@@ -1,12 +1,12 @@
-import prisma from '@/lib/prisma'
-import { timeAgo } from '@/lib/utils'
-import Image from 'next/image'
-import RefreshButton from './refresh-button'
+import prisma from '@/lib/prisma';
+import { timeAgo } from '@/lib/utils';
+import Image from 'next/image';
+import RefreshButton from './refresh-button';
 
 export default async function Table() {
-  const startTime = Date.now()
-  const parts = await prisma.bodyPart.findMany()
-  const duration = Date.now() - startTime
+  const startTime = Date.now();
+  const parts = await prisma.bodyPart.findMany();
+  const duration = Date.now() - startTime;
 
   return (
     <div className="bg-white/30 p-12 shadow-xl ring-1 ring-gray-900/5 rounded-lg backdrop-blur-lg max-w-xl mx-auto w-full">
@@ -42,5 +42,5 @@ export default async function Table() {
         ))}
       </div>
     </div>
-  )
+  );
 }
