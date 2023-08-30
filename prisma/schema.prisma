@@ -11,10 +11,53 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model users {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  image     String
-  createdAt DateTime @default(now())
+model BodyPart {
+  id          Int       @id @default(autoincrement())
+  name        String
+  url         String    @unique
+  createdAt   DateTime  @default(now())
+  anchorX     Int
+  anchorY     Int
+  type        PartType
+  bodyTypes   BodyType[]
+  leftLegTo   Legs? @relation("LeftLeg")
+  rightLegTo  Legs? @relation("RightLeg")
+  leftArmTo   Arms? @relation("LeftArm")
+  rightArmTo  Arms? @relation("RightArm")
+}
+
+model Legs {
+  id          Int @id @default(autoincrement())
+  left        BodyPart? @relation("LeftLeg", fields: [leftID], references: [id])
+  right       BodyPart? @relation("RightLeg", fields: [rightID], references: [id])
+  leftID      Int @unique
+  rightID     Int @unique
+}
+
+model Arms {
+  id          Int @id @default(autoincrement())
+  left        BodyPart? @relation("LeftArm", fields: [leftID], references: [id])
+  right       BodyPart? @relation("RightArm", fields: [rightID], references: [id])
+  leftID      Int @unique
+  rightID     Int @unique
+}
+
+enum PartType {
+  Head
+  Body
+  LeftLeg
+  RightLeg
+  LeftArm
+  RightArm
+  Hair
+  Eyes
+  FacialHair
+  FaceAccessory
+  HairAccessory
+}
+
+enum BodyType {
+  Small
+  Medium
+  Large
 }
