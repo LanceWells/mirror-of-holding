@@ -1,39 +1,48 @@
-"use client";
+import { PartType } from '@prisma/client';
+import React from 'react';
+import PartTabSelector from './part-tab-selector';
+import PartTab from './part-tab';
 
-import react, { useContext } from 'react';
-import CharacterCanvas from './character-canvas';
-import { CharacterSelectionContext, CharacterSelectionDispatchContext } from '@/app/character-selection-context';
+export type PartGridProps = {
+  Parts: {
+    [P in keyof typeof PartType]: JSX.Element[];
+  }
+};
 
-export default function PartGrid() {
-  const dispatch = useContext(CharacterSelectionDispatchContext);
+export default async function PartGrid(props: PartGridProps) {
+  const {
+    Parts: parts,
+  } = props;
+
+  const tabSelectors = Object.keys(PartType)
+    .filter((p) => !['RightArm', 'RightLeg'].includes(p))
+    .map((p) => (
+      <PartTabSelector
+        key={`${p}-tab-selector`}
+        partType={p as keyof typeof PartType}
+      />
+    )
+  );
+
+  const tabs = Object.entries(parts)
+    .map(([k, v]) => (
+      <PartTab
+        key={`${k}-tab`}
+        partType={k as keyof typeof PartType}
+      >
+        {v}
+      </PartTab>
+    )
+  );
 
   return (
-    <div className='bg-slate-100 p-12 shadow-xl ring-gray-800 rounded-lg'>
-      <CharacterCanvas />
-      <button onClick={() => {
-        dispatch!({
-          type: 'updateParts',
-          parts: {
-            Hair: {
-              url: 'https://lh3.googleusercontent.com/pw/AIL4fc-N0-5JcUp57lmUnqf4RbO9VDSCcSzCLQr5wJ7LDgsaRn77LXeQZq6NkiPHYK-hLsgCq7KA9m-KSTzAPtpBI6VcJLM6EdS-65XpivuBVb4KzfNZu4BCRAZzBhkjwOwqxQRWfr-qabQpMCP6tWUEYUv9=w17-h13-s-no?authuser=0',
-              anchorX: 0,
-              anchorY: 0,
-            }
-          }
-        })
-      }}>Thingy</button>
-      <button onClick={() => {
-        dispatch!({
-          type: 'updateParts',
-          parts: {
-            Hair: {
-              url: 'https://lh3.googleusercontent.com/pw/AIL4fc8_QH36zXyeK_FQjqT6EQTExtobc7ybqiJeJqRCLuZjQFlYSrM2vwHQ5F3mi_96zvcZU-UK6_d1dIm2eU4ixQsKPpGLqNwewhenPQhhrU0elSD4Qq03qmjRsVlskUFTl8wTqIjVngriZ6_cpidkR07Q=w11-h10-s-no?authuser=0',
-              anchorX: 1,
-              anchorY: 1,
-            }
-          }
-        })
-      }}>Thingy</button>
+    <div className='mb-3'>
+      <div className='flex m-2'>
+        {tabSelectors}
+      </div>
+      <div>
+        {tabs}
+      </div>
     </div>
   );
 }

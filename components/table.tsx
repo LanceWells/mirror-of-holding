@@ -27,7 +27,7 @@ export default async function Table() {
           >
             <div className="flex items-center space-x-4">
               <Image
-                src={part.url}
+                src={`data:image/png;base64,${part.image.toString('base64')}`}
                 alt={part.name}
                 width={48}
                 height={48}

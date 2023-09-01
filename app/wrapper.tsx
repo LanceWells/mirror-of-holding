@@ -2,16 +2,12 @@
 
 import { BodyType } from "@prisma/client";
 import React, { useReducer } from "react";
-import { CharacterReducer } from "./character-selection-reducer";
-import { CharacterSelectionContext, CharacterSelectionDispatchContext } from "./character-selection-context";
+import { CharacterReducer } from "../lib/character-selection-reducer";
+import { CharacterSelectionContext, CharacterSelectionDispatchContext, CharacterStateDefault } from "../lib/character-selection-context";
 
 export default function AppWrapper(props: React.PropsWithChildren<{}>) {
   const {children} = props;
-
-  const [character, dispatchCharacter] = useReducer(CharacterReducer, {
-    BodyType: BodyType.Medium,
-    Parts: {},
-  });
+  const [character, dispatchCharacter] = useReducer(CharacterReducer, CharacterStateDefault());
 
   return (
     <CharacterSelectionContext.Provider value={character}>

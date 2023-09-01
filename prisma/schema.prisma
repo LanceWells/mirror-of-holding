@@ -14,32 +14,28 @@ datasource db {
 model BodyPart {
   id          Int       @id @default(autoincrement())
   name        String
-  url         String    @unique
+  image       Bytes     @unique
   createdAt   DateTime  @default(now())
   anchorX     Int
   anchorY     Int
-  type        PartType
+  partType    PartType
   bodyTypes   BodyType[]
-  leftLegTo   Legs? @relation("LeftLeg")
-  rightLegTo  Legs? @relation("RightLeg")
-  leftArmTo   Arms? @relation("LeftArm")
-  rightArmTo  Arms? @relation("RightArm")
+  outfit      Outfit    @relation(fields: [outfitID], references: [id])
+  outfitID    Int
 }
 
-model Legs {
-  id          Int @id @default(autoincrement())
-  left        BodyPart? @relation("LeftLeg", fields: [leftID], references: [id])
-  right       BodyPart? @relation("RightLeg", fields: [rightID], references: [id])
-  leftID      Int @unique
-  rightID     Int @unique
+model Outfit {
+  id      Int @id @default(autoincrement())
+  parts   BodyPart[]
+  name    String
 }
 
-model Arms {
-  id          Int @id @default(autoincrement())
-  left        BodyPart? @relation("LeftArm", fields: [leftID], references: [id])
-  right       BodyPart? @relation("RightArm", fields: [rightID], references: [id])
-  leftID      Int @unique
-  rightID     Int @unique
+model BodyLayout {
+  bodyType  BodyType
+  partType  PartType
+  anchorX   Int
+  anchorY   Int
+  @@id([bodyType, partType])
 }
 
 enum PartType {
