@@ -36,8 +36,8 @@ export default async function PartGrid(props: PartGridProps) {
   );
 
   return (
-    <div className='mb-3'>
-      <div className='flex m-2'>
+    <div className='px-4 max-w-screen-lg'>
+      <div className='flex mx-2 justify-center'>
         {tabSelectors}
       </div>
       <div>

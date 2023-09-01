@@ -25,7 +25,7 @@ export default function PartTabSelector(props: PartTabSelectorProps) {
   return (
     <button
       className={clsx(
-        'p-3',
+        'px-6 py-2',
         'rounded-t-md',
         character.VisibleTab === partType && [
           'border-b-2',

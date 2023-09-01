@@ -29,3 +29,12 @@ body {
     rgb(var(--background-start-rgb));
   image-rendering: pixelated;
 }
+
+.button-std {
+  @apply w-32;
+  @apply rounded-md;
+  @apply bg-primary-600;
+  @apply text-white;
+  @apply drop-shadow-md;
+  @apply hover:bg-primary-700;
+}

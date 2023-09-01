@@ -1,4 +1,4 @@
-import { BodyPart, BodyType, PartType } from '@prisma/client';
+import { BodyLayout, BodyPart, BodyType, PartType } from '@prisma/client';
 import { Reducer } from 'react';
 import { produce } from "immer";
 
@@ -12,7 +12,7 @@ import { produce } from "immer";
 
 export type BodyPartImage = Pick<
   BodyPart,
-  'name' | 'anchorX' | 'anchorY' | 'partType'
+  'name' | 'anchorX' | 'anchorY' | 'partType' | 'image'
 >
 
 export type SplitParts = {
@@ -22,6 +22,7 @@ export type SplitParts = {
 
 export type CharacterState = {
   BodyType: BodyType,
+  Layouts: BodyLayout[],
   Parts: {
     [Property in keyof typeof PartType]: BodyPartImage | null;
   },

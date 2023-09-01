@@ -19,6 +19,7 @@ export const CharacterStateDefault = () => ({
     RightLeg: null,
   },
   VisibleTab: 'Body',
+  Layouts: [],
 } as CharacterState)
 
 export const CharacterSelectionContext = createContext<CharacterState>(CharacterStateDefault());

@@ -43,10 +43,9 @@ export default function OutfitButton(props: PartButtonProps) {
         'h-16',
         'w-16',
         'rounded-full',
-        'ring-2',
-        'bg-primary-accent-100',
-        'ring-primary-200',
-        'hover:bg-primary-accent-200',
+        'bg-primary-200',
+        'hover:bg-primary-300',
+        'drop-shadow-sm',
       )}
       {...others}
       onClick={handleClick}

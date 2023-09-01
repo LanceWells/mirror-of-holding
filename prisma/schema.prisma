@@ -14,7 +14,7 @@ datasource db {
 model BodyPart {
   id          Int       @id @default(autoincrement())
   name        String
-  image       Bytes     @unique
+  image       Bytes
   createdAt   DateTime  @default(now())
   anchorX     Int
   anchorY     Int
