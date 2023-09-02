@@ -62,7 +62,7 @@ export default async function Home() {
         anchorY: p.anchorY,
         name: p.name,
         partType: p.partType,
-        image: p.image
+        encImage: p.image.toString('base64'),
       });
 
       const clientParts = o.parts.map(toClientPart);

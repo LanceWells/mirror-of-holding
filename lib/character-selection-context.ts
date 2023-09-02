@@ -19,7 +19,49 @@ export const CharacterStateDefault = () => ({
     RightLeg: null,
   },
   VisibleTab: 'Body',
-  Layouts: [],
+  // TODO: Load this on first query
+  Layouts: [
+    {
+      partType: 'Body',
+      anchorX: 0,
+      anchorY: 0,
+    },
+    {
+      partType: 'Head',
+      anchorX: -2,
+      anchorY: -3,
+    },
+    {
+      partType: 'Hair',
+      anchorX: -2,
+      anchorY: -7,
+    },
+    {
+      partType: 'Eyes',
+      anchorX: -2,
+      anchorY: -7,
+    },
+    {
+      partType: 'LeftLeg',
+      anchorX: 0,
+      anchorY: 4,
+    },
+    {
+      partType: 'RightLeg',
+      anchorX: -2,
+      anchorY: 3,
+    },
+    {
+      partType: 'LeftArm',
+      anchorX: 3,
+      anchorY: -1,
+    },
+    {
+      partType: 'RightArm',
+      anchorX: -2,
+      anchorY: -1,
+    }
+  ],
 } as CharacterState)
 
 export const CharacterSelectionContext = createContext<CharacterState>(CharacterStateDefault());
