@@ -14,9 +14,11 @@ export type SplitParts = {
   Right: BodyPartImage | null,
 }
 
+export type StateLayout = Omit<BodyLayout, 'bodyType'>[];
+
 export type CharacterState = {
   BodyType: BodyType,
-  Layouts: Omit<BodyLayout, 'bodyType'>[],
+  Layouts: StateLayout,
   Parts: {
     [Property in keyof typeof PartType]: BodyPartImage | null;
   },

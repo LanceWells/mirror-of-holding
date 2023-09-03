@@ -4,7 +4,7 @@ import { Dispatch, createContext, useContext } from "react";
 import { CharacterAction, CharacterState } from './character-selection-reducer';
 
 export const CharacterStateDefault = () => ({
-  BodyType: "Medium",
+  BodyType: "MediumHumanoid",
   Parts: {
     Body: null,
     Eyes: null,

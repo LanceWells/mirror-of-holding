@@ -12,29 +12,30 @@ datasource db {
 }
 
 model BodyPart {
-  id          Int       @id @default(autoincrement())
   name        String
   image       Bytes
   createdAt   DateTime  @default(now())
   anchorX     Int
   anchorY     Int
   partType    PartType
-  bodyTypes   BodyType[]
   outfit      Outfit    @relation(fields: [outfitID], references: [id])
   outfitID    Int
+  @@id([outfitID, partType])
 }
 
 model Outfit {
-  id      Int @id @default(autoincrement())
-  parts   BodyPart[]
-  name    String
+  id          Int       @id @default(autoincrement())
+  parts       BodyPart[]
+  name        String
+  bodyTypes   BodyType[]
+  outfitType  OutfitType
 }
 
 model BodyLayout {
-  bodyType  BodyType
-  partType  PartType
-  anchorX   Int
-  anchorY   Int
+  bodyType    BodyType
+  partType    PartType
+  anchorX     Int
+  anchorY     Int
   @@id([bodyType, partType])
 }
 
@@ -53,7 +54,19 @@ enum PartType {
 }
 
 enum BodyType {
-  Small
-  Medium
-  Large
+  MediumHumanoid
+}
+
+enum OutfitType {
+  Body            // Head,FaceAccessory, Eyes, FacialHair Eyes, Body, Legs, Arms
+  Pants           // Legs
+  Top             // Body, Arms
+  Hair            // Hair
+  Vest            // Body
+  Robes           // Arms, Body, Legs
+  FacialHair      // FacialHair
+  FaceAccessory   // FaceAccessory
+  HairAccessory   // HairAccessory
+  Mask            // FaceAccessory, Eyes, FacialHair
+  Helmet          // FaceAccessory, Eyes, FacialHair, Hair
 }
