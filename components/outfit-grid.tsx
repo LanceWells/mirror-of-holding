@@ -2,6 +2,7 @@ import { OutfitType, PartType } from '@prisma/client';
 import React from 'react';
 import OutfitTabSelector from './outfit-tab-selector';
 import OutfitTab from './outfit-tab';
+import clsx from 'clsx';
 
 export type OutfitGridProps = {
   outfits: Map<OutfitType, JSX.Element[]>;
@@ -27,8 +28,15 @@ export default async function OutfitGrid(props: OutfitGridProps) {
     ))
 
   return (
-    <div className='px-4 max-w-screen-lg'>
-      <div className='flex mx-2 justify-center w-full flex-wrap'>
+    <div className='grid grid-cols-1 grid-rows-[125px_1fr] sm:w-full md:max-w-screen-lg'>
+      <div className={clsx(
+        'sm:relative',
+        'xs:w-max',
+        'lg:flex',
+        'lg:flex-wrap',
+        'lg:max-w-full',
+        'justify-center',
+      )}>
         {tabSelectors}
       </div>
       <div>

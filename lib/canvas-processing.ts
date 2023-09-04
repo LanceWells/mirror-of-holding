@@ -1,6 +1,18 @@
-import { OutfitType, PartType } from "@prisma/client";
-import { BodyPartOrderConfig, OutfitLayerConfig, OutfitLayerType } from "./outfit-configuration";
-import { CharacterBody, BodyPart_Client, BodyLayout_Client } from "./store/store";
+import {
+  OutfitType,
+  PartType,
+} from "@prisma/client";
+import {
+  BodyPartOrderConfig,
+  OutfitLayerConfig,
+  OutfitLayerType,
+  OutfitLayerTypeOrderConfig,
+} from "./outfit-configuration";
+import {
+  CharacterBody,
+  BodyPart_Client,
+  BodyLayout_Client,
+} from "./store/store";
 
 export const ImageCentering = 32;
 export const ImageScaling = 4;
@@ -41,7 +53,16 @@ export function SortDrawingLayers(
   });
 
   const orderedLayers = Object.values(groupedLayers)
-    .flatMap((l) => Object.values(l))
+    .flatMap((l) => Object.entries(l).sort((a, b) => {
+      if (!a) { return -1; }
+      if (!b) { return 1; }
+
+      const aVal = OutfitLayerTypeOrderConfig[a[0] as keyof typeof OutfitLayerType];
+      const bVal = OutfitLayerTypeOrderConfig[b[0] as keyof typeof OutfitLayerType];
+
+      return aVal - bVal;
+    }))
+    .map(([_, v]) => v)
     .sort((a, b) => {
       if (!a || !a.part || !a.part.partType) { return -1; }
       if (!b || !b.part || !b.part.partType) { return 1; }

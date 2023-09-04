@@ -28,6 +28,8 @@ body {
     )
     rgb(var(--background-start-rgb));
   image-rendering: pixelated;
+  overflow: hidden;
+  max-height: 100vh;
 }
 
 .button-std {

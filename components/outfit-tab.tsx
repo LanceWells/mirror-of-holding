@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
 import Image from 'next/image';
 import { useOutfitTabSelector } from '@/lib/store';
+import RecolorPalette from './recolor-palette';
 
 type OutfitTabProps = PropsWithChildren<{
   outfitType: OutfitType;
@@ -45,6 +46,7 @@ export default function OutfitTab(props: OutfitTabProps) {
         />
         <p><b>Recolor</b></p>
       </button>
+      <RecolorPalette thisTab={outfitType} />
     </div>
   );
 }

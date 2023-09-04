@@ -1,4 +1,7 @@
-import { OutfitType, PartType } from "@prisma/client";
+import {
+  OutfitType,
+  PartType,
+} from "@prisma/client";
 
 enum OutfitLayerType {
   Skin,
@@ -8,6 +11,21 @@ enum OutfitLayerType {
 
 type OutfitLayerConfig = {
   [Property in keyof typeof OutfitType]: OutfitLayerType;
+}
+type BodyPartOrderConfig = {
+  [Property in keyof typeof PartType]: number;
+}
+
+type OutfitLayerTypeOrderConfig = {
+  [Property in keyof typeof OutfitLayerType]: number;
+}
+
+type OutfitThumbnailConfig = {
+  [Property in keyof typeof OutfitType]: PartType;
+}
+
+type PaletteConfig = {
+  
 }
 
 const OutfitLayerConfig: OutfitLayerConfig = {
@@ -25,25 +43,6 @@ const OutfitLayerConfig: OutfitLayerConfig = {
   ArmAccessory:   OutfitLayerType.Armour,
 };
 
-const OutfitLayerOrder: OutfitType[] = [
-  OutfitType.Body,
-  OutfitType.Pants,
-  OutfitType.Top,
-  OutfitType.Vest,
-  OutfitType.ArmAccessory,
-  OutfitType.Robes,
-  OutfitType.FaceAccessory,
-  OutfitType.FacialHair,
-  OutfitType.Mask,
-  OutfitType.Helmet,
-  OutfitType.Hair,
-  OutfitType.HairAccessory
-]
-
-type BodyPartOrderConfig = {
-  [Property in keyof typeof PartType]: number;
-}
-
 const BodyPartOrderConfig: BodyPartOrderConfig = {
   RightLeg:        0,
   RightArm:        1,
@@ -58,14 +57,10 @@ const BodyPartOrderConfig: BodyPartOrderConfig = {
   LeftLeg:        10,
 }
 
-const OutfitLayerTypeOrder: OutfitLayerType[] = [
-  OutfitLayerType.Skin,
-  OutfitLayerType.Clothing,
-  OutfitLayerType.Armour,
-]
-
-type OutfitThumbnailConfig = {
-  [Property in keyof typeof OutfitType]: PartType;
+const OutfitLayerTypeOrderConfig: OutfitLayerTypeOrderConfig = {
+  Skin:     0,
+  Clothing: 1,
+  Armour:   2,
 }
 
 const OutfitThumbnailConfig: OutfitThumbnailConfig = {
@@ -87,7 +82,6 @@ export {
   OutfitLayerType,
   OutfitLayerConfig,
   OutfitThumbnailConfig,
-  OutfitLayerOrder,
   BodyPartOrderConfig,
-  OutfitLayerTypeOrder,
+  OutfitLayerTypeOrderConfig,
 };

@@ -39,6 +39,9 @@ export default function OutfitTabSelector(props: OutfitTabSelectorProps) {
           'dark:bg-slate-800',
           'dark:border-b-indigo-100',
         ],
+        selectedOutfitType !== outfitType && [
+          'my-2',
+        ],
         'hover:text-indigo-700',
         'hover:dark:text-indigo-200',
         'hover:bg-slate-100',
