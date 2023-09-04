@@ -1,26 +1,26 @@
 "use client";
 
-import { useCharacterContext } from '@/lib/character-selection-context';
-import { PartType } from '@prisma/client';
+import { OutfitType, PartType } from '@prisma/client';
 import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
 import Image from 'next/image';
+import { useOutfitTabSelector } from '@/lib/store';
 
-type PartTabProps = PropsWithChildren<{
-  partType: PartType;
+type OutfitTabProps = PropsWithChildren<{
+  outfitType: OutfitType;
 }>;
 
-export default function PartTab(props: PartTabProps) {
+export default function OutfitTab(props: OutfitTabProps) {
   const {
-    partType,
+    outfitType,
     children,
   } = props;
 
-  const character = useCharacterContext();
+  const selectedOutfitType = useOutfitTabSelector();
 
   return (
-    <div key={`${partType}-tab`} className={clsx(
-      character.VisibleTab !== partType && 'hidden',
+    <div key={`${outfitType}-tab`} className={clsx(
+      selectedOutfitType !== outfitType && 'hidden',
       'p-3',
       'flex',
       'rounded-lg',

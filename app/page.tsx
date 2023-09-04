@@ -1,22 +1,18 @@
 import AppWrapper from './wrapper';
-import PartGrid, { PartGridProps } from '@/components/part-grid';
 import prisma from '../lib/prisma'
-import { BodyLayout, PartType } from '@prisma/client';
+import { OutfitType, PartType } from '@prisma/client';
 import OutfitButton from '@/components/outfit-button';
-import { OutfitQuery } from '@/lib/utils';
 import CharacterCanvas from '@/components/character-canvas';
-import { BodyPartImage } from '@/lib/character-selection-reducer';
 import clsx from 'clsx';
+import OutfitGrid from '@/components/outfit-grid';
+import { OutfitThumbnailConfig } from '@/lib/outfit-configuration';
+import { ContentQuery } from '@/lib/utils';
+import { BodyPart_Client, CharacterBodyLayer } from '@/lib/store/store';
 
 // Prisma does not support Edge without the Data Proxy currently
 // export const runtime = 'edge'
 export const preferredRegion = 'home';
 export const dynamic = 'force-dynamic';
-
-type ContentQuery = {
-  Outfits: OutfitQuery[];
-  Layouts: BodyLayout[];
-}
 
 async function LoadImages(): Promise<ContentQuery> {
   const [
@@ -25,8 +21,8 @@ async function LoadImages(): Promise<ContentQuery> {
   ] = await Promise.all([
     prisma.outfit.findMany({
       include: {
-        parts: true
-      }
+        parts: true,
+      },
     }),
     prisma.bodyLayout.findMany(),
   ]);
@@ -38,46 +34,36 @@ async function LoadImages(): Promise<ContentQuery> {
 }
 
 export default async function Home() {
-  const bodyOptions = await LoadImages();
-  const outfitCategories = new Map<PartType, OutfitQuery[]>();
+  const outfitOptions = await LoadImages();
 
-  for (let o of bodyOptions.Outfits) {
-    for (let p of o.parts) {
-      if (!outfitCategories.has(p.partType)) {
-        outfitCategories.set(p.partType, []);
-      }
+  const outfitsMap = new Map(
+    Object.keys(OutfitType)
+    .map((k) => [k as OutfitType, [] as JSX.Element[]])
+  );
 
-      outfitCategories.get(p.partType)!.push(o);
-    }
-  }
-
-  const tabPanels = [...outfitCategories.entries()].reduce((prev, [k, v]) => {
-    const buttons = v.map((o) => {
-      const imgBuf = o.parts.find((p) => p.partType === k)?.image ?? Buffer.from([]);
-      const imgb64 = imgBuf.toString('base64');
-      const imgUrl = `data:image/png;base64,${imgb64}`;
-      
-      const toClientPart = (p: OutfitQuery['parts'][number]): BodyPartImage => ({
+  for (let o of outfitOptions.Outfits) {
+    const parts: CharacterBodyLayer = Object.fromEntries(o.parts.map((p) => [
+      p.partType,
+      {
+        src: p.src,
+        name: p.name,
         anchorX: p.anchorX,
         anchorY: p.anchorY,
-        name: p.name,
         partType: p.partType,
-        encImage: p.image.toString('base64'),
-      });
+      } as BodyPart_Client
+    ])) as CharacterBodyLayer;
 
-      const clientParts = o.parts.map(toClientPart);
-      return (
-        <OutfitButton
-          name={o.name}
-          parts={clientParts}
-          src={imgUrl}
-        />
-      )
-    });
+    const targetPart = OutfitThumbnailConfig[o.outfitType];
+    const srcPart = parts[targetPart as keyof typeof PartType];
 
-    prev[k] = buttons;
-    return prev;
-  }, {} as PartGridProps['Parts'])
+    outfitsMap.get(o.outfitType)!.push((
+      <OutfitButton
+        name={o.name}
+        outfitType={o.outfitType}
+        parts={parts}
+        src={srcPart?.src ?? ""} />
+    ));
+  }
 
   return (
     <AppWrapper>
@@ -90,7 +76,7 @@ export default async function Home() {
         'justify-items-center',
       )}>
         <CharacterCanvas />
-        <PartGrid Parts={tabPanels}/>
+        <OutfitGrid outfits={outfitsMap}/>
       </main>
     </AppWrapper>
   );

@@ -1,4 +1,4 @@
-import { BodyPart } from '@prisma/client';
+import { BodyLayout, BodyPart, Outfit, PartType } from '@prisma/client';
 import ms from 'ms';
 
 export const timeAgo = (timestamp: Date, timeOnly?: boolean): string => {
@@ -8,7 +8,17 @@ export const timeAgo = (timestamp: Date, timeOnly?: boolean): string => {
   }`;
 };
 
-export type OutfitQuery = {
-  name: string;
-  parts: BodyPart[];
-};
+export type OutfitQuery = (
+  Outfit & {
+    parts: BodyPart[],
+  }
+)
+
+export type ContentQuery = {
+  Outfits: OutfitQuery[],
+  Layouts: BodyLayout[],
+}
+
+export type PartMap = {
+  [Property in keyof PartType]: BodyPart;
+}

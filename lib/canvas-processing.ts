@@ -1,5 +1,6 @@
-import { PartType } from "@prisma/client";
-import { BodyPartImage, StateLayout } from "./character-selection-reducer";
+import { BodyLayout, OutfitType, PartType } from "@prisma/client";
+import { OutfitLayerConfig, OutfitLayerType } from "./outfit-configuration";
+import { CharacterBody, BodyPart_Client } from "./store/store";
 
 export const ImageCentering = 32;
 export const ImageScaling = 4;
@@ -10,6 +11,38 @@ export type ImageLayer = {
   processed: ProcessedImage;
   partType?: PartType;
   image?: HTMLImageElement;
+}
+
+export function SortDrawingLayers(
+  input: CharacterBody['Parts'],
+  processing: { [Property in PartType]?: PostProcessing[]; }
+): DrawCommand[] {
+  const groupedLayers: {
+    [Property in PartType]?: {
+      [Property in OutfitLayerType]?: DrawCommand;
+    }
+  } = {};
+
+  if (!input) { return []; }
+
+  Object.entries(input).forEach(([outfitType, outfit]) => {
+    Object.entries(outfit).forEach(([partType, part]) => {
+      const outfitLayerType = OutfitLayerConfig[outfitType as OutfitType];
+      const partLayer = groupedLayers[partType as PartType] ?? {};
+      const postProcessing = (processing[partType as PartType]) ?? [];
+
+      partLayer[outfitLayerType] = {
+        part,
+        postProcessing,
+      };
+      
+      groupedLayers[partType as PartType] = partLayer;
+    });
+  });
+
+  const orderedLayers = Object.values(groupedLayers).flatMap((l) => Object.values(l));
+
+  return orderedLayers;
 }
 
 /**
@@ -52,7 +85,7 @@ export type DrawCommand = {
   /**
    * The image, and its associated data, to process.
    */
-  image: BodyPartImage | null;
+  part: BodyPart_Client | null;
 
   /**
    * The processing steps to take. Note that these are performed explicitly in-sequence.
@@ -123,6 +156,7 @@ export function LoadImage(src: string): Promise<HTMLImageElement> {
     img.onload = () => resolve(img);
     img.onerror = reject;
     img.src = src;
+    img.crossOrigin = 'anonymous';
   });
 }
 
@@ -162,4 +196,94 @@ export function CalculateDrawingCoords(
   }
 
   return {x, y}
+}
+
+/**
+ * A helper method used to process the components of a character image into a singular image on the
+ * provided {@link canvas}.
+ * @param canvas The canvas that the image should be drawn upon.
+ * @param cmds A list of processing commands that contain information about what to draw.
+ * @param character The character state as taken from the {@link CharacterSelectionContext}.
+ */
+export async function ProcessImages(
+  canvas: HTMLCanvasElement,
+  cmds: DrawCommand[],
+  layouts: { [Property in keyof typeof PartType]?: BodyLayout },
+) {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) { return; }
+
+  const imgPromises = cmds.map(async (c) => {
+    if (!c.part) { return undefined; }
+    
+    const imgUrl = c.part.src;
+    const image = await LoadImage(imgUrl);
+
+    let processed: ProcessedImage = { img: image };
+    for (let process of c.postProcessing) {
+      processed = await process(processed) ?? processed;
+    }
+
+    const layout = layouts[c.part.partType as PartType];
+    const coords = CalculateDrawingCoords(
+      {
+        x: c.part.anchorX,
+        y: c.part.anchorY,
+      },
+      layout && {
+        x: layout.anchorX,
+        y: layout.anchorY,
+      },
+      processed.adjustments && {
+        x: processed.adjustments.x,
+        y: processed.adjustments.y,
+      },
+    )
+
+    return {
+      x: coords.x,
+      y: coords.y,
+      partType: c.part.partType,
+      processed,
+      image,
+    } as ImageLayer;
+  });
+
+  const layers = (await (Promise.all(imgPromises))).filter(Boolean) as ImageLayer[];
+
+  const processedCanvas = document.createElement('canvas');
+  processedCanvas.height = 64;
+  processedCanvas.width = 64;
+
+  const outlineCanvas = document.createElement('canvas');
+  outlineCanvas.height = 64;
+  outlineCanvas.width = 64;
+
+  const processedCtx = processedCanvas.getContext('2d');
+  if (!processedCtx) { return; }
+
+  const outlineCtx = outlineCanvas.getContext('2d');
+  if (!outlineCtx) { return; }
+
+  for (let layer of layers) {
+    processedCtx.drawImage(layer.processed.img, layer.x, layer.y);
+    if (layer.image) {
+      outlineCtx.drawImage(layer.image, layer.x, layer.y);
+    }
+  }
+
+  const outlineImage = await DrawOutline({img: outlineCanvas});
+
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.scale(ImageScaling, ImageScaling);
+  if (outlineImage) {
+    ctx.drawImage(
+      outlineImage.img,
+      (ImageCentering / 8) + (outlineImage.adjustments?.x ?? 0),
+      -(ImageCentering / 3) + (outlineImage.adjustments?.y ?? 0)
+    )
+  }
+  ctx.drawImage(processedCanvas, (ImageCentering / 8), -(ImageCentering / 3));
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
 }

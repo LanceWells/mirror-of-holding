@@ -1,38 +1,40 @@
 "use client"
 
-import React, { useContext, useMemo } from "react"
+import React, { useCallback } from "react"
 import Image from "next/image";
-import { BodyPartImage, CharacterState } from "@/lib/character-selection-reducer";
-import { CharacterSelectionDispatchContext } from "@/lib/character-selection-context";
 import clsx from "clsx";
+import { updateParts } from "@/lib/store";
+import { useDispatch } from "react-redux";
+import { CharacterBodyLayer } from "@/lib/store/character-body";
+import { OutfitType } from "@prisma/client";
 
 export type PartButtonProps = JSX.IntrinsicElements['button'] & {
-  src: string;
+  src: HTMLImageElement['src'];
   name: string;
-  parts: BodyPartImage[];
+  outfitType: OutfitType,
+  parts: CharacterBodyLayer;
 }
 
 export default function OutfitButton(props: PartButtonProps) {
   const {
     src,
     name,
+    outfitType,
     parts,
     ...others
   } = props;
 
-  const dispatch = useContext(CharacterSelectionDispatchContext);
-
-  const handleClick = useMemo(() => () => {
-    const outfit: Partial<CharacterState['Parts']> = {};
-    for (let p of parts) {
-      outfit[p.partType] = p;
-    }
-
-    dispatch({
-      type: 'updateParts',
-      parts: outfit,
-    })
-  }, [parts])
+  const dispatch = useDispatch();
+  const handleClick = useCallback(
+    () => dispatch(
+      updateParts(
+        {
+          outfitType,
+          parts,
+        }
+      )
+    ), [dispatch]
+  )
 
   return (
     <button

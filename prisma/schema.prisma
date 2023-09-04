@@ -13,7 +13,7 @@ datasource db {
 
 model BodyPart {
   name        String
-  image       Bytes
+  src         String
   createdAt   DateTime  @default(now())
   anchorX     Int
   anchorY     Int
@@ -69,4 +69,5 @@ enum OutfitType {
   HairAccessory   // HairAccessory
   Mask            // FaceAccessory, Eyes, FacialHair
   Helmet          // FaceAccessory, Eyes, FacialHair, Hair
+  ArmAccessory    // Arms
 }
