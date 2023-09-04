@@ -28,7 +28,7 @@ export default async function OutfitGrid(props: OutfitGridProps) {
 
   return (
     <div className='px-4 max-w-screen-lg'>
-      <div className='flex mx-2 justify-center'>
+      <div className='flex mx-2 justify-center w-full flex-wrap'>
         {tabSelectors}
       </div>
       <div>

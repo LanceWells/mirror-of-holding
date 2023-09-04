@@ -23,17 +23,17 @@ export type CharacterBody = {
 const DefaultCharacterBody: CharacterBody = {
   Parts: {},
   Layouts: {
-    Head:           { anchorX: -2, anchorY: -3 },
+    Head:           { anchorX: -1, anchorY: -3 },
     Body:           { anchorX:  0, anchorY:  0 },
-    Eyes:           { anchorX: -3, anchorY: -7 },
-    Hair:           { anchorX: -3, anchorY: -7 },
+    Eyes:           { anchorX: -2, anchorY: -7 },
+    Hair:           { anchorX: -2, anchorY: -7 },
     LeftArm:        { anchorX:  3, anchorY: -1 },
     LeftLeg:        { anchorX:  0, anchorY:  4 },
     RightArm:       { anchorX: -2, anchorY: -1 },
     RightLeg:       { anchorX: -2, anchorY:  3 },
-    FacialHair:     { anchorX: -3, anchorY: -7 },
-    FaceAccessory:  { anchorX: -3, anchorY: -7 },
-    HairAccessory:  { anchorX: -3, anchorY: -7 },
+    FacialHair:     { anchorX: -2, anchorY: -7 },
+    FaceAccessory:  { anchorX: -2, anchorY: -7 },
+    HairAccessory:  { anchorX: -2, anchorY: -7 },
   },
   OutfitType: OutfitType.Body,
 };

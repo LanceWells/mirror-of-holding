@@ -40,19 +40,23 @@ const OutfitLayerOrder: OutfitType[] = [
   OutfitType.HairAccessory
 ]
 
-const BodyPartOrder: PartType[] = [
-  PartType.RightLeg,
-  PartType.RightArm,
-  PartType.Body,
-  PartType.Head,
-  PartType.FacialHair,
-  PartType.Hair,
-  PartType.HairAccessory,
-  PartType.Eyes,
-  PartType.FaceAccessory,
-  PartType.LeftArm,
-  PartType.LeftLeg,
-];
+type BodyPartOrderConfig = {
+  [Property in keyof typeof PartType]: number;
+}
+
+const BodyPartOrderConfig: BodyPartOrderConfig = {
+  RightLeg:        0,
+  RightArm:        1,
+  Body:            2,
+  Head:            3,
+  FacialHair:      4,
+  Hair:            5,
+  HairAccessory:   6,
+  Eyes:            7,
+  FaceAccessory:   8,
+  LeftArm:         9,
+  LeftLeg:        10,
+}
 
 const OutfitLayerTypeOrder: OutfitLayerType[] = [
   OutfitLayerType.Skin,
@@ -84,6 +88,6 @@ export {
   OutfitLayerConfig,
   OutfitThumbnailConfig,
   OutfitLayerOrder,
-  BodyPartOrder,
+  BodyPartOrderConfig,
   OutfitLayerTypeOrder,
 };

@@ -1,6 +1,6 @@
-import { BodyLayout, OutfitType, PartType } from "@prisma/client";
-import { OutfitLayerConfig, OutfitLayerType } from "./outfit-configuration";
-import { CharacterBody, BodyPart_Client } from "./store/store";
+import { OutfitType, PartType } from "@prisma/client";
+import { BodyPartOrderConfig, OutfitLayerConfig, OutfitLayerType } from "./outfit-configuration";
+import { CharacterBody, BodyPart_Client, BodyLayout_Client } from "./store/store";
 
 export const ImageCentering = 32;
 export const ImageScaling = 4;
@@ -40,7 +40,17 @@ export function SortDrawingLayers(
     });
   });
 
-  const orderedLayers = Object.values(groupedLayers).flatMap((l) => Object.values(l));
+  const orderedLayers = Object.values(groupedLayers)
+    .flatMap((l) => Object.values(l))
+    .sort((a, b) => {
+      if (!a || !a.part || !a.part.partType) { return -1; }
+      if (!b || !b.part || !b.part.partType) { return 1; }
+
+      const aVal = BodyPartOrderConfig[a.part.partType];
+      const bVal = BodyPartOrderConfig[b.part.partType];
+
+      return aVal - bVal;
+    });
 
   return orderedLayers;
 }
@@ -208,7 +218,7 @@ export function CalculateDrawingCoords(
 export async function ProcessImages(
   canvas: HTMLCanvasElement,
   cmds: DrawCommand[],
-  layouts: { [Property in keyof typeof PartType]?: BodyLayout },
+  layouts: { [Property in keyof typeof PartType]?: BodyLayout_Client },
 ) {
   const ctx = canvas.getContext('2d');
   if (!ctx) { return; }
