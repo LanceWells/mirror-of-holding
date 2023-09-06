@@ -1,11 +1,13 @@
 "use client";
 
 import { LoadImage } from "@/lib/canvas-processing";
-import { ColorInput, ColorReplacement, DefaultColorForPallete, GroupColors, RGBToHexString } from "@/lib/colors";
+import { ColorInput, ColorReplacement, GroupColors, RGBToHexString } from "@/lib/colors";
 import { useOutfitSelector, useOutfitTabSelector } from "@/lib/store";
 import { OutfitType } from "@prisma/client";
 import clsx from "clsx";
 import { useLayoutEffect, useState } from "react";
+import RecolorButton from "./recolor-button";
+import { useFilters } from "@/lib/store/store";
 
 async function GetImagePalletes(
   imgSrcs: string[],
@@ -77,21 +79,23 @@ export default function RecolorPalette(props: RecolorPaletteProps) {
   }, [outfit]);
 
   const ces = colors.map((c) => (
-    <button
-      style={{
-        backgroundColor: c.displayColor,
-      }}
-      className={clsx(
-        'w-6',
-        'h-6',
-        'rounded-full',
-        'drop-shadow-sm',
-      )}
+    <RecolorButton
+      id={c.displayColor}
+      colorReplacement={c}
+      outfit={thisTab}
     />
   ));
 
   return (
-    <div>
+    <div className={clsx(
+      'grid',
+      'grid-cols-2',
+      'bg-primary-300',
+      'drop-shadow-md',
+      'rounded-md',
+      'items-center',
+      'justify-items-center',
+    )}>
       {ces}
     </div>
   );

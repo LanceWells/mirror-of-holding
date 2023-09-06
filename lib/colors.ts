@@ -36,6 +36,8 @@ enum ColorGroup {
   PINK_RED,
 }
 
+const ColorGroupCount = Object.entries(ColorGroup).length;
+
 enum ColorType {
   shade,
   medium,
@@ -43,49 +45,133 @@ enum ColorType {
 }
 
 type DefaultColorForPallete = {
-  [Property in keyof typeof ColorGroup]: string;
+  [Property in ColorGroup]: {
+    [Property in ColorType]: string;
+  };
 }
+
+// type DefaultColorForPallete = Map<
+//   ColorGroup,
+//   Map<
+//     ColorType,
+//     string
+//   >
+// >;
+
+// const DefaultColorForPallete: DefaultColorForPallete = {
+//   BLUE:           '#4d9be6',
+//   BLUE_MAGENTA:   '#323353',
+//   CYAN:           '#8ff8e2',
+//   CYAN_BLUE:      '#0b8a8f',
+//   GREEN:          '#91db69',
+//   GREEN_CYAN:     '#165a4c',
+//   MAGENTA:        '#905ea9',
+//   MAGENTA_PINK:   '#c32454',
+//   ORANGE_BROWN:   '#cd683d',
+//   ORANGE_RED:     '#b33831',
+//   ORANGE_YELLOW:  '#f79617',
+//   PINK:           '#fca790',
+//   PINK_RED:       '#b33831',
+//   RED:            '#ae2334',
+//   YELLOW:         '#f9c22b',
+//   YELLOW_GREEN:   '#fbff86',
+// }
+
+// const DefaultColorForPallete = new Map(
+//   [ColorGroup.RED, ]
+// );
 
 const DefaultColorForPallete: DefaultColorForPallete = {
-  BLUE:           '#4d9be6',
-  BLUE_MAGENTA:   '#323353',
-  CYAN:           '#8ff8e2',
-  CYAN_BLUE:      '#0b8a8f',
-  GREEN:          '#91db69',
-  GREEN_CYAN:     '#165a4c',
-  MAGENTA:        '#905ea9',
-  MAGENTA_PINK:   '#c32454',
-  ORANGE_BROWN:   '#cd683d',
-  ORANGE_RED:     '#b33831',
-  ORANGE_YELLOW:  '#f79617',
-  PINK:           '#fca790',
-  PINK_RED:       '#b33831',
-  RED:            '#ae2334',
-  YELLOW:         '#f9c22b',
-  YELLOW_GREEN:   '#fbff86',
+  [ColorGroup.RED]:           {
+    [ColorType.shade]: '#6e2727',
+    [ColorType.medium]: '#b33831',
+    [ColorType.tint]: '#e83b3b',
+  },
+  [ColorGroup.ORANGE_RED]:    {
+    [ColorType.shade]: '#cd683d',
+    [ColorType.medium]: '#f57d4a',
+    [ColorType.tint]: '#fca790'
+  },
+  [ColorGroup.ORANGE_BROWN]:  {
+    [ColorType.shade]: '#fca790',
+    [ColorType.medium]: '#fdcbb0',
+    [ColorType.tint]: '#fdcbb0'
+  },
+  [ColorGroup.ORANGE_YELLOW]: {
+    [ColorType.shade]: '#f9c22b',
+    [ColorType.medium]: '#fbb954',
+    [ColorType.tint]: '#fbff86'
+  },
+  [ColorGroup.YELLOW]:        {
+    [ColorType.shade]: '#fbb954',
+    [ColorType.medium]: '#fbff86',
+    [ColorType.tint]: '#fbff86'
+  },
+  [ColorGroup.YELLOW_GREEN]:  {
+    [ColorType.shade]: '#a2a947',
+    [ColorType.medium]: '#d5e04b',
+    [ColorType.tint]: '#cddf6c'
+  },
+  [ColorGroup.GREEN]:         {
+    [ColorType.shade]: '#92a984',
+    [ColorType.medium]: '#1ebc73',
+    [ColorType.tint]: '#91db69'
+  },
+  [ColorGroup.GREEN_CYAN]:    {
+    [ColorType.shade]: '#165a4c',
+    [ColorType.medium]: '#239063',
+    [ColorType.tint]: '#1ebc73'
+  },
+  [ColorGroup.CYAN]:          {
+    [ColorType.shade]: '#313638',
+    [ColorType.medium]: '#0b5e65',
+    [ColorType.tint]: '#0b8a8f'
+  },
+  [ColorGroup.CYAN_BLUE]:     {
+    [ColorType.shade]: '#4d9be6',
+    [ColorType.medium]: '#8fd3ff',
+    [ColorType.tint]: '#8ff8e2'
+  },
+  [ColorGroup.BLUE]:          {
+    [ColorType.shade]: '#323353',
+    [ColorType.medium]: '#484a77',
+    [ColorType.tint]: '#4d65b4'
+  },
+  [ColorGroup.BLUE_MAGENTA]:  {
+    [ColorType.shade]: '#484a77',
+    [ColorType.medium]: '#7f708a',
+    [ColorType.tint]: '#a884f3'
+  },
+  [ColorGroup.MAGENTA]:       {
+    [ColorType.shade]: '#2e222f',
+    [ColorType.medium]: '#6b3e75',
+    [ColorType.tint]: '#905ea9'
+  },
+  [ColorGroup.MAGENTA_PINK]:  {
+    [ColorType.shade]: '#831c5d',
+    [ColorType.medium]: '#f04f78',
+    [ColorType.tint]: '#ed8099'
+  },
+  [ColorGroup.PINK]:          {
+    [ColorType.shade]: '#7a3045',
+    [ColorType.medium]: '#753c54',
+    [ColorType.tint]: '#a24b6f'
+  },
+  [ColorGroup.PINK_RED]:      {
+    [ColorType.shade]: '#ae2334',
+    [ColorType.medium]: '#f04f78',
+    [ColorType.tint]: '#ed8099'
+  },
 }
 
-const AdjacentColors: {
-  [Property in keyof typeof ColorGroup]: ColorGroup[]
-} = {
-	RED:           [ColorGroup.ORANGE_RED, ColorGroup.PINK_RED],
-	ORANGE_RED:    [ColorGroup.RED, ColorGroup.ORANGE_BROWN],
-	ORANGE_BROWN:  [ColorGroup.ORANGE_RED, ColorGroup.ORANGE_YELLOW],
-	ORANGE_YELLOW: [ColorGroup.ORANGE_BROWN, ColorGroup.YELLOW],
-	YELLOW:        [ColorGroup.ORANGE_YELLOW, ColorGroup.YELLOW_GREEN],
-	YELLOW_GREEN:  [ColorGroup.YELLOW, ColorGroup.GREEN],
-	GREEN:         [ColorGroup.YELLOW_GREEN, ColorGroup.GREEN_CYAN],
-	GREEN_CYAN:    [ColorGroup.GREEN, ColorGroup.CYAN],
-	CYAN:          [ColorGroup.GREEN_CYAN, ColorGroup.CYAN_BLUE],
-	CYAN_BLUE:     [ColorGroup.CYAN, ColorGroup.BLUE],
-	BLUE:          [ColorGroup.CYAN_BLUE, ColorGroup.BLUE_MAGENTA],
-	BLUE_MAGENTA:  [ColorGroup.BLUE, ColorGroup.MAGENTA],
-	MAGENTA:       [ColorGroup.BLUE_MAGENTA, ColorGroup.MAGENTA_PINK],
-	MAGENTA_PINK:  [ColorGroup.MAGENTA, ColorGroup.PINK],
-	PINK:          [ColorGroup.MAGENTA_PINK, ColorGroup.PINK_RED],
-	PINK_RED:      [ColorGroup.PINK, ColorGroup.RED],
-};
-
+/**
+ * This array represents a slice of a color wheel, where each degree (0 - 360), represents a
+ * separate hue from that wheel. The original source for this value has been lost, but they
+ * typically describe what a given hue degree refers to in regards to its color.
+ * 
+ * This appears a little "extra" in how it's been constructed, yet this array is effectively 360
+ * numbers, with O(1) lookup time when converting a hue degree into a hue group.
+ */
 const ColorWheel: ColorGroup[] = [
   ColorGroup.RED,
   ColorGroup.RED,
@@ -449,17 +535,6 @@ const ColorWheel: ColorGroup[] = [
   ColorGroup.RED,
 ];
 
-// type ColorData = {
-//   colorHex: string;
-//   colorType: ColorType;
-//   colorDelta: number;
-// }
-
-// type ColorReplacement = {
-//   displayColor: ColorGroup;
-//   colors: ColorData[];
-// }
-
 type RGB = {
   r: number;
   g: number;
@@ -469,12 +544,15 @@ type RGB = {
 type ColorField = {
   colorType: ColorType,
   colorDelta: number,
+  colorGroup: ColorGroup,
   rgb: RGB
 }
 
 export type ColorReplacement = {
   displayColor: string,
-  colors: Map<string, ColorField>
+  colors: {
+    [key: string]: ColorField;
+  }
 };
 
 export type ColorInput = {
@@ -482,6 +560,11 @@ export type ColorInput = {
   count: number;
 }
 
+/**
+ * Converts a given set of RGB values into a hex string.
+ * @param rgb The RGB values to convert.
+ * @returns The RGB values represented as a hex string.
+ */
 function RGBToHexString(rgb: RGB): string {
   const r = `${rgb.r.toString(16).padStart(2, '0')}`
   const g = `${rgb.g.toString(16).padStart(2, '0')}`
@@ -490,6 +573,109 @@ function RGBToHexString(rgb: RGB): string {
   return `#${r}${g}${b}`;
 }
 
+function HexStringToRGB(hex: string): RGB {
+  const noHash = hex.replaceAll("#", "");
+  const r = parseInt(noHash.substring(0, 2), 16);
+  const g = parseInt(noHash.substring(2, 4), 16);
+  const b = parseInt(noHash.substring(4, 6), 16);
+
+  return { r, g, b };
+}
+
+/**
+ * @TODO Work this into an edge function once outfit uploading is enabled. Then a user can just
+ * download this processed information associated with an image rather than process it each time on
+ * their own machine.
+ * 
+ * A helper function that converts a list of colors and their given counts into groups of related
+ * colors that might be replaced. The general idea is that colors are grouped by color group
+ * adjacency, where a gap in adjacent groups would result in two groups.
+ * 
+ * Each color group contains the series of colors for that group. Each color within that series
+ * describes the original color, the color group in the form of a delta, and the relative value of
+ * the color to the "primary" color.
+ * 
+ * Algorithmically, this function takes the following steps:
+ *    - Break the input colors into groups of related colors.
+ *    - For each group, determine which color is the most prevalent. This becomes the "primary"
+ *      color.
+ *    - For every color in the group, determine whether or not it is a tint or a shade relative to
+ *      the primary color, in addition to how many degrees its own color group is from the primary
+ *      color's group.
+ * 
+ * For example, if we had the following colors:
+ * ```
+ *    - #2e222f x 10
+ *    - #374e4a x 7
+ *    - #694f62 x 3
+ *    - #c32454 x 2
+ * ```
+ * 
+ * We would first identify the hue for each of each of the colors.
+ * ```
+ *    - #2e222f x 10 --> 295
+ *    - #374e4a x 7  --> 170
+ *    - #694f62 x 3  --> 316
+ *    - #c32454 x 2  --> 342
+ * ```
+ * 
+ * Each of these hues can be grouped into a "Color Group", which we use our {@link ColorWheel}
+ * lookup table to identify.
+ * ```
+ *    - #2e222f x 10 --> 295 --> Magenta
+ *    - #374e4a x 7  --> 170 --> Cyan
+ *    - #694f62 x 3  --> 316 --> Magenta
+ *    - #c32454 x 2  --> 342 --> Magenta_Pink
+ * ```
+ * 
+ * Then we group each color by those colors adjacent. This gives us:
+ * ```
+ *    - #2e222f x 10  (Magenta)
+ *    - #694f62 x 7   (Magenta)
+ *    - #c32454 x 3   (Magenta_Pink)
+ * 
+ *    - #374e4a x 2   (Cyan)
+ * ```
+ * 
+ * Each color group uses a "primary" color to identify what the intended pallet is. The simplest way
+ * to determine this is by the number of times that the color appears in the associated image, as
+ * pixel count. That gives us:
+ * ```
+ *    - #2e222f x 10  (Magenta)       [Primary]
+ *    - #694f62 x 7   (Magenta)
+ *    - #c32454 x 3   (Magenta_Pink)
+ * 
+ *    - #374e4a x 2   (Cyan)          [Primary]
+ * ```
+ * 
+ * Now we determine the relative value of each image to understand whether or not it is a tint or a
+ * shade relative to the primary color in the group. A "tint" is a color that is brighter than its
+ * base color, and a "shade" is a color that is darker than its base color.
+ * ```
+ *    - #2e222f x 10  (Magenta)       18%   [Primary]
+ *    - #694f62 x 7   (Magenta)       41%   [Tint]
+ *    - #c32454 x 3   (Magenta_Pink)  76%   [Tint]
+ * 
+ *    - #374e4a x 2   (Cyan)          31%   [Primary]
+ * ```
+ * 
+ * The final step is to determine how many groups away from the primary group each color is. The
+ * intent here is that if we want to recolor the base, then we will need to shift all other related
+ * colors appropriately. E.g. if we wanted to shift a red base to orange_red, each color within
+ * that color's group needs to shift its own color group by +1 in addition to shifting its own color
+ * by a number of groups away from the primary color that it was originally. This keeps a consistent
+ * relevancy between the primary color and all secondary colors.
+ * ```
+ *    - #2e222f x 10  (Magenta)       18%   [Primary]   +0
+ *    - #694f62 x 7   (Magenta)       41%   [Tint]      +0
+ *    - #c32454 x 3   (Magenta_Pink)  76%   [Tint]      +1
+ * 
+ *    - #374e4a x 2   (Cyan)          31%   [Primary]   +0
+ * ```
+ * 
+ * @param colors 
+ * @returns 
+ */
 function GroupColors(colors: ColorInput[]): ColorReplacement[] {
   type ColorValue = {
     colorHex: ColorInput['rgb'];
@@ -540,11 +726,6 @@ function GroupColors(colors: ColorInput[]): ColorReplacement[] {
     colorSet.delete(color);
     const colorGroup: ColorGroup[] = [color];
 
-    // for (let adjacentColor of AdjacentColors[color]) {
-    //   if (colorSet.has(adjacentColor)) {
-    //     colorGroup.push(...mapAdjacentColors(adjacentColor));
-    //   }
-    // }
     const colorGroupCount = Object.keys(ColorGroup).length;
     [(color - 1 % colorGroupCount), (color + 1 % colorGroupCount)]
       .forEach((adjacentColor) => {
@@ -610,103 +791,25 @@ function GroupColors(colors: ColorInput[]): ColorReplacement[] {
           colorType,
           colorDelta,
           rgb: set.rgb,
+          colorGroup: set.colorGroup,
         }
       ] as [string, ColorField];
     });
 
     return {
       displayColor: RGBToHexString(primary.rgb),
-      colors: new Map(colorFields),
+      colors: Object.fromEntries(colorFields),
     } as ColorReplacement;
   });
 
   return replacementMaps;
 }
 
-
-/*
-    end up with instructions on how to replace colors within a group.
-
-    we have the groups, and are iterating over each color group.
-
-    a group is a set of related colors within an image.
-
-    Basically, what we want is to know which color is the "primary" color. The idea is that the
-    "primary" color is the color that we see the most. If we want to translate this into a
-    different color, we'll use the "main" color for that group. Then we need to know what each
-    subsequent color should be.
-
-    We need to know whether each color is a medium, shade, or tint; in addition to its color group.
-    This lets us look up what color to translate to.
-
-    The color group should be a set number of degrees away from the primary color. That number of
-    degrees should be the difference in enum values from the primary color, applied to the color
-    to translate to. For example, if our primary color is ORANGE_RED, then ORANGE_BROWN is a degree
-    of +1. PINK would be -3.
-
-    The calculation should be something like:
-      delta = color - primary
-
-    The problem with that alone is that PINK - ORANGE_RED would give us 13. There are 16 color
-    groups, so if the difference between the two is >= 8, then we know that we need to work
-    backwards.
-
-    PINK being 14, and ORANGE_RED being 1, then (16 - 14) - 1 = (-2) - 1 = -3.
-    In short, (sizeof(ColorGroup) - color) - primary;
-
-    16 - 2 - 1 = 13
-
-    Otherwise, if the two are <= 7 apart, try using the difference:
-
-    MAGENTA = 12 (Primary)
-    YELLOW_GREEN = 5 (Color)
-    Expect -7
-    abs(12 - 5) % 8 = 7; Magenta is larger, so positive.
-    
-
-    MAGENTA = 12 (Primary)
-    ORANGE_RED = 1 (Color)
-    Expect +5
-    abs(12 - 1) % 8 = 5; Magenta is larger, so positive.
-    13  14  15   0   1
-    +1  +2  +3  +4  +5
-
-    ORANGE_RED = 1 (Primary)
-    MAGENTA = 12 (Color)
-    Expect -5
-    abs(1 - 12) % 8 = 5; Orange_red is smaller, so negative.
-     0  15  14  13  12
-    -1  -2  -3  -4  -5
-    
-
-    So then, we find the color with the greatest amount to use as our primary. This color is our
-    "medium".
-
-    For every other color, we need two values:
-      1. The color group.
-      2. The value.
-
-    We then return {
-      The Primary Color Group
-      The Colors: [
-        {
-          hex: Primary Color Hex,
-          type: "medium",
-          delta: 0,
-        },
-        ...(all other colors)...
-        {
-          hex: Darker Color Hex,
-          type: "shade",
-          delta: N
-        },
-        {
-          hex: Lighter Color Hex,
-          type: "tint",
-          delta: N
-        },
-      ]
-    }
-    */
-
-export { GroupColors, DefaultColorForPallete, RGBToHexString };
+export {
+  GroupColors,
+  RGBToHexString,
+  HexStringToRGB,
+  DefaultColorForPallete,
+  ColorGroup,
+  ColorGroupCount,
+};

@@ -1,6 +1,7 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import { BodyPart, PartType, OutfitType, BodyLayout } from "@prisma/client";
 import { useSelector } from "react-redux";
+import { ColorGroup, ColorReplacement } from "../colors";
 
 export type BodyPart_Client = Pick<BodyPart, 'anchorX' | 'anchorY' | 'name' | 'partType' | 'src'>;
 
@@ -8,6 +9,11 @@ export type BodyLayout_Client = Pick<BodyLayout, 'anchorX' | 'anchorY'>;
 
 export type CharacterBodyLayer = {
   [Property in keyof typeof PartType]?: BodyPart_Client;
+}
+
+export type ColorFilter = {
+  replacement: ColorReplacement;
+  newColorGroup: ColorGroup;
 }
 
 export type CharacterBody = {
@@ -18,6 +24,9 @@ export type CharacterBody = {
     [Property in keyof typeof PartType]?: BodyLayout_Client;
   };
   OutfitType: OutfitType;
+  Filters: {
+    [Property in keyof typeof OutfitType]?: ColorFilter;
+  };
 }
 
 const DefaultCharacterBody: CharacterBody = {
@@ -36,6 +45,7 @@ const DefaultCharacterBody: CharacterBody = {
     HairAccessory:  { anchorX: -2, anchorY: -7 },
   },
   OutfitType: OutfitType.Body,
+  Filters: {},
 };
 
 const CharacterBodySlice = createSlice({
@@ -50,6 +60,12 @@ const CharacterBodySlice = createSlice({
     },
     updateTab(state, action: PayloadAction<OutfitType>) {
       state.OutfitType = action.payload;
+    },
+    setFilter(state, action: PayloadAction<{
+      filter?: ColorFilter,
+      outfitType: OutfitType
+    }>) {
+      state.Filters[action.payload.outfitType] = action.payload.filter;
     },
     default(state) {
       return state;
@@ -70,9 +86,20 @@ const useLayoutSelector = () =>
 const useOutfitTabSelector = () =>
   useSelector<CharacterBody, CharacterBody['OutfitType']>((state) => state.OutfitType);
 
+const useFilters = () =>
+  useSelector<CharacterBody, CharacterBody['Filters']>((state) => state.Filters);
+
 export default store;
-export const { updateParts } = CharacterBodySlice.actions;
-export const { updateTab } = CharacterBodySlice.actions;
-export { useOutfitSelector, useLayoutSelector, useOutfitTabSelector };
 
+export const {
+  updateParts,
+  updateTab,
+  setFilter,
+} = CharacterBodySlice.actions;
 
+export {
+  useOutfitSelector,
+  useLayoutSelector,
+  useOutfitTabSelector,
+  useFilters,
+};

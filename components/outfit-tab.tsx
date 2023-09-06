@@ -23,10 +23,9 @@ export default function OutfitTab(props: OutfitTabProps) {
     <div key={`${outfitType}-tab`} className={clsx(
       selectedOutfitType !== outfitType && 'hidden',
       'p-3',
-      'flex',
       'rounded-lg',
       'overflow-y-auto',
-      'grid grid-rows-[1fr_35px]',
+      'grid grid-cols-[1fr_70px]',
       'gap-y-6',
       'justify-center',
       'bg-slate-200',
@@ -36,16 +35,6 @@ export default function OutfitTab(props: OutfitTabProps) {
       <div className='flex justify-center'>
         {children}
       </div>
-      <button className='button-std flex items-center justify-between align-middle w-32 px-4 py-2'>
-        <Image
-          src="/paint-roller.svg"
-          alt="Recolor Icon"
-          width={24}
-          height={24}
-          className='fill-white'
-        />
-        <p><b>Recolor</b></p>
-      </button>
       <RecolorPalette thisTab={outfitType} />
     </div>
   );

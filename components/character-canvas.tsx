@@ -1,7 +1,9 @@
 "use client";
 
-import { DrawOutline, SortDrawingLayers, ProcessImages } from "@/lib/canvas-processing";
+import { DrawOutlineProcessing, SortDrawingLayers, ProcessImages, DrawCommand, PostProcessing, ConstructColorReplacementProcessing } from "@/lib/canvas-processing";
 import { useLayoutSelector, useOutfitSelector } from "@/lib/store";
+import { useFilters } from "@/lib/store/store";
+import { OutfitType, PartType } from "@prisma/client";
 import { useLayoutEffect, useRef } from "react"
 
 /**
@@ -11,6 +13,7 @@ export default function CharacterCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const character = useOutfitSelector();
   const layouts = useLayoutSelector();
+  const filters = useFilters();
 
   useLayoutEffect(() => {
     if (!canvasRef.current || !character) {
@@ -23,16 +26,45 @@ export default function CharacterCanvas() {
       return;
     }
 
+    const processing: { [Property in keyof typeof PartType]?: PostProcessing[] } = {
+      'LeftArm': [DrawOutlineProcessing],
+      'LeftLeg': [DrawOutlineProcessing],
+    };
+
+    for (let [outfitType, filter] of Object.entries(filters)) {
+      if (!filter) {
+        continue;
+      }
+
+      const outfit = character[outfitType as keyof typeof OutfitType];
+      if (!outfit) {
+        continue;
+      }
+
+      for(let [partType, part] of Object.entries(outfit)) {
+        if (!part) {
+          continue;
+        }
+
+        const colorReplacement = ConstructColorReplacementProcessing(filter);
+        const thisProcessing = processing[partType as keyof typeof PartType] ?? [];
+        thisProcessing.push(colorReplacement);
+  
+        processing[partType as keyof typeof PartType] = thisProcessing;
+      }
+    }
+
     const drawCmds = SortDrawingLayers(
       character,
-      {
-        'LeftArm': [DrawOutline],
-        'LeftLeg': [DrawOutline],
-      }
+      processing,
     )
 
-    ProcessImages(canvasRef.current, drawCmds, layouts);
-  }, [canvasRef, character]);
+    ProcessImages(
+      canvasRef.current,
+      drawCmds,
+      layouts,
+    );
+  }, [canvasRef, character, filters]);
 
   return (
     <canvas className="h-full" ref={canvasRef}/>

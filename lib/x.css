@@ -1,0 +1,171 @@
+.test2 {
+  text:
+  
+  #9e4539
+  #f68181
+  #ea4f36
+  #966c6c
+  #fb6b1d
+  #fbb954
+  #e6904e
+  #f79617
+  #b2ba90
+  #fbff86
+  #8eaf9b
+  #c7dcd0
+  #547e64
+  #30e1b9
+  #8ff8e2
+  #374e4a
+  #9babb2
+  #625565
+  #694f62
+  #eaaded
+  #45293f
+  #c32454
+
+  /* RED */
+  #6e2727
+  #b33831
+  #e83b3b
+
+  /* ORANGE_RED */
+  #cd683d
+  #f57d4a
+  #fca790
+
+  /* ORANGE_BROWN */
+  #fca790
+  #fdcbb0
+  #fdcbb0
+
+  /* ORANGE_YELLOW */
+  #f9c22b
+  #fbb954
+  #fbff86
+
+  /* YELLOW */
+  #fbb954
+  #fbff86
+  #fbff86
+  
+  /* YELLOW_GREEN */
+  #a2a947
+  #d5e04b
+  #cddf6c
+
+  /* GREEN */
+  #92a984
+  #1ebc73
+  #91db69
+
+  /* GREEN_CYAN */
+  #165a4c
+  #239063
+  #1ebc73
+
+  /* CYAN */
+  #313638
+  #0b5e65
+  #0b8a8f
+
+  /* CYAN_BLUE */
+  #4d9be6
+  #8fd3ff
+  #8ff8e2
+
+  /* BLUE */
+  #323353
+  #484a77
+  #4d65b4
+
+  /* BLUE_MAGENTA */
+  #484a77
+  #7f708a
+  #a884f3
+
+  /* MAGENTA */
+  #2e222f
+  #6b3e75
+  #905ea9
+
+  /* MAGENTA_PINK */
+  #831c5d
+  #f04f78
+  #ed8099
+
+  /* PINK */
+  #7a3045
+  #753c54
+  #a24b6f
+
+  /* PINK_RED */
+  #ae2334
+  #f04f78
+  #ed8099
+}
+
+.test {
+  text:
+  #966c6c /* 0 */     /* RED */
+  #6e2727 /* 0 */     /* RED */
+  #e83b3b /* 0 */     /* RED */
+  #f68181 /* 0 */     /* RED */
+  #b33831 /* 3 */     /* RED */
+  #9e4539 /* 7 */     /* RED */
+  #ea4f36 /* 8 */     /* RED */
+  #fca790 /* 13 */    /* ORANGE_RED */
+  #cd683d /* 18 */    /* ORANGE_RED */
+  #f57d4a /* 18 */    /* ORANGE_RED */
+  #fdcbb0 /* 21 */    /* ORANGE_BROWN */
+  #fb6b1d /* 21 */    /* ORANGE_BROWN */
+  #e6904e /* 26 */    /* ORANGE_BROWN */
+  #ab947a /* 32 */    /* ORANGE_BROWN */
+  #f79617 /* 34 */    /* ORANGE_BROWN */
+  #fbb954 /* 36 */    /* ORANGE_BROWN */
+  #4c3e24 /* 39 */    /* ORANGE_BROWN */
+  #f9c22b /* 44 */    /* ORANGE_YELLOW */
+  #676633 /* 59 */    /* YELLOW */
+  #fbff86 /* 62 */    /* YELLOW_GREEN */
+  #a2a947 /* 64 */    /* YELLOW_GREEN */
+  #d5e04b /* 64 */    /* YELLOW_GREEN */
+  #cddf6c /* 69 */    /* YELLOW_GREEN */
+  #b2ba90 /* 71 */    /* YELLOW_GREEN */
+  #92a984 /* 97 */    /* GREEN */
+  #91db69 /* 99 */    /* GREEN */
+  #547e64 /* 143 */   /* GREEN_CYAN */
+  #8eaf9b /* 144 */   /* GREEN_CYAN */
+  #c7dcd0 /* 146 */   /* GREEN_CYAN */
+  #1ebc73 /* 152 */   /* GREEN_CYAN */
+  #239063 /* 155 */   /* GREEN_CYAN */
+  #30e1b9 /* 166 */   /* GREEN_CYAN */
+  #8ff8e2 /* 167 */   /* GREEN_CYAN */
+  #165a4c /* 168 */   /* GREEN_CYAN */
+  #374e4a /* 170 */   /* CYAN */
+  #0b8a8f /* 182 */   /* CYAN */
+  #0b5e65 /* 185 */   /* CYAN */
+  #313638 /* 197 */   /* CYAN */
+  #9babb2 /* 198 */   /* CYAN */
+  #8fd3ff /* 204 */   /* CYAN_BLUE */
+  #4d9be6 /* 209 */   /* CYAN_BLUE */
+  #4d65b4 /* 226 */   /* BLUE */
+  #484a77 /* 237 */   /* BLUE */
+  #323353 /* 238 */   /* BLUE */
+  #a884f3 /* 259 */   /* BLUE_MAGENTA */
+  #7f708a /* 275 */   /* BLUE_MAGENTA */
+  #905ea9 /* 280 */   /* MAGENTA */
+  #625565 /* 289 */   /* MAGENTA */
+  #6b3e75 /* 289 */   /* MAGENTA */
+  #2e222f /* 295 */   /* MAGENTA */
+  #eaaded /* 297 */   /* MAGENTA */
+  #45293f /* 313 */   /* MAGENTA */
+  #694f62 /* 316 */   /* MAGENTA */
+  #831c5d /* 322 */   /* MAGENTA_PINK */
+  #753c54 /* 335 */   /* PINK */
+  #a24b6f /* 335 */   /* PINK */
+  #c32454 /* 342 */   /* PINK */
+  #7a3045 /* 343 */   /* PINK */
+  #f04f78 /* 345 */   /* PINK_RED */
+  #ed8099 /* 346 */   /* PINK_RED */
+  #ae2334 /* 353 */   /* PINK_RED */
+}

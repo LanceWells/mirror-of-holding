@@ -12,7 +12,9 @@ import {
   CharacterBody,
   BodyPart_Client,
   BodyLayout_Client,
+  ColorFilter,
 } from "./store/store";
+import { ColorGroup, ColorGroupCount, DefaultColorForPallete, HexStringToRGB, RGBToHexString } from "./colors";
 
 export const ImageCentering = 32;
 export const ImageScaling = 4;
@@ -84,12 +86,12 @@ export type ProcessedImage = {
   /**
    * The image that will be processed, or has been processed.
    */
-  img: CanvasImageSource;
+  img: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas;
 
   /**
    * A set of adjustments made to the image that need to be noted when rendering the final image.
    */
-  adjustments?: {
+  adjustments: {
     /**
      * x-axis movement adjustments.
      */
@@ -129,7 +131,7 @@ export type DrawCommand = {
   * @param img The image to draw an outline around.
   * @returns The image with the rendered outline.
   */
-export const DrawOutline: PostProcessing = async (img) => {
+export const DrawOutlineProcessing: PostProcessing = async (img) => {
  // https://stackoverflow.com/a/28416298/17503966
  const canvas = document.createElement('canvas');
  const ctx = canvas.getContext('2d');
@@ -168,10 +170,54 @@ export const DrawOutline: PostProcessing = async (img) => {
  return {
    img: newImg,
    adjustments: {
-     x: (img.adjustments?.x ?? 0) - s,
-     y: (img.adjustments?.y ?? 0) - s,
+     x: (img.adjustments.x) - s,
+     y: (img.adjustments.y) - s,
    }
  };
+}
+
+export function ConstructColorReplacementProcessing(filter: ColorFilter): PostProcessing {
+  return async (img: ProcessedImage) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d')
+    if (!ctx) { return; }
+
+    ctx.drawImage(img.img, 0, 0);
+    const imgData = ctx.getImageData(0, 0, img.img.width, img.img.height);
+    const colors = filter.replacement.colors;
+
+    const hexMap = new Map(Object.entries(colors).map(([oldHex, color]) => {
+      const newGroup = (filter.newColorGroup + color.colorDelta) % ColorGroupCount as ColorGroup;
+      const newHex = DefaultColorForPallete[newGroup][color.colorType];
+      return [oldHex, newHex];
+    }));
+
+    for (let i = 0; i < imgData.data.length; i += 4) {
+      const
+        r = imgData.data[i],
+        g = imgData.data[i+1],
+        b = imgData.data[i+2];
+      
+      const thisHex = RGBToHexString({r, g, b});
+      let replace = hexMap.get(thisHex);
+      if (replace) {
+        const newRGB = HexStringToRGB(replace);
+        imgData.data[i]    = newRGB.r;
+        imgData.data[i+1]  = newRGB.g;
+        imgData.data[i+2]  = newRGB.b;
+      }
+    }
+
+    ctx.putImageData(imgData, 0, 0)
+
+    const dataURL = canvas.toDataURL();
+    const newImg = await LoadImage(dataURL);
+
+    return {
+      img: newImg,
+      adjustments: img.adjustments,
+    };
+  };
 }
 
 /**
@@ -250,7 +296,7 @@ export async function ProcessImages(
     const imgUrl = c.part.src;
     const image = await LoadImage(imgUrl);
 
-    let processed: ProcessedImage = { img: image };
+    let processed: ProcessedImage = { img: image, adjustments: { x: 0, y: 0 } };
     for (let process of c.postProcessing) {
       processed = await process(processed) ?? processed;
     }
@@ -303,7 +349,7 @@ export async function ProcessImages(
     }
   }
 
-  const outlineImage = await DrawOutline({img: outlineCanvas});
+  const outlineImage = await DrawOutlineProcessing({img: outlineCanvas, adjustments: {x: 0, y: 0}});
 
   ctx.imageSmoothingEnabled = false;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
