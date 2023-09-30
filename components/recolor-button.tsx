@@ -6,8 +6,8 @@ import { ArrowContainer, Popover } from "react-tiny-popover";
 import { MemoizedRecolorSwatch } from "./recolor-swatch";
 import { OutfitType } from "@prisma/client";
 import { ColorGroup, ColorReplacement } from "@/lib/colors";
-import { setFilter } from "@/lib/store/store";
 import { useDispatch } from "react-redux";
+import { setFilter } from "@/lib/store/character-body";
 
 export type RecolorButtonProps = JSX.IntrinsicElements['button'] & {
   colorReplacement: ColorReplacement;

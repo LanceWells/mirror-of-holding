@@ -8,13 +8,8 @@ import {
   OutfitLayerType,
   OutfitLayerTypeOrderConfig,
 } from "./outfit-configuration";
-import {
-  CharacterBody,
-  BodyPart_Client,
-  BodyLayout_Client,
-  ColorFilter,
-} from "./store/store";
 import { ColorGroup, ColorGroupCount, DefaultColorForPallete, HexStringToRGB, RGBToHexString } from "./colors";
+import { CharacterBody, BodyPart_Client, ColorFilter, BodyLayout_Client } from "./store/character-body";
 
 export const ImageCentering = 32;
 export const ImageScaling = 4;

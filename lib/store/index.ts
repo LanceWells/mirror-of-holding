@@ -1,4 +1,5 @@
-import store, { updateParts, updateTab, useLayoutSelector, useOutfitSelector, useOutfitTabSelector } from "./store";
+import { updateParts, updateTab, useOutfitSelector, useLayoutSelector, useOutfitTabSelector } from "./character-body";
+import store from "./store";
 
 export {
   updateParts,

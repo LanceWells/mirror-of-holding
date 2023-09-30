@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { updateParts } from "@/lib/store";
 import { useDispatch } from "react-redux";
 import { OutfitType } from "@prisma/client";
-import { CharacterBodyLayer } from "@/lib/store/store";
+import { CharacterBodyLayer } from "@/lib/store/character-body";
 
 export type PartButtonProps = JSX.IntrinsicElements['button'] & {
   src: HTMLImageElement['src'];

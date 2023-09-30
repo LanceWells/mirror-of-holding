@@ -1,6 +1,6 @@
 "use client";
 
-import { OutfitType, PartType } from '@prisma/client';
+import { OutfitType } from '@prisma/client';
 import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
 import Image from 'next/image';

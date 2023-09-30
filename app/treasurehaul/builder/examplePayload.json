@@ -1,0 +1,35 @@
+{
+  "items": [
+    {
+      "name": "example potion",
+      "count": 0,
+      "type": "potion",
+      "image": {
+        "fill": "#afafaf",
+        "shape": 0,
+        "topper": 1
+      }
+    },
+    {
+      "name": "example coin stack",
+      "type": "money",
+      "count": 500
+    },
+    {
+      "name": "example item with effects",
+      "type": "item",
+      "image": {
+        "baseItem": 0,
+        "effects": [
+          "flaming",
+          "enchanted1"
+        ]
+      }
+    },
+    {
+      "name": "example custom item",
+      "type": "custom",
+      "customSrc": "https://example.com/example.png"
+    }
+  ]
+}

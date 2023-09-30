@@ -71,3 +71,28 @@ enum OutfitType {
   Helmet          // FaceAccessory, Eyes, FacialHair, Hair
   ArmAccessory    // Arms
 }
+
+// 
+// Treasure Chests
+// 
+// 
+
+model TreasureHaul {
+  id    Int @id @default(autoincrement())
+  item  Json
+}
+
+enum BaseItemType {
+  Weapon
+  Armor
+  MagicItem
+  Treasure
+  Consumable
+}
+
+model BaseItem {
+  id    Int @id @default(autoincrement())
+  name  String
+  type  BaseItemType
+  src   String
+}

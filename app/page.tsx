@@ -1,4 +1,3 @@
-import AppWrapper from './wrapper';
 import prisma from '../lib/prisma'
 import { OutfitType, PartType } from '@prisma/client';
 import OutfitButton from '@/components/outfit-button';
@@ -7,7 +6,7 @@ import clsx from 'clsx';
 import OutfitGrid from '@/components/outfit-grid';
 import { OutfitThumbnailConfig } from '@/lib/outfit-configuration';
 import { ContentQuery } from '@/lib/utils';
-import { BodyPart_Client, CharacterBodyLayer } from '@/lib/store/store';
+import { CharacterBodyLayer, BodyPart_Client } from '@/lib/store/character-body';
 
 // Prisma does not support Edge without the Data Proxy currently
 // export const runtime = 'edge'
@@ -66,18 +65,16 @@ export default async function Home() {
   }
 
   return (
-    <AppWrapper>
-      <main className={clsx(
-        'relative',
-        'grid',
-        'grid-cols-1',
-        'grid-rows-[300px_1fr]',
-        'min-h-screen',
-        'justify-items-center',
-      )}>
-        <CharacterCanvas />
-        <OutfitGrid outfits={outfitsMap}/>
-      </main>
-    </AppWrapper>
+    <main className={clsx(
+      'relative',
+      'grid',
+      'grid-cols-1',
+      'grid-rows-[300px_1fr]',
+      'min-h-screen',
+      'justify-items-center',
+    )}>
+      <CharacterCanvas />
+      <OutfitGrid outfits={outfitsMap}/>
+    </main>
   );
 }

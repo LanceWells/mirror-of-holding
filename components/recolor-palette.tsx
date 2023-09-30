@@ -2,12 +2,11 @@
 
 import { LoadImage } from "@/lib/canvas-processing";
 import { ColorInput, ColorReplacement, GroupColors, RGBToHexString } from "@/lib/colors";
-import { useOutfitSelector, useOutfitTabSelector } from "@/lib/store";
 import { OutfitType } from "@prisma/client";
 import clsx from "clsx";
 import { useLayoutEffect, useState } from "react";
 import RecolorButton from "./recolor-button";
-import { useFilters } from "@/lib/store/store";
+import { useOutfitSelector, useOutfitTabSelector } from "@/lib/store/character-body";
 
 async function GetImagePalletes(
   imgSrcs: string[],

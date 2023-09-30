@@ -2,9 +2,9 @@
 
 import { DrawOutlineProcessing, SortDrawingLayers, ProcessImages, DrawCommand, PostProcessing, ConstructColorReplacementProcessing } from "@/lib/canvas-processing";
 import { useLayoutSelector, useOutfitSelector } from "@/lib/store";
-import { useFilters } from "@/lib/store/store";
+import { useFilters } from "@/lib/store/character-body";
 import { OutfitType, PartType } from "@prisma/client";
-import { useLayoutEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 
 /**
  * A canvas used to render a character's image.
@@ -15,7 +15,7 @@ export default function CharacterCanvas() {
   const layouts = useLayoutSelector();
   const filters = useFilters();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!canvasRef.current || !character) {
       return;
     }

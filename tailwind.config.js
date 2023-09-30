@@ -11,6 +11,16 @@ module.exports = {
       fontFamily: {
         default: ['var(--font-inter)'],
       },
+      keyframes: {
+        shake: {
+          '0%'  : { transform: 'rotate(-0.5deg)' },
+          '50%' : { transform: 'rotate(0.5deg)' },
+          '100%': { transform: 'rotate(0deg)' },
+        }
+      },
+      animation: {
+        shake: 'shake 0.1s ease-in-out',
+      },
     },
   },
   darkMode: 'class',
