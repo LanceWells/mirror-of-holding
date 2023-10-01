@@ -1,6 +1,6 @@
 "use client";
 
-import { addItemToHaul } from "@/lib/store/treasure-haul";
+import { addItemToHaul, useSearchTermSelector } from "@/lib/store/treasure-haul";
 import { TreasureHaulItemFromBase } from "@/lib/treasurehaul/treasure-haul-payload";
 import { BaseItem } from "@prisma/client";
 import clsx from "clsx";
@@ -16,6 +16,8 @@ export default function BaseItemContainer(props: BaseItemProps) {
   const {
     item,
   } = props;
+
+  const searchTerm = useSearchTermSelector();
 
   const dispatch = useDispatch();
 
@@ -37,6 +39,9 @@ export default function BaseItemContainer(props: BaseItemProps) {
         'm-2',
         'rounded-md',
         'drop-shadow-sm',
+        item.name.toUpperCase().includes(searchTerm)
+          ? ['visible']
+          : ['hidden']
       )}
       onClick={() => onClickCB()}>
       <Image

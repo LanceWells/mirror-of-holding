@@ -1,5 +1,4 @@
 import './globals.css';
-import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { Inter } from 'next/font/google';
 import AppWrapper from '@/components/wrapper';
 
