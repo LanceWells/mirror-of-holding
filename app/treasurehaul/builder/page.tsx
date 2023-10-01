@@ -14,9 +14,8 @@ export default function Builder() {
   return (
     <main
       className={clsx(
-      'relative',
-      'min-h-screen',
-      'max-h-screen',
+        'min-h-screen',
+        'max-h-screen',
       )}
     >
       <ContentsPanel />

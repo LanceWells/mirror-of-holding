@@ -19,6 +19,6 @@ export default function BuilderSearch() {
     <TextInput
       onChange={(e) => setSearchTerm(e.target.value)}
       value={searchTerm}
-      placeholder="Search" />
+      placeholder="Search for an existing item" />
   )
 }

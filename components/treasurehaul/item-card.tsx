@@ -46,9 +46,9 @@ export default function ItemCard(props: ItemCardProps) {
         }
       }}
       className={clsx(
-        onClick && [
-          'hover:border-slate-100',
-        ],
+        onClick
+          ? ['hover:border-slate-100']
+          : ['pointer-events-none'],
         'drop-shadow-md',
         'transition-all',
         'rounded-xl',
@@ -89,7 +89,7 @@ export default function ItemCard(props: ItemCardProps) {
         'text-ellipsis',
         'z-10',
       )}>
-        {`+1 Striking Returning ${item.itemName} of Amalur`}
+        {item.itemName}
       </h3>
     </button>
   );

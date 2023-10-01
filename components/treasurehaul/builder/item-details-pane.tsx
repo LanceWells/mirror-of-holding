@@ -1,29 +1,22 @@
 "use client";
 
-import { useDisplayedItemSelector } from "@/lib/store/treasure-haul";
+import { setEditorDrawerOpen, updateItemInHaul, useDisplayedItemSelector } from "@/lib/store/treasure-haul";
 import ItemCard from "../item-card";
 import clsx from "clsx";
-import { TextInput } from "@/components/form/form-helpers";
 import { TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
+import { Button, Label, TextInput, Textarea } from "flowbite-react";
+import { FormEvent, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function ItemDetailsPane() {
   const displayedItem = useDisplayedItemSelector();
 
   return (
-    <div className={clsx(
-      'rounded-xl',
-      'from-slate-300',
-      'to-slate-600',
-      'bg-gradient-to-br',
-      'border-4',
-      'border-slate-500',
-      'mb-2',
-      'mr-2',
-    )}>
+    <div className="h-full">
       {displayedItem && (
         <ItemDetailsContents
           item={displayedItem.item}
-          key={displayedItem.itemKey}
+          itemKey={displayedItem.itemKey}
         />
       )}
     </div>
@@ -32,31 +25,100 @@ export default function ItemDetailsPane() {
 
 type ItemDetailsContentsProps = {
   item: TreasureHaulItem;
-  key: string;
+  itemKey: string;
 }
 
 function ItemDetailsContents(props: ItemDetailsContentsProps) {
   const {
     item,
-    key,
+    itemKey,
   } = props;
+
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState<TreasureHaulItem>(structuredClone(item));
+
+  useEffect(() => {
+    setFormData(structuredClone(item));
+  }, [item, itemKey]);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    dispatch(updateItemInHaul({
+      item: formData,
+      key: itemKey,
+    }));
+
+    dispatch(setEditorDrawerOpen(null));
+  }
 
   return (
     <div className={clsx(
       'grid',
-      'grid-cols-[min-content_1fr]',
-      'gap-x-8',
+      'h-full',
+      'items-end',
+      'grid-rows-[min-content_min-content_1fr]'
     )}>
-      <ItemCard
-        item={item}
-        itemKey={key}
-      />
-      <form>
-        <TextInput
-          fieldDisplayName={"Item Name"}
-          defaultValue={item.itemName}
+      <div className="flex justify-center">
+        <ItemCard
+          item={item}
+          itemKey={itemKey}
         />
+      </div>
+      <form
+        className={clsx(
+          'grid',
+          'grid-cols-1',
+          'gap-y-4',
+        )}
+        onSubmit={handleSubmit}
+      >
+        <div>
+          <Label
+            htmlFor="item-name"
+            value="Name"
+          />
+          <TextInput
+            id="item-name"
+            value={formData.itemName}
+            type="text"
+            required
+            onChange={(e) => setFormData({ ...formData, itemName: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label
+            htmlFor="item-description"
+            value="Description"
+          />
+          <Textarea
+            id="item-description"
+            value={formData.description}
+            rows={4}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label
+            htmlFor="item-src"
+            value="Image URL"
+          />
+          <TextInput
+            id="item-src"
+            value={formData.src}
+            type="text"
+            required
+            onChange={(e) => setFormData({ ...formData, src: e.target.value })}
+          />
+        </div>
+        <Button type="submit">
+          Update Item
+        </Button>
       </form>
+      <Button className="bottom-0" color='failure'>
+        Remove item
+      </Button>
     </div>
   )
 }

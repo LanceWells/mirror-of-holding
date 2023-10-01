@@ -11,7 +11,7 @@ const DefaultTreasureHaul = {
     item: TreasureHaulItem,
     itemKey: string,
   },
-  editorDrawerOpen: false,
+  editorDrawerOpen: null as null | "baseItem" | "details",
   baseItemSearch: ''
 }
 
@@ -27,11 +27,17 @@ const TreasureHaulSlice = createSlice({
       const item = action.payload.item;
 
       let itemIndex = 0;
-      while (state.items[`${item.itemName}_${itemIndex}`]) {
-        itemIndex++;
+      let itemKey = `${item.itemName}_${itemIndex}`;
+      while (state.items[itemKey]) {
+        itemKey = `${item.itemName}_${++itemIndex}`;
       }
 
-      state.items[`${item.itemName}_${itemIndex}`] = item;
+      state.items[itemKey] = item;
+      state.displayedItem = {
+        item,
+        itemKey,
+      }
+      console.debug("stalling")
     },
     removeItemFromHaul(state, action: PayloadAction<{ key: string }>) {
       delete state.items[action.payload.key];
@@ -50,7 +56,7 @@ const TreasureHaulSlice = createSlice({
         }
       }
     },
-    setEditorDrawerOpen(state, action: PayloadAction<boolean>) {
+    setEditorDrawerOpen(state, action: PayloadAction<TreasureHaulStorage['editorDrawerOpen']>) {
       state.editorDrawerOpen = action.payload;
     },
     setBuilderBaseItemSearch(state, action: PayloadAction<string>) {
@@ -61,7 +67,10 @@ const TreasureHaulSlice = createSlice({
 
 const useHaulSelector = () =>
   useSelector<{ treasureHaul: TreasureHaulStorage }, [string, TreasureHaulItem][]>(
-    (state) => Object.entries(state.treasureHaul.items)
+    createSelector(
+      (state: { treasureHaul: TreasureHaulStorage }) => state.treasureHaul.items,
+      (items) => Object.entries(items),
+    )
   );
 
 const useHaulNameSelector = () =>

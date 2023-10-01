@@ -5,7 +5,9 @@ import clsx from "clsx";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 import BuilderSearch from "./builder-search";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
+import { Button } from "flowbite-react";
+import ItemDetailsPane from "./item-details-pane";
 
 type BuilderDrawerProps = {
   itemSelector: ReactNode
@@ -46,24 +48,35 @@ export default function BuilderDrawer(props: BuilderDrawerProps) {
           'p-4',
           'overflow-y-auto',
           'transition-transform',
-          'bg-white',
-          'w-80',
-          'dark:bg-gray-800',
+          'w-96',
+          'h-full',
           'pointer-events-auto',
+          'bg-gray-100',
+          'dark:bg-gray-800',
           drawerOpen
             ? ['']
             : ['-translate-x-full'],
         )}
       >
-        <h5>Testing</h5>
-        <Image src='/magnifying-glass.svg' alt='search' width={32} height={32} />
-        <BuilderSearch />
-        {itemSelector}
-        <form>
-        </form>
+        <div className={clsx(
+          'h-full',
+          drawerOpen === 'baseItem'
+            ? ['visible']
+            : ['hidden']
+        )}>
+          <BaseItemSetup itemSelector={itemSelector} />
+        </div>
+        <div className={clsx(
+          'h-full',
+          drawerOpen === 'details'
+            ? ['visible']
+            : ['hidden']
+        )}>
+          <ItemDetailsPane />
+        </div>
       </div>
       <div
-        onClick={() => { dispatch(setEditorDrawerOpen(false)) }}
+        onClick={() => { dispatch(setEditorDrawerOpen(null)) }}
         className={clsx(
           'relative',
           drawerOpen
@@ -83,4 +96,42 @@ export default function BuilderDrawer(props: BuilderDrawerProps) {
       )} />
     </div>
   );
+}
+
+function BaseItemSetup(props: { itemSelector: ReactNode }) {
+  return (
+    <div className={clsx(
+        'grid',
+        'grid-cols-[32px_1fr]',
+        'gap-y-2',
+        'gap-x-1',
+      )}
+      style={{
+        gridTemplateAreas: `
+          "title        title"
+          "hr           hr"
+          "search-icon  search-box"
+          "options      options"
+        `
+      }}
+    >
+      <h2 className="[grid-area:title] text-xl">
+        Add an Item
+      </h2>
+      <hr className="[grid-area:hr] w-full mb-8" />
+      <Image
+        src='/magnifying-glass.svg'
+        alt='search'
+        width={32}
+        height={32}
+        className="[grid-area:search-icon] translate-y-1"
+      />
+      <div className="[grid-area:search-box]">
+        <BuilderSearch />
+      </div>
+      <div className="[grid-area:options]">
+        {props.itemSelector}
+      </div>
+    </div>
+  )
 }

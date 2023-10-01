@@ -2,6 +2,7 @@ import { BaseItem } from "@prisma/client";
 import prisma from '../../../lib/prisma'
 import BaseItemContainer from "./base-item-container";
 import clsx from "clsx";
+import BlankItemContainer from "./blank-item-container";
 
 type ItemSelectorProps = {};
 
@@ -18,15 +19,19 @@ export default async function ItemSelector(props: ItemSelectorProps) {
 
   return (
     <div className={clsx(
-      '[grid-area:selector]',
-      'from-slate-300',
-      'to-slate-600',
+      'bg-white',
+      'dark:bg-gray-700',
+      'border-gray-200',
+      'dark:border-gray-900',
       'bg-gradient-to-br',
-      'rounded-xl',
-      'border-slate-500',
-      'border-4',
-      'm-2',
+      'rounded-lg',
+      'border',
+      'shadow-sm',
+      'grid',
+      'grid-cols-[repeat(3,_minmax(min-content,_max-content))]',
+      "justify-center"
     )}>
+      <BlankItemContainer />
       {itemOptions}
     </div>
   );

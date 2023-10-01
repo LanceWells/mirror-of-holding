@@ -5,7 +5,6 @@ import { setDisplayedItem, setEditorDrawerOpen, useHaulSelector } from "@/lib/st
 import ItemCard from "../item-card";
 import clsx from "clsx";
 import { useDispatch } from "react-redux";
-import { Button } from "flowbite-react";
 
 export default function ContentsPanel() {
   const haul = useHaulSelector();
@@ -13,44 +12,47 @@ export default function ContentsPanel() {
 
   const effectsItems = useMemo(
     () => haul
-    .flatMap(([itemKey, item]) => (
-      <ItemCard
-        item={item}
-        itemKey={itemKey}
-        onClick={(thisItemKey) => dispatch(setDisplayedItem({ itemKey: thisItemKey }))}
-      />
-    )),
+      .flatMap(([itemKey, item]) => (
+        <ItemCard
+          item={item}
+          itemKey={itemKey}
+          onClick={(thisItemKey) => {
+            dispatch(
+              setDisplayedItem({ itemKey: thisItemKey })
+            );
+
+            dispatch(
+              setEditorDrawerOpen('details')
+            );
+          }}
+        />
+      )),
     [haul, dispatch]
   )
 
   return (
     <div className={clsx(
-      '[grid-area:contents]',
-      'from-slate-300',
-      'to-slate-600',
-      'bg-gradient-to-br',
-      'rounded-xl',
-      'border-slate-500',
-      'border-4',
-      'mt-2',
-      'mr-2',
-      'overflow-y-scroll',
+      'absolute',
+      'h-full',
+      'w-full',
+      'justify-center',
+      'items-center',
+      'flex',
     )}>
       <div className={clsx(
-        'flex',
-        'flex-row',
-        'flex-wrap',
-        'flex-grow-0',
-        'items-start',
-        'justify-start',
-        'content-start',
-        'p-2',
+        'border',
+        'shadow-md',
+        'bg-white',
+        'border-gray-200',
+        'rounded-lg',
+        'grid',
+        'items-center',
+        'justify-center',
+        'justify-items-center',
+        'grid-cols-[repeat(5,_min-content)]',
       )}>
         {effectsItems}
       </div>
-      <Button onClick={() => dispatch(setEditorDrawerOpen(true))}>
-        Open Drawer
-      </Button>
     </div>
   );
 }

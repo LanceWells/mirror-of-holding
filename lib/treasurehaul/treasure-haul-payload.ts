@@ -13,6 +13,14 @@ enum TreasureHaulMoneyType {
   Paintings,
 }
 
+export type TreasureHaulItem = {
+  itemName: string;
+  src: string;
+  type: BaseItemType;
+  effects: TreasureHaulItemEffectType[];
+  description: string;
+}
+
 function GenerateTreasureDetails(
   count: number,
   type: TreasureHaulMoneyType,
@@ -129,18 +137,12 @@ function GenerateTreasureDetails(
   }
 }
 
-export type TreasureHaulItem = {
-  itemName: string;
-  src: string;
-  type: BaseItemType;
-  effects: TreasureHaulItemEffectType[];
-}
-
 const TreasureHaulItemFromBase = (item: BaseItem): TreasureHaulItem => ({
   effects: [],
   itemName: item.name,
   src: item.src,
   type: item.type,
+  description: '',
 });
 
 function TreasureHaulItemFromMoney(
@@ -154,7 +156,18 @@ function TreasureHaulItemFromMoney(
     type: BaseItemType.Treasure,
     itemName: details.name,
     src: details.src,
+    description: '',
   };
+}
+
+function TreasureHaulItemFromBlank() : TreasureHaulItem {
+  return {
+    effects: [],
+    itemName: "A brand new item",
+    src: "",
+    type: BaseItemType.MagicItem,
+    description: '',
+  }
 }
 
 export {
@@ -162,4 +175,5 @@ export {
   TreasureHaulMoneyType,
   TreasureHaulItemFromBase,
   TreasureHaulItemFromMoney,
+  TreasureHaulItemFromBlank,
 }
