@@ -45,11 +45,13 @@ export default function ContentsPanel() {
         'bg-white',
         'border-gray-200',
         'rounded-lg',
-        'grid',
+        'flex',
         'items-center',
         'justify-center',
         'justify-items-center',
-        'grid-cols-[repeat(5,_min-content)]',
+        'flex-wrap',
+        'md:w-[80%]',
+        'sm:w-[90%]',
       )}>
         {effectsItems}
       </div>

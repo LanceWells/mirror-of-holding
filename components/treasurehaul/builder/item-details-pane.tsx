@@ -1,11 +1,11 @@
 "use client";
 
-import { setEditorDrawerOpen, updateItemInHaul, useDisplayedItemSelector } from "@/lib/store/treasure-haul";
+import { removeItemFromHaul, setEditorDrawerOpen, updateItemInHaul, useDisplayedItemSelector } from "@/lib/store/treasure-haul";
 import ItemCard from "../item-card";
 import clsx from "clsx";
 import { TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
 import { Button, Label, TextInput, Textarea } from "flowbite-react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export default function ItemDetailsPane() {
@@ -37,6 +37,8 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState<TreasureHaulItem>(structuredClone(item));
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setFormData(structuredClone(item));
@@ -52,6 +54,21 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
 
     dispatch(setEditorDrawerOpen(null));
   }
+
+  const handleClickDelete = useCallback(() => {
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      timeoutRef.current = setTimeout(() => setConfirmDelete(false), 3000);
+    } else {
+      dispatch(
+        removeItemFromHaul({ key: itemKey })
+      );
+
+      dispatch(
+        setEditorDrawerOpen(null)
+      );
+    }
+  }, [confirmDelete])
 
   return (
     <div className={clsx(
@@ -116,8 +133,13 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
           Update Item
         </Button>
       </form>
-      <Button className="bottom-0" color='failure'>
-        Remove item
+      <Button onClick={handleClickDelete} color='failure' className={clsx(
+        confirmDelete && ['animate-pulse'],
+        'transition-all',
+      )}>
+        {
+          confirmDelete ? 'Are you sure?' : 'Delete this item'
+        }
       </Button>
     </div>
   )

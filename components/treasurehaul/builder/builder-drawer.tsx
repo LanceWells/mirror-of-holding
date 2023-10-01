@@ -51,6 +51,7 @@ export default function BuilderDrawer(props: BuilderDrawerProps) {
           'w-96',
           'h-full',
           'pointer-events-auto',
+          'overflow-x-hidden',
           'bg-gray-100',
           'dark:bg-gray-800',
           drawerOpen
