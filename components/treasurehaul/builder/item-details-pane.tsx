@@ -3,9 +3,9 @@
 import { removeItemFromHaul, setEditorDrawerOpen, updateItemInHaul, useDisplayedItemSelector } from "@/lib/store/treasure-haul";
 import ItemCard from "../item-card";
 import clsx from "clsx";
-import { TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
-import { Button, Label, TextInput, Textarea } from "flowbite-react";
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { TreasureHaulItem, TreasureHaulItemEffectType } from "@/lib/treasurehaul/treasure-haul-payload";
+import { Button, Label, Select, TextInput, Textarea } from "flowbite-react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export default function ItemDetailsPane() {
@@ -70,6 +70,12 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
     }
   }, [confirmDelete])
 
+  const effectOptions = useMemo(
+    () => Object.keys(TreasureHaulItemEffectType)
+      .map((effect) => (<option>{effect}</option>)),
+    [],
+  );
+
   return (
     <div className={clsx(
       'grid',
@@ -128,6 +134,19 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
             required
             onChange={(e) => setFormData({ ...formData, src: e.target.value })}
           />
+        </div>
+        <div>
+          <Label
+            htmlFor="effect-options"
+            value="Effects"
+          />
+          <Select
+            id="effect-options"
+            value={formData.effects}
+            onChange={(e) => setFormData({ ...formData, effects: e.target.value as TreasureHaulItemEffectType })}
+          >
+            {effectOptions}
+          </Select>
         </div>
         <Button type="submit">
           Update Item

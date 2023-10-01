@@ -1,10 +1,10 @@
 "use client";
 
 import { LoadImage } from "@/lib/canvas-processing";
-import { TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
+import { TreasureHaulItem, TreasureHaulItemEffectType } from "@/lib/treasurehaul/treasure-haul-payload";
 import clsx from "clsx";
 import { MedievalSharp } from "next/font/google";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type ItemCardProps = {
   item: TreasureHaulItem;
@@ -22,9 +22,14 @@ export default function ItemCard(props: ItemCardProps) {
   } = props;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [imgs, setImgs] = useState<{ src?: HTMLImageElement, noise?: HTMLImageElement }>({});
 
   useEffect(() => {
-    if (!canvasRef || !canvasRef.current) {
+    if (
+      !canvasRef || !canvasRef.current ||
+      !imgs || !imgs.noise || !imgs.src
+    ) {
       return;
     }
 
@@ -35,8 +40,29 @@ export default function ItemCard(props: ItemCardProps) {
 
     ctx.imageSmoothingEnabled = false;
 
-    DrawCardImage(item.src, ctx);
-  });
+    let time = 0;
+    timerRef.current = setInterval(() => {
+      time += 0.7;
+      time %= 128;
+      Effects[item.effects](ctx, imgs.src!, imgs.noise!, time);
+    }, 30);
+    
+    return () => clearInterval(timerRef.current as NodeJS.Timeout);
+  }, [canvasRef, imgs, item]);
+
+  const loadImages = async () => {
+    const [src, noise] = await Promise.all([
+      LoadImage(item.src),
+      LoadImage('/noise.png'),
+    ]);
+
+    setImgs({
+      src,
+      noise,
+    })
+  }
+
+  useEffect(() => { loadImages(); }, []);
 
   return (
     <button
@@ -95,10 +121,39 @@ export default function ItemCard(props: ItemCardProps) {
   );
 }
 
-async function DrawCardImage(
-  src: string,
-  ctx: CanvasRenderingContext2D,
-) {
-  const img = await LoadImage(src);
-  ctx.drawImage(img, 0, 0, 128, 128);
+const Effects: {
+  [P in keyof typeof TreasureHaulItemEffectType]: (
+    ctx: CanvasRenderingContext2D,
+    src: HTMLImageElement,
+    noise: HTMLImageElement,
+    time: number,
+  ) => void
+} = {
+  Enchanted_1: (ctx, src, noise, time) => {
+    ctx.clearRect(0, 0, 128, 128);
+
+    ctx.globalAlpha = 1.0;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(src, 0, 0, 128, 128);
+  
+    ctx.globalAlpha = 0.4;
+    ctx.globalCompositeOperation = 'source-atop';
+    ctx.drawImage(noise, time, 0, 128, 128);
+    ctx.drawImage(noise, time - 128, 0, 128, 128);
+  
+    ctx.globalAlpha = 1.0;
+    ctx.globalCompositeOperation = 'color-dodge';
+    ctx.drawImage(src, 0, 0, 128, 128);
+  },
+
+  Flaming: (ctx, src, noise, time) => {
+
+  },
+
+  None: (ctx, src) => {
+    ctx.globalAlpha = 1.0;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(src, 0, 0, 128, 128);
+  }
 }
+

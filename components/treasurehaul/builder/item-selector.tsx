@@ -29,7 +29,9 @@ export default async function ItemSelector(props: ItemSelectorProps) {
       'shadow-sm',
       'grid',
       'grid-cols-[repeat(3,_minmax(min-content,_max-content))]',
-      "justify-center"
+      'justify-center',
+      'overflow-y-auto',
+      'overflow-x-hidden',
     )}>
       <BlankItemContainer />
       {itemOptions}

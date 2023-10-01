@@ -1,10 +1,13 @@
 import { BaseItem, BaseItemType } from "@prisma/client";
 import { randomInt } from "crypto";
 
-enum TreasureHaulItemEffectType {
-  Flaming,
-  Enchanted1,
-}
+const TreasureHaulItemEffectType = {
+  None: 'None',
+  Flaming: 'Flaming',
+  Enchanted_1: 'Enchanted_1',
+};
+
+export type TreasureHaulItemEffectType = keyof typeof TreasureHaulItemEffectType;
 
 enum TreasureHaulMoneyType {
   Coins,
@@ -17,7 +20,7 @@ export type TreasureHaulItem = {
   itemName: string;
   src: string;
   type: BaseItemType;
-  effects: TreasureHaulItemEffectType[];
+  effects: TreasureHaulItemEffectType;
   description: string;
 }
 
@@ -138,7 +141,7 @@ function GenerateTreasureDetails(
 }
 
 const TreasureHaulItemFromBase = (item: BaseItem): TreasureHaulItem => ({
-  effects: [],
+  effects: 'None',
   itemName: item.name,
   src: item.src,
   type: item.type,
@@ -152,7 +155,7 @@ function TreasureHaulItemFromMoney(
   const details = GenerateTreasureDetails(copperCount, moneyType);
 
   return {
-    effects: [],
+    effects: 'None',
     type: BaseItemType.Treasure,
     itemName: details.name,
     src: details.src,
@@ -162,7 +165,7 @@ function TreasureHaulItemFromMoney(
 
 function TreasureHaulItemFromBlank() : TreasureHaulItem {
   return {
-    effects: [],
+    effects: 'None',
     itemName: "A brand new item",
     src: "",
     type: BaseItemType.MagicItem,
