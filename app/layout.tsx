@@ -3,9 +3,6 @@ import { Inter } from 'next/font/google';
 import AppWrapper from '@/components/wrapper';
 
 export const metadata = {
-  title: 'Vercel Postgres Demo with Prisma',
-  description:
-    'A simple Next.js app with Vercel Postgres as the database and Prisma as the ORM',
 };
 
 const inter = Inter({

@@ -42,6 +42,8 @@ async function HaulContents(props: { roomID: string }) {
 
   return (
     <div>
+      <title>A mysterious chest . . .</title>
+      <desc>What could it hold?</desc>
       <meta property='og:type' content='website' />
       <meta property='og:title' content="A mysterious chest" />
       <meta property='og:description' content='A mysterious chest awaits . . .' />
