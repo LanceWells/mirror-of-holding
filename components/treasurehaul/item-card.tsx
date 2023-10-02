@@ -83,7 +83,10 @@ export default function ItemCard(props: ItemCardProps) {
     })
   }
 
-  useEffect(() => { loadImages(); }, []);
+  useEffect(() => { loadImages(); }, [
+    itemKey,
+    item.src,
+  ]);
 
   return (
     <button
