@@ -11,6 +11,10 @@ export default function BuilderToolbar() {
 
   return (
     <div className={clsx(
+      'bg-white',
+      'border-gray-200',
+      'dark:bg-slate-600',
+      'dark:border-gray-600',
       'md:h-72',
       'md:-translate-y-1/2',
       'md:top-1/2',
@@ -23,9 +27,7 @@ export default function BuilderToolbar() {
       'fixed',
       'z-30',
       'rounded-full',
-      'bg-white',
       'border',
-      'border-gray-200',
       'grid',
       'justify-center',
       'items-center',

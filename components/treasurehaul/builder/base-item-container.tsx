@@ -31,12 +31,12 @@ export default function BaseItemContainer(props: BaseItemProps) {
   }, [dispatch]);
 
   return (
-    <Tooltip content={item.name}>
+    <Tooltip className='pointer-events-none' content={item.name}>
       <button
         className={clsx(
           'bg-slate-400',
           'hover:bg-slate-300',
-          'dark:bg-slate-700',
+          'dark:bg-slate-600',
           'hover:dark:bg-slate-600',
           'transition-colors',
           'p-2',

@@ -40,10 +40,12 @@ export default function ContentsPanel() {
       'flex',
     )}>
       <div className={clsx(
-        'border',
-        'shadow-md',
         'bg-white',
         'border-gray-200',
+        'dark:bg-slate-900',
+        'dark:border-gray-700',
+        'border',
+        'shadow-md',
         'rounded-lg',
         'flex',
         'items-center',

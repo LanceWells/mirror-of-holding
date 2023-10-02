@@ -19,14 +19,19 @@ module.exports = {
           '0%'  : { transform: 'rotate(-0.5deg)' },
           '50%' : { transform: 'rotate(0.5deg)' },
           '100%': { transform: 'rotate(0deg)' },
+        },
+        fold_in: {
+          '0%'  : { transform: 'translateY(-10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0px)', opacity: '1.0' },
         }
       },
       animation: {
         shake: 'shake 0.1s ease-in-out',
+        fold_in: 'fold_in 0.5s ease-in-out 1 both',
       },
     },
   },
-  darkMode: 'class',
+  darkMode: 'media',
   plugins: [
     require('flowbite/plugin')
   ],

@@ -42,6 +42,10 @@ async function HaulContents(props: { roomID: string }) {
 
   return (
     <div>
+      <meta property='og:type' content='website' />
+      <meta property='og:title' content={(thisHaul.item as any)['roomName'] ?? ''} />
+      <meta property='og:description' content='A mysterious chest awaits . . .' />
+      <meta property='og:image' content='./WoodenStaticChest.png' />
       {items}
     </div>
   )

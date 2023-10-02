@@ -118,7 +118,7 @@ function BaseItemSetup(props: { itemSelector: ReactNode }) {
         `
       }}
     >
-      <h2 className="[grid-area:title] text-xl">
+      <h2 className="[grid-area:title] text-xl text-black dark:text-slate-50">
         Add an Item
       </h2>
       <hr className="[grid-area:hr] w-full mb-8" />

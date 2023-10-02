@@ -16,6 +16,8 @@ export default function Builder() {
       className={clsx(
         'min-h-screen',
         'max-h-screen',
+        'bg-slate-50',
+        'dark:bg-slate-950',
       )}
     >
       <ContentsPanel />

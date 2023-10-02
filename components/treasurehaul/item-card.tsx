@@ -116,7 +116,10 @@ export default function ItemCard(props: ItemCardProps) {
         'bg-cover',
         'items-center',
       )}
-      style={{ backgroundImage: 'url(/cards/weapon.png)' }}
+      style={{
+        backgroundImage: 'url(/cards/weapon.png)',
+        // animationDelay: '2500ms',
+      }}
     >
       <canvas
         className={clsx(
