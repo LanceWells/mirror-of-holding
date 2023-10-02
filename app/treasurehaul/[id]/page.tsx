@@ -2,11 +2,20 @@
 // export const runtime = 'edge'
 export const preferredRegion = 'home';
 export const dynamic = 'force-dynamic';
-import { Prisma } from '@prisma/client';
 import prisma from '../../../lib/prisma'
 import { TreasureHaulItem } from '@/lib/treasurehaul/treasure-haul-payload';
-import { JsonObject } from '@prisma/client/runtime/library';
 import ItemCard from '@/components/treasurehaul/item-card';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'A mysterious chest . . .',
+  description: 'What does it hold?',
+  openGraph: {
+    images: [
+      'https://jagtjjiirouufnquzlhr.supabase.co/storage/v1/object/public/mirror-of-holding/TreasureHaul/Icons/WoodenStaticChest.png?t=2023-10-02T17%3A18%3A41.919Z'
+    ]
+  }
+}
 
 export default function TreasureHaul({ params }: { params: { id: string } }) {
   return (
@@ -42,12 +51,6 @@ async function HaulContents(props: { roomID: string }) {
 
   return (
     <div>
-      <title>A mysterious chest . . .</title>
-      <meta property='description' content='What could it hold?' />
-      <meta property='og:type' content='website' />
-      <meta property='og:title' content="A mysterious chest" />
-      <meta property='og:description' content='A mysterious chest awaits . . .' />
-      <meta property='og:image' content='https://jagtjjiirouufnquzlhr.supabase.co/storage/v1/object/public/mirror-of-holding/TreasureHaul/Icons/WoodenStaticChest.png?t=2023-10-02T17%3A18%3A41.919Z' />
       {items}
     </div>
   )
