@@ -43,9 +43,9 @@ async function HaulContents(props: { roomID: string }) {
   return (
     <div>
       <meta property='og:type' content='website' />
-      <meta property='og:title' content={(thisHaul.item as any)['roomName'] ?? ''} />
+      <meta property='og:title' content="A mysterious chest" />
       <meta property='og:description' content='A mysterious chest awaits . . .' />
-      <meta property='og:image' content='./WoodenStaticChest.png' />
+      <meta property='og:image' content='https://jagtjjiirouufnquzlhr.supabase.co/storage/v1/object/public/mirror-of-holding/TreasureHaul/Icons/WoodenStaticChest.png?t=2023-10-02T17%3A18%3A41.919Z' />
       {items}
     </div>
   )
