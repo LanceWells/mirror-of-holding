@@ -37,7 +37,6 @@ const TreasureHaulSlice = createSlice({
         item,
         itemKey,
       }
-      console.debug("stalling")
     },
     removeItemFromHaul(state, action: PayloadAction<{ key: string }>) {
       delete state.items[action.payload.key];

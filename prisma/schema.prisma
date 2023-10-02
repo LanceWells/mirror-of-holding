@@ -90,9 +90,16 @@ enum BaseItemType {
   Consumable
 }
 
+model Tag {
+  id    Int @id @default(autoincrement())
+  tag   String
+  items BaseItem[]
+}
+
 model BaseItem {
   id    Int @id @default(autoincrement())
   name  String
   type  BaseItemType
   src   String
+  tags  Tag[]
 }

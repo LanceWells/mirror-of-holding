@@ -7,6 +7,7 @@ import { TreasureHaulItem, TreasureHaulItemEffectType } from "@/lib/treasurehaul
 import { Button, Label, Select, TextInput, Textarea } from "flowbite-react";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { BlockPicker, ChromePicker, HuePicker } from "react-color";
 
 export default function ItemDetailsPane() {
   const displayedItem = useDisplayedItemSelector();
@@ -143,10 +144,34 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
           <Select
             id="effect-options"
             value={formData.effects}
-            onChange={(e) => setFormData({ ...formData, effects: e.target.value as TreasureHaulItemEffectType })}
+            onChange={(e) => setFormData({ ...formData, effects: e.target.value as keyof typeof TreasureHaulItemEffectType })}
           >
             {effectOptions}
           </Select>
+        </div>
+        <div className={clsx(
+          'grid',
+          formData.effects !== 'None'
+            ? ['visible']
+            : ['hidden']
+        )}>
+          <Label
+            value="Effect Color"
+          />
+          <HuePicker
+            className="justify-self-center"
+            color={formData.uniforms?.color}
+            onChange={(color) => setFormData({
+              ...formData,
+              uniforms: {
+                color: {
+                  r: color.rgb.r,
+                  g: color.rgb.g,
+                  b: color.rgb.b,
+                }
+              }
+            })}
+          />
         </div>
         <Button type="submit">
           Update Item

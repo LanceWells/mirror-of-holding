@@ -4,7 +4,7 @@ import { randomInt } from "crypto";
 const TreasureHaulItemEffectType = {
   None: 'None',
   Flaming: 'Flaming',
-  Enchanted_1: 'Enchanted_1',
+  Enchanted: 'Enchanted',
 };
 
 export type TreasureHaulItemEffectType = keyof typeof TreasureHaulItemEffectType;
@@ -20,8 +20,15 @@ export type TreasureHaulItem = {
   itemName: string;
   src: string;
   type: BaseItemType;
-  effects: TreasureHaulItemEffectType;
   description: string;
+  effects: TreasureHaulItemEffectType;
+  uniforms?: {
+    color?: {
+      r: number;
+      g: number;
+      b: number;
+    }
+  };
 }
 
 function GenerateTreasureDetails(
