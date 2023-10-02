@@ -3,18 +3,46 @@
 export const preferredRegion = 'home';
 export const dynamic = 'force-dynamic';
 import prisma from '../../../lib/prisma'
-import { TreasureHaulItem } from '@/lib/treasurehaul/treasure-haul-payload';
+import { TreasureHaulItem, TreasureHaulPayload } from '@/lib/treasurehaul/treasure-haul-payload';
 import ItemCard from '@/components/treasurehaul/item-card';
 import { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'A mysterious chest . . .',
-  description: 'What does it hold?',
-  openGraph: {
-    images: [
-      'https://jagtjjiirouufnquzlhr.supabase.co/storage/v1/object/public/mirror-of-holding/TreasureHaul/Icons/WoodenStaticChest.png?t=2023-10-02T17%3A18%3A41.919Z'
-    ]
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const id = params.id;
+  const idAsNum = Number.parseInt(id);
+
+  const metadata: Metadata = {
+    title: 'A mysterious chest . . .',
+    description: 'What does it hold?',
+    openGraph: {
+      images: [
+        'https://jagtjjiirouufnquzlhr.supabase.co/storage/v1/object/public/mirror-of-holding/TreasureHaul/Icons/WoodenStaticChest.png?t=2023-10-02T17%3A18%3A41.919Z'
+      ]
+    }
   }
+
+  const thisHaul = await prisma.treasureHaul.findFirst({
+    where: {
+      id: idAsNum,
+    }
+  });
+  
+  if (!thisHaul || !thisHaul.id || !thisHaul.item) {
+    return metadata;
+  }
+
+  const thisHaulObj = thisHaul as unknown as TreasureHaulPayload;
+
+  if (thisHaulObj.roomName) {
+    metadata.title = thisHaulObj.roomName;
+  }
+
+  if (thisHaulObj.previewImageSrc) {
+    metadata.openGraph = metadata.openGraph ?? {};
+    metadata.openGraph.images = [thisHaulObj.previewImageSrc];
+  }
+
+  return metadata;
 }
 
 export default function TreasureHaul({ params }: { params: { id: string } }) {

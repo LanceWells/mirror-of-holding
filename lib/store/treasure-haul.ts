@@ -11,7 +11,7 @@ const DefaultTreasureHaul = {
     item: TreasureHaulItem,
     itemKey: string,
   },
-  editorDrawerOpen: null as null | "baseItem" | "details",
+  editorDrawerOpen: null as null | string,
   baseItemSearch: ''
 }
 
@@ -55,7 +55,7 @@ const TreasureHaulSlice = createSlice({
         }
       }
     },
-    setEditorDrawerOpen(state, action: PayloadAction<TreasureHaulStorage['editorDrawerOpen']>) {
+    setDrawerOpen(state, action: PayloadAction<TreasureHaulStorage['editorDrawerOpen']>) {
       state.editorDrawerOpen = action.payload;
     },
     setBuilderBaseItemSearch(state, action: PayloadAction<string>) {
@@ -64,50 +64,66 @@ const TreasureHaulSlice = createSlice({
   },
 });
 
+type HaulStore = {
+  treasureHaul: TreasureHaulStorage;
+}
+
 const useHaulSelector = () =>
-  useSelector<{ treasureHaul: TreasureHaulStorage }, [string, TreasureHaulItem][]>(
+  useSelector<HaulStore, [string, TreasureHaulItem][]>(
     createSelector(
-      (state: { treasureHaul: TreasureHaulStorage }) => state.treasureHaul.items,
+      (state: HaulStore) => state.treasureHaul.items,
       (items) => Object.entries(items),
     )
   );
 
 const useHaulNameSelector = () =>
-  useSelector<{ treasureHaul: TreasureHaulStorage }, TreasureHaulStorage['name']>(
-    (state) => state.treasureHaul.name
+  useSelector<HaulStore, TreasureHaulStorage['name']>(
+    createSelector(
+      (state: HaulStore) => state.treasureHaul.name,
+      (name) => name,
+    )
   );
 
 const useDisplayedItemSelector = () =>
-  useSelector<{ treasureHaul: TreasureHaulStorage }, TreasureHaulStorage['displayedItem']>(
-    (state) => state.treasureHaul.displayedItem
-  );
+  useSelector<HaulStore, TreasureHaulStorage['displayedItem']>(
+    createSelector(
+      (state: HaulStore) => state.treasureHaul.displayedItem,
+      (item) => item,
+    )
+  )
 
 const useDrawerOpenSelector = () =>
-  useSelector<{ treasureHaul: TreasureHaulStorage }, TreasureHaulStorage['editorDrawerOpen']>(
-    (state) => state.treasureHaul.editorDrawerOpen
+  useSelector<HaulStore, TreasureHaulStorage['editorDrawerOpen']>(
+    createSelector(
+      (state: HaulStore) => state.treasureHaul.editorDrawerOpen,
+      (open) => open,
+    )
   )
 
 const useSearchTermSelector = () =>
-  useSelector<{ treasureHaul: TreasureHaulStorage }, TreasureHaulStorage['baseItemSearch']>(
-    (state) => state.treasureHaul.baseItemSearch
+  useSelector<HaulStore, TreasureHaulStorage['baseItemSearch']>(
+    createSelector(
+      (state: HaulStore) => state.treasureHaul.baseItemSearch,
+      (search) => search,
+    )
   )
 
 export default TreasureHaulSlice;
 
-  export const {
-    addItemToHaul,
-    removeItemFromHaul,
-    setDisplayedItem,
-    updateItemInHaul,
-    setEditorDrawerOpen,
-    setBuilderBaseItemSearch,
-  } = TreasureHaulSlice.actions;
+export const {
+  addItemToHaul,
+  removeItemFromHaul,
+  setDisplayedItem,
+  updateItemInHaul,
+  setDrawerOpen,
+  setBuilderBaseItemSearch,
+} = TreasureHaulSlice.actions;
 
-  export {
-    useHaulSelector,
-    useHaulNameSelector,
-    useDisplayedItemSelector,
-    useDrawerOpenSelector,
-    useSearchTermSelector,
-    DefaultTreasureHaul,
-  };
+export {
+  useHaulSelector,
+  useHaulNameSelector,
+  useDisplayedItemSelector,
+  useDrawerOpenSelector,
+  useSearchTermSelector,
+  DefaultTreasureHaul,
+};

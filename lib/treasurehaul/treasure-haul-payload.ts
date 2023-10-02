@@ -1,6 +1,12 @@
 import { BaseItem, BaseItemType } from "@prisma/client";
 import { randomInt } from "crypto";
 
+export type TreasureHaulPayload = {
+  haul: TreasureHaulItem[];
+  roomName: string;
+  previewImageSrc: string;
+}
+
 const TreasureHaulItemEffectType = {
   None: 'None',
   Flaming: 'Flaming',

@@ -1,8 +1,7 @@
 "use client";
 
-import { DrawOutlineProcessing, SortDrawingLayers, ProcessImages, DrawCommand, PostProcessing, ConstructColorReplacementProcessing } from "@/lib/canvas-processing";
-import { useLayoutSelector, useOutfitSelector } from "@/lib/store";
-import { useFilters } from "@/lib/store/character-body";
+import { DrawOutlineProcessing, SortDrawingLayers, ProcessImages, PostProcessing, ConstructColorReplacementProcessing } from "@/lib/canvas-processing";
+import { useFilters, useLayoutSelector, useOutfitSelector } from "@/lib/store/character-body";
 import { OutfitType, PartType } from "@prisma/client";
 import { useEffect, useRef } from "react"
 

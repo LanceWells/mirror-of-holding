@@ -1,6 +1,6 @@
 "use client";
 
-import { removeItemFromHaul, setEditorDrawerOpen, updateItemInHaul, useDisplayedItemSelector } from "@/lib/store/treasure-haul";
+import { removeItemFromHaul, setDrawerOpen, updateItemInHaul, useDisplayedItemSelector } from "@/lib/store/treasure-haul";
 import ItemCard from "../item-card";
 import clsx from "clsx";
 import { TreasureHaulItem, TreasureHaulItemEffectType } from "@/lib/treasurehaul/treasure-haul-payload";
@@ -53,7 +53,7 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
       key: itemKey,
     }));
 
-    dispatch(setEditorDrawerOpen(null));
+    dispatch(setDrawerOpen(null));
   }
 
   const handleClickDelete = useCallback(() => {
@@ -66,7 +66,7 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
       );
 
       dispatch(
-        setEditorDrawerOpen(null)
+        setDrawerOpen(null)
       );
     }
   }, [confirmDelete])

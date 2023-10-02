@@ -1,29 +1,17 @@
-import { TreasureHaulItem } from '@/lib/treasurehaul/treasure-haul-payload';
+import { TreasureHaulPayload } from '@/lib/treasurehaul/treasure-haul-payload';
 import prisma from '../../../../lib/prisma'
 
 export async function POST(request: Request) {
   const {
     roomName,
     haul,
-  } = await request.json() as {
-    roomName: string,
-    haul: TreasureHaulItem[],
-  };
+    previewImageSrc,
+  } = await request.json() as TreasureHaulPayload;
 
-  const thisRoom: {
-    roomName: string,
-    haul: TreasureHaulItem[],
-  } = {
-    roomName: "",
+  const thisRoom: TreasureHaulPayload = {
     haul: [],
-  }
-
-  if (!roomName) {
-    return new Response(
-      'Invaild room name', {
-        status: 400,
-      }
-    )
+    roomName: "",
+    previewImageSrc: "",
   }
 
   if (!haul) {
@@ -32,15 +20,29 @@ export async function POST(request: Request) {
         status: 400,
       }
     )
+  } else {
+    const validItems = haul.filter((item) => (
+      item.itemName &&
+      item.src &&
+      item.type
+    ));
+  
+    thisRoom.haul = validItems;
   }
 
-  const validItems = haul.filter((item) => (
-    item.itemName &&
-    item.src &&
-    item.type
-  ));
+  if (!roomName) {
+    return new Response(
+      'Invaild room name', {
+        status: 400,
+      }
+    )
+  } else {
+    thisRoom.roomName = roomName;
+  }
 
-  thisRoom.haul = validItems;
+  if (previewImageSrc) {
+    thisRoom.previewImageSrc = previewImageSrc;
+  }
 
   const createdHaul = await prisma.treasureHaul.create({
     data: {

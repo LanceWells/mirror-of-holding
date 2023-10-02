@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo } from "react";
-import { setDisplayedItem, setEditorDrawerOpen, useHaulSelector } from "@/lib/store/treasure-haul";
+import { setDisplayedItem, setDrawerOpen, useHaulSelector } from "@/lib/store/treasure-haul";
 import ItemCard from "../item-card";
 import clsx from "clsx";
 import { useDispatch } from "react-redux";
+import { HaulBuilderDrawerStates } from "@/lib/drawer-states";
 
 export default function ContentsPanel() {
   const haul = useHaulSelector();
@@ -22,7 +23,7 @@ export default function ContentsPanel() {
             );
 
             dispatch(
-              setEditorDrawerOpen('details')
+              setDrawerOpen(HaulBuilderDrawerStates[1])
             );
           }}
         />

@@ -1,6 +1,6 @@
 "use client";
 
-import { addItemToHaul, setDisplayedItem, setEditorDrawerOpen, useSearchTermSelector } from "@/lib/store/treasure-haul";
+import { addItemToHaul, setDrawerOpen, useSearchTermSelector } from "@/lib/store/treasure-haul";
 import { TreasureHaulItemFromBase } from "@/lib/treasurehaul/treasure-haul-payload";
 import { BaseItem } from "@prisma/client";
 import clsx from "clsx";
@@ -19,7 +19,6 @@ export default function BaseItemContainer(props: BaseItemProps) {
   } = props;
 
   const searchTerm = useSearchTermSelector();
-
   const dispatch = useDispatch();
 
   const onClickCB = useCallback(() => {
@@ -27,7 +26,7 @@ export default function BaseItemContainer(props: BaseItemProps) {
       item: TreasureHaulItemFromBase(item),
     }));
 
-    dispatch(setEditorDrawerOpen(null));
+    dispatch(setDrawerOpen(null));
   }, [dispatch]);
 
   return (

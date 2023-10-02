@@ -4,8 +4,8 @@ import { OutfitType } from '@prisma/client';
 import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
 import Image from 'next/image';
-import { useOutfitTabSelector } from '@/lib/store';
 import RecolorPalette from './recolor-palette';
+import { useOutfitTabSelector } from '@/lib/store/character-body';
 
 type OutfitTabProps = PropsWithChildren<{
   outfitType: OutfitType;

@@ -1,6 +1,6 @@
 "use client";
 
-import { updateTab, useOutfitTabSelector } from "@/lib/store";
+import { updateTab, useOutfitTabSelector } from "@/lib/store/character-body";
 import {
   OutfitType,
 } from "@prisma/client";
