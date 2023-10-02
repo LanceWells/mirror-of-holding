@@ -19,7 +19,7 @@ export default function BlankItemContainer() {
   }, [dispatch]);
 
   return (
-    <div className="flex items-center justify-center w-[80px]">
+    <div className="flex items-center justify-center w-[96px] h-[96px]">
       <button
         className={clsx(
           'bg-teal-700',

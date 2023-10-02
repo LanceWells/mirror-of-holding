@@ -85,7 +85,7 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
     )}>
       <div className="flex justify-center">
         <ItemCard
-          item={item}
+          item={formData}
           itemKey={itemKey}
         />
       </div>

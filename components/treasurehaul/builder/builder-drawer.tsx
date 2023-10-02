@@ -104,8 +104,10 @@ function BaseItemSetup(props: { itemSelector: ReactNode }) {
     <div className={clsx(
         'grid',
         'grid-cols-[32px_1fr]',
+        'grid-rows-[auto_auto_auto_1fr]',
         'gap-y-2',
         'gap-x-1',
+        'h-full',
       )}
       style={{
         gridTemplateAreas: `
@@ -130,7 +132,7 @@ function BaseItemSetup(props: { itemSelector: ReactNode }) {
       <div className="[grid-area:search-box]">
         <BuilderSearch />
       </div>
-      <div className="[grid-area:options]">
+      <div className="[grid-area:options] grid">
         {props.itemSelector}
       </div>
     </div>

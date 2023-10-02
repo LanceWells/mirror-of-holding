@@ -63,8 +63,11 @@ export default function ItemCard(props: ItemCardProps) {
       );
     }, 30);
     
-    return () => clearInterval(timerRef.current as NodeJS.Timeout);
-  }, [canvasRef, imgs, item]);
+    return () => {
+      clearInterval(timerRef.current as NodeJS.Timeout)
+      timerRef.current = null;
+    };
+  }, [canvasRef, imgs, item, itemKey]);
 
   const loadImages = async () => {
     const [src, noise, patchyNoise] = await Promise.all([
@@ -196,6 +199,8 @@ const Effects: {
   },
 
   None: (ctx, src) => {
+    ctx.clearRect(0, 0, 128, 128);
+
     ctx.globalAlpha = 1.0;
     ctx.globalCompositeOperation = 'source-over';
     ctx.drawImage(src, 0, 0, 128, 128);
