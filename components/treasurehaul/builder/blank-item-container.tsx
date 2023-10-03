@@ -1,5 +1,6 @@
 "use client";
 
+import { AddIcon } from "@/components/svgs";
 import { HaulBuilderDrawerStates } from "@/lib/drawer-states";
 import { addItemToHaul, setDrawerOpen } from "@/lib/store/treasure-haul";
 import { TreasureHaulItemFromBlank } from "@/lib/treasurehaul/treasure-haul-payload";
@@ -36,12 +37,7 @@ export default function BlankItemContainer() {
             'drop-shadow-sm',
           )}
           onClick={() => onClickCB()}>
-          <Image
-            src='/add-plus.svg'
-            alt='Add'
-            width={48}
-            height={48}
-          />
+          <AddIcon className='stroke-gray-50 w-12 h-12' />
         </button>
       </Tooltip>
     </div>

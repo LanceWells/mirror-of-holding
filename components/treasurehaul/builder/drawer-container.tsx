@@ -1,9 +1,6 @@
 "use client";
 
 import { HaulBuilderDrawerStates } from "@/lib/drawer-states";
-import BaseItemSetup from "./base-item-setup";
-import ItemDetailsPane from "./item-details-pane";
-import ItemSelector from "./item-selector";
 import Drawer, { DrawerProps } from "@/components/drawer/drawer";
 import { setDrawerOpen, useDrawerOpenSelector } from "@/lib/store/treasure-haul";
 import { useDispatch } from "react-redux";

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 import BuilderSearch from "./builder-search";
-import Image from "next/image";
+import { MagnifyingGlassIcon } from "@/components/svgs";
 
 export default function BaseItemSetup(props: { itemSelector: ReactNode }) {
   return (
@@ -26,13 +26,7 @@ export default function BaseItemSetup(props: { itemSelector: ReactNode }) {
         Add an Item
       </h2>
       <hr className="[grid-area:hr] w-full mb-8" />
-      <Image
-        src='/magnifying-glass.svg'
-        alt='search'
-        width={32}
-        height={32}
-        className="[grid-area:search-icon] translate-y-1"
-      />
+      <MagnifyingGlassIcon className='fill-gray-900 dark:fill-gray-50 w-32 h-32' />
       <div className="[grid-area:search-box]">
         <BuilderSearch />
       </div>

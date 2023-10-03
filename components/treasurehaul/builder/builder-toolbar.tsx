@@ -1,12 +1,11 @@
 "use client"
 
-import { HaulBuilderDrawerStates } from "@/lib/drawer-states";
-import { setDrawerOpen, useHaulNameSelector, useHaulSelector } from "@/lib/store/treasure-haul";
+import { AddIcon, LoadingIcon, TreasureChestOpenIcon } from "@/components/svgs";
+import { setDrawerOpen, setToast, useHaulNameSelector, useHaulSelector } from "@/lib/store/treasure-haul";
 import { TreasureHaulPayload } from "@/lib/treasurehaul/treasure-haul-payload";
 import clsx from "clsx";
 import { Tooltip } from "flowbite-react";
-import Image from "next/image";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export default function BuilderToolbar() {
@@ -14,26 +13,38 @@ export default function BuilderToolbar() {
   const haulName = useHaulNameSelector();
   const dispatch = useDispatch();
 
-  const handleCreate = useCallback(() => {
+  const [isCreatingChest, setIsCreatingChest] = useState(false);
+
+  const handleCreate = useCallback(async () => {
     const payload: TreasureHaulPayload = {
       haul,
       previewImageSrc: '',
       roomName: 'A mysterious chest',
     }
 
-    fetch(
+    setIsCreatingChest(true);
+
+    const resp = await fetch(
       '/api/treasurehaul/builder', {
       body: JSON.stringify(payload),
       method: 'POST',
-    }
-    );
+    });
+
+    const { roomID } = await resp.json() as { roomID: number };
+    setIsCreatingChest(false);
+    dispatch(setToast({
+      text: `Successfully created a chest!`,
+      duration: null,
+      icon: 'success',
+      url: `https://${window.location.hostname}/treasurehaul/${roomID}`
+    }));
   }, [haul])
 
   return (
     <div className={clsx(
       ['bg-white', 'border-gray-200'],
       ['dark:bg-slate-600', 'dark:border-gray-600'],
-      ['w-[90%]', 'md:h-72', 'md:w-12'],
+      ['w-[90%]', 'md:h-72', 'md:w-16'],
       ['-translate-x-1/2', 'md:-translate-y-1/2',],
       ['z-30'],
       ['left-1/2', 'bottom-4', 'md:top-1/2', 'md:left-12'],
@@ -54,12 +65,23 @@ export default function BuilderToolbar() {
           ['p-0'],
           ['flex', 'place-content-center', 'items-center'],
         )}>
-          <Image
-            src='/open-treasure-chest.svg'
-            alt='create chest'
-            width={32}
-            height={32}
-          />
+          <TreasureChestOpenIcon className={clsx(
+            ['fill-gray-900', 'dark:fill-gray-50'],
+            ['w-32', 'h-32'],
+            isCreatingChest
+            ? 'hidden'
+            : 'visible'
+          )} />
+          <LoadingIcon className={clsx(
+            ['fill-gray-900', 'dark:fill-gray-50'],
+            ['stroke-gray-900', 'dark:stroke-gray-50'],
+            'w-8',
+            'h-8',
+            ['animate-spin'],
+            isCreatingChest
+              ? 'visible'
+              : 'hidden'
+          )} />
         </button>
       </Tooltip>
       <Tooltip content="Add item">
@@ -67,17 +89,16 @@ export default function BuilderToolbar() {
           onClick={() => dispatch(setDrawerOpen('PickBaseItem'))}
           className={clsx(
             ['rounded-full'],
-            ['w-14', 'h-14'],
+            ['w-12', 'h-12'],
             ['p-0'],
             ['bg-cyan-600'],
           )}
         >
-          <Image
-            src='/add-plus.svg'
-            alt='Add'
-            width={64}
-            height={64}
-          />
+          <AddIcon className={clsx(
+            'stroke-gray-50',
+            'w-12',
+            'h-12',
+          )} />
         </button>
       </Tooltip>
     </div>

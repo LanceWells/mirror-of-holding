@@ -7,6 +7,7 @@ import DrawerContainer from "@/components/treasurehaul/builder/drawer-container"
 import BaseItemSetup from "@/components/treasurehaul/builder/base-item-setup";
 import ItemSelector from "@/components/treasurehaul/builder/item-selector";
 import ItemDetailsPane from "@/components/treasurehaul/builder/item-details-pane";
+import ToastFeed from "@/components/toast/toast-feed";
 
 // export const runtime = 'edge'
 export const preferredRegion = 'home';
@@ -30,6 +31,7 @@ export default function Builder() {
         }}
       />
       <BuilderToolbar />
+      <ToastFeed />
     </main>
   );
 }

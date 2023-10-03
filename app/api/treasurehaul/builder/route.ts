@@ -50,9 +50,10 @@ export async function POST(request: Request) {
     }
   });
 
-  return new Response(
-    `Created room ${createdHaul.id}!`, {
+  return new Response(JSON.stringify({
+    roomID: createdHaul.id,
+  }), {
       status: 200,
-    }
+    },
   )
 }

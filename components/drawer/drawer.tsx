@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import Image from "next/image";
 import { ReactNode } from "react";
+import { CloseIcon } from "../svgs";
 
 export type DrawerProps<T extends string> = {
   drawerStates: {
@@ -47,19 +48,14 @@ export default function Drawer<T extends string>(props: DrawerProps<T>) {
           onClick={onClose}
           className={clsx(
             ['absolute', 'top-0', 'right-0'],
-            ['bg-slate-900', 'hover:bg-slate-700'],
+            ['bg-slate-300', 'hover:bg-slate-200', 'dark:bg-slate-900', 'dark:hover:bg-slate-700'],
             ['transition-colors'],
             ['z-50'],
             ['m-1', 'p-2'],
             ['rounded-full'],
           )}
         >
-          <Image
-            src='/close-svgrepo.svg'
-            alt='close'
-            width={32}
-            height={32}
-          />
+          <CloseIcon className='fill-gray-900 dark:fill-gray-50 w-8 h-8' />
         </button>
         {drawerChild}
       </div>

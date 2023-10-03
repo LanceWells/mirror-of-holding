@@ -2,6 +2,7 @@ import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { TreasureHaulItem } from "../treasurehaul/treasure-haul-payload";
 import { HaulBuilderDrawerStates } from "../drawer-states";
+import { ToastEntry } from "@/components/toast/toast-types";
 
 const DefaultTreasureHaul = {
   name: "",
@@ -13,7 +14,8 @@ const DefaultTreasureHaul = {
     itemKey: string,
   },
   editorDrawerOpen: null as null | HaulBuilderDrawerStates,
-  baseItemSearch: ''
+  baseItemSearch: '',
+  toasts: [] as [string, ToastEntry][],
 }
 
 export type TreasureHaulStorage = typeof DefaultTreasureHaul;
@@ -61,6 +63,23 @@ const TreasureHaulSlice = createSlice({
     },
     setBuilderBaseItemSearch(state, action: PayloadAction<string>) {
       state.baseItemSearch = action.payload.toUpperCase();
+    },
+    setToast(state, action: PayloadAction<ToastEntry>) {
+      let newToast: ToastEntry = {
+        duration: action.payload.duration,
+        icon: action.payload.icon,
+        text: action.payload.text,
+        url: action.payload.url,
+      };
+
+      const toastKey = Math.random().toString();
+      state.toasts.push([toastKey, newToast]);
+    },
+    removeToast(state, action: PayloadAction<{ toastKey: string }>) {
+      const removeIndex = state.toasts.findIndex((t) => t[0] === action.payload.toastKey);
+      if (removeIndex >= 0) {
+        state.toasts.splice(removeIndex, 1);
+      }
     }
   },
 });
@@ -109,6 +128,14 @@ const useSearchTermSelector = () =>
     )
   )
 
+const useToastSelector = () =>
+  useSelector<HaulStore, TreasureHaulStorage['toasts']>(
+    createSelector(
+      (state: HaulStore) => state.treasureHaul.toasts,
+      (toasts) => toasts,
+    )
+  )
+
 export default TreasureHaulSlice;
 
 export const {
@@ -118,6 +145,8 @@ export const {
   updateItemInHaul,
   setDrawerOpen,
   setBuilderBaseItemSearch,
+  setToast,
+  removeToast,
 } = TreasureHaulSlice.actions;
 
 export {
@@ -126,5 +155,6 @@ export {
   useDisplayedItemSelector,
   useDrawerOpenSelector,
   useSearchTermSelector,
+  useToastSelector,
   DefaultTreasureHaul,
 };
