@@ -1,23 +1,25 @@
 "use client";
 
-import { setDrawerOpen as setDrawerOpen, useDrawerOpenSelector } from "@/lib/store/treasure-haul";
 import clsx from "clsx";
+import Image from "next/image";
 import { ReactNode } from "react";
-import { useDispatch } from "react-redux";
 
-type DrawerProps<T extends string> = {
+export type DrawerProps<T extends string> = {
   drawerStates: {
     [P in T]: ReactNode
   };
+  onClose: () => void;
+  drawerOpen: T | null;
 }
 
 export default function Drawer<T extends string>(props: DrawerProps<T>) {
   const {
     drawerStates,
+    onClose,
+    drawerOpen,
   } = props;
 
-  const dispatch = useDispatch();
-  const drawerOpen = useDrawerOpenSelector() as keyof typeof drawerStates | null;
+  // const drawerOpen = useDrawerOpenSelector() as keyof typeof drawerStates | null;
   const drawerChild = drawerOpen ? drawerStates[drawerOpen] : (<></>);
 
   return (
@@ -41,10 +43,28 @@ export default function Drawer<T extends string>(props: DrawerProps<T>) {
         ['transition-transform'],
         drawerOpen ? '' : '-translate-x-full',
       )}>
+        <button
+          onClick={onClose}
+          className={clsx(
+            ['absolute', 'top-0', 'right-0'],
+            ['bg-slate-900', 'hover:bg-slate-700'],
+            ['transition-colors'],
+            ['z-50'],
+            ['m-1', 'p-2'],
+            ['rounded-full'],
+          )}
+        >
+          <Image
+            src='/close-svgrepo.svg'
+            alt='close'
+            width={32}
+            height={32}
+          />
+        </button>
         {drawerChild}
       </div>
       <div
-        onClick={() => { dispatch(setDrawerOpen(null)) }}
+        onClick={onClose}
         className={clsx(
           ['relative'],
           drawerOpen ? 'pointer-events-auto' : 'pointer-events-none',

@@ -3,9 +3,13 @@
 export const preferredRegion = 'home';
 export const dynamic = 'force-dynamic';
 import prisma from '../../../lib/prisma'
-import { TreasureHaulItem, TreasureHaulPayload } from '@/lib/treasurehaul/treasure-haul-payload';
-import ItemCard from '@/components/treasurehaul/item-card';
+import { TreasureHaulPayload } from '@/lib/treasurehaul/treasure-haul-payload';
 import { Metadata } from 'next';
+import clsx from 'clsx';
+import { Suspense } from 'react';
+import DrawerContainer from '@/components/treasurehaul/chest/drawer-container';
+import HaulContents from '@/components/treasurehaul/chest/haul-contents';
+import ChestItemDetailsPane from '@/components/treasurehaul/chest/item-details-pane';
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const id = params.id;
@@ -47,13 +51,26 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
 export default function TreasureHaul({ params }: { params: { id: string } }) {
   return (
-    <main>
-      <HaulContents roomID={params.id} />
+    <main className={clsx(
+      'min-h-screen',
+      'max-h-screen',
+      'bg-slate-50',
+      'dark:bg-slate-950',
+      'top-0',
+    )}>
+      <DrawerContainer
+        drawerStates={{
+          ViewDetails: (<ChestItemDetailsPane />),
+        }}
+      />
+      <Suspense fallback={'Loading'}>
+        <HaulContentsLoader roomID={params.id} />
+      </Suspense>
     </main>
   );
 }
 
-async function HaulContents(props: { roomID: string }) {
+async function HaulContentsLoader(props: { roomID: string }) {
   const {
     roomID,
   } = props;
@@ -70,16 +87,9 @@ async function HaulContents(props: { roomID: string }) {
     return (<div></div>);
   }
 
-  const items = ((thisHaul.item as any)['haul'] as TreasureHaulItem[]).map((item) => (
-    <ItemCard
-      item={item}
-      itemKey='testing'
-    />
-  ))
+  const thisHaulObj = (thisHaul.item as TreasureHaulPayload).haul;
 
   return (
-    <div>
-      {items}
-    </div>
+    <HaulContents haul={thisHaulObj} />
   )
 }

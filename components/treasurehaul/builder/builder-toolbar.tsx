@@ -1,24 +1,29 @@
 "use client"
 
 import { HaulBuilderDrawerStates } from "@/lib/drawer-states";
-import { setDrawerOpen, useHaulSelector } from "@/lib/store/treasure-haul";
+import { setDrawerOpen, useHaulNameSelector, useHaulSelector } from "@/lib/store/treasure-haul";
+import { TreasureHaulPayload } from "@/lib/treasurehaul/treasure-haul-payload";
 import clsx from "clsx";
-import { Button, Tooltip } from "flowbite-react";
+import { Tooltip } from "flowbite-react";
 import Image from "next/image";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 export default function BuilderToolbar() {
   const haul = useHaulSelector();
+  const haulName = useHaulNameSelector();
   const dispatch = useDispatch();
 
   const handleCreate = useCallback(() => {
+    const payload: TreasureHaulPayload = {
+      haul,
+      previewImageSrc: '',
+      roomName: 'A mysterious chest',
+    }
+
     fetch(
       '/api/treasurehaul/builder', {
-      body: JSON.stringify({
-        roomName: "Testing",
-        haul: haul.map(([_, item]) => item),
-      }),
+      body: JSON.stringify(payload),
       method: 'POST',
     }
     );
@@ -50,7 +55,7 @@ export default function BuilderToolbar() {
           ['flex', 'place-content-center', 'items-center'],
         )}>
           <Image
-            src='/scroll-quill.svg'
+            src='/open-treasure-chest.svg'
             alt='create chest'
             width={32}
             height={32}
@@ -59,7 +64,7 @@ export default function BuilderToolbar() {
       </Tooltip>
       <Tooltip content="Add item">
         <button
-          onClick={() => dispatch(setDrawerOpen(HaulBuilderDrawerStates[0]))}
+          onClick={() => dispatch(setDrawerOpen('PickBaseItem'))}
           className={clsx(
             ['rounded-full'],
             ['w-14', 'h-14'],

@@ -2,18 +2,35 @@ import { BaseItem, BaseItemType } from "@prisma/client";
 import { randomInt } from "crypto";
 
 export type TreasureHaulPayload = {
-  haul: TreasureHaulItem[];
+  haul: {
+    [key: string]: TreasureHaulItem
+  };
   roomName: string;
   previewImageSrc: string;
 }
 
-const TreasureHaulItemEffectType = {
-  None: 'None',
-  Flaming: 'Flaming',
-  Enchanted: 'Enchanted',
-};
+export type ItemEffectUniformColor = {
+  color: {
+    r: number;
+    g: number;
+    b: number;
+  }
+}
 
-export type TreasureHaulItemEffectType = keyof typeof TreasureHaulItemEffectType;
+export type ItemEffectNone = {
+  type: 'none';
+  uniforms?: undefined;
+} 
+
+export type ItemEffectFlaming = {
+  type: 'flaming';
+  uniforms: ItemEffectUniformColor
+}
+
+export type ItemEffectEnchanted = {
+  type: 'enchanted';
+  uniforms?: undefined;
+}
 
 enum TreasureHaulMoneyType {
   Coins,
@@ -27,14 +44,17 @@ export type TreasureHaulItem = {
   src: string;
   type: BaseItemType;
   description: string;
-  effects: TreasureHaulItemEffectType;
-  uniforms?: {
-    color?: {
-      r: number;
-      g: number;
-      b: number;
-    }
-  };
+  effects: ItemEffectNone | ItemEffectFlaming | ItemEffectEnchanted;
+}
+
+export type ItemEffectOptions = TreasureHaulItem['effects']['type'];
+
+export const ItemEffectOptions: {
+  [P in ItemEffectOptions]: P
+} = {
+  enchanted: 'enchanted',
+  flaming: 'flaming',
+  none: 'none',
 }
 
 function GenerateTreasureDetails(
@@ -154,7 +174,7 @@ function GenerateTreasureDetails(
 }
 
 const TreasureHaulItemFromBase = (item: BaseItem): TreasureHaulItem => ({
-  effects: 'None',
+  effects: { type: 'none' },
   itemName: item.name,
   src: item.src,
   type: item.type,
@@ -168,7 +188,7 @@ function TreasureHaulItemFromMoney(
   const details = GenerateTreasureDetails(copperCount, moneyType);
 
   return {
-    effects: 'None',
+    effects: { type: 'none' },
     type: BaseItemType.Treasure,
     itemName: details.name,
     src: details.src,
@@ -178,7 +198,7 @@ function TreasureHaulItemFromMoney(
 
 function TreasureHaulItemFromBlank() : TreasureHaulItem {
   return {
-    effects: 'None',
+    effects: { type: 'none' },
     itemName: "A brand new item",
     src: "",
     type: BaseItemType.MagicItem,
@@ -187,7 +207,6 @@ function TreasureHaulItemFromBlank() : TreasureHaulItem {
 }
 
 export {
-  TreasureHaulItemEffectType,
   TreasureHaulMoneyType,
   TreasureHaulItemFromBase,
   TreasureHaulItemFromMoney,

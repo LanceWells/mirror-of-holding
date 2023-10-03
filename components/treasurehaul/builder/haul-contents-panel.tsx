@@ -12,18 +12,19 @@ export default function ContentsPanel() {
   const dispatch = useDispatch();
 
   const effectsItems = useMemo(
-    () => haul
+    () => Object.entries(haul)
       .flatMap(([itemKey, item]) => (
         <ItemCard
           item={item}
           itemKey={itemKey}
+          key={itemKey}
           onClick={(thisItemKey) => {
             dispatch(
               setDisplayedItem({ itemKey: thisItemKey })
             );
 
             dispatch(
-              setDrawerOpen(HaulBuilderDrawerStates[1])
+              setDrawerOpen('EditDetails')
             );
           }}
         />
@@ -54,7 +55,7 @@ export default function ContentsPanel() {
         'justify-items-center',
         'flex-wrap',
         'md:w-[80%]',
-        'sm:w-[90%]',
+        'w-[90%]',
       )}>
         {effectsItems}
       </div>

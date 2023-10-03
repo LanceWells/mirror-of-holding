@@ -3,11 +3,12 @@
 import { removeItemFromHaul, setDrawerOpen, updateItemInHaul, useDisplayedItemSelector } from "@/lib/store/treasure-haul";
 import ItemCard from "../item-card";
 import clsx from "clsx";
-import { TreasureHaulItem, TreasureHaulItemEffectType } from "@/lib/treasurehaul/treasure-haul-payload";
+import { ItemEffectOptions, ItemEffectUniformColor, TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
 import { Button, Label, Select, TextInput, Textarea } from "flowbite-react";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { BlockPicker, ChromePicker, HuePicker } from "react-color";
+import { HuePicker, HuePickerProps } from "react-color";
+import { produce } from 'immer';
 
 export default function ItemDetailsPane() {
   const displayedItem = useDisplayedItemSelector();
@@ -72,9 +73,9 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
   }, [confirmDelete])
 
   const effectOptions = useMemo(
-    () => Object.keys(TreasureHaulItemEffectType)
+    () => Object.keys(ItemEffectOptions)
       .map((effect) => (<option>{effect}</option>)),
-    [],
+    []
   );
 
   return (
@@ -143,36 +144,54 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
           />
           <Select
             id="effect-options"
-            value={formData.effects}
-            onChange={(e) => setFormData({ ...formData, effects: e.target.value as keyof typeof TreasureHaulItemEffectType })}
+            value={formData.effects.type}
+            onChange={(e) => {
+              let effects: TreasureHaulItem['effects'] = {
+                type: 'none',
+              }
+
+              switch (e.target.value as ItemEffectOptions) {
+                case 'enchanted':
+                  effects = {
+                    type: 'enchanted'
+                  }
+                  break;
+                case 'flaming': effects = {
+                  type: 'flaming',
+                  uniforms: {
+                    color: {
+                      r: 255,
+                      g: 0,
+                      b: 0,
+                    }
+                  }
+                }
+                break;
+              }
+
+              setFormData({
+                ...formData,
+                effects,
+              })
+            }}
           >
             {effectOptions}
           </Select>
         </div>
-        <div className={clsx(
-          'grid',
-          formData.effects !== 'None'
-            ? ['visible']
-            : ['hidden']
-        )}>
-          <Label
-            value="Effect Color"
-          />
-          <HuePicker
-            className="justify-self-center"
-            color={formData.uniforms?.color}
-            onChange={(color) => setFormData({
-              ...formData,
-              uniforms: {
-                color: {
-                  r: color.rgb.r,
-                  g: color.rgb.g,
-                  b: color.rgb.b,
+        <UniformFields
+          colorSettings={{
+            color: (formData.effects as any)['color'],
+            onChangeColor: (color) => {
+              const updatedColor = produce(formData, (draft) => {
+                draft.effects.uniforms = {
+                  color: color.rgb,
                 }
-              }
-            })}
-          />
-        </div>
+              })
+              setFormData(updatedColor);
+            },
+          }}
+          effects={formData.effects}
+        />
         <Button type="submit">
           Update Item
         </Button>
@@ -185,6 +204,47 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
           confirmDelete ? 'Are you sure?' : 'Delete this item'
         }
       </Button>
+    </div>
+  )
+}
+
+type UniformFieldsProps = {
+  effects: TreasureHaulItem['effects'];
+  colorSettings: ItemEffectUniformColor & {
+    onChangeColor: HuePickerProps['onChange'];
+  }
+}
+
+function UniformFields(props: UniformFieldsProps) {
+  const {
+    effects,
+    colorSettings,
+  } = props;
+
+  return (
+    <div>
+      <div className={clsx(
+        'grid',
+        effects.uniforms && effects.uniforms.color
+          ? 'visible'
+          : 'hidden'
+      )}>
+        <Label value="Effect Color" />
+        <HuePicker
+          className="justify-self-center"
+          color={effects.uniforms && effects.uniforms.color ? {
+              r: effects.uniforms.color.r,
+              g: effects.uniforms.color.g,
+              b: effects.uniforms.color.b,
+            } : {
+              r: 255,
+              g: 255,
+              b: 255,
+            }
+          }
+          onChange={colorSettings.onChangeColor}
+        />
+      </div>
     </div>
   )
 }

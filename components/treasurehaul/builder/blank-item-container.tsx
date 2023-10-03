@@ -17,7 +17,7 @@ export default function BlankItemContainer() {
       item: TreasureHaulItemFromBlank(),
     }));
 
-    dispatch(setDrawerOpen(HaulBuilderDrawerStates[1]));
+    dispatch(setDrawerOpen('EditDetails'));
   }, [dispatch]);
 
   return (

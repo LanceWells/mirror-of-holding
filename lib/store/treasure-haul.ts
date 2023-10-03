@@ -1,6 +1,7 @@
 import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { TreasureHaulItem } from "../treasurehaul/treasure-haul-payload";
+import { HaulBuilderDrawerStates } from "../drawer-states";
 
 const DefaultTreasureHaul = {
   name: "",
@@ -11,7 +12,7 @@ const DefaultTreasureHaul = {
     item: TreasureHaulItem,
     itemKey: string,
   },
-  editorDrawerOpen: null as null | string,
+  editorDrawerOpen: null as null | HaulBuilderDrawerStates,
   baseItemSearch: ''
 }
 
@@ -69,10 +70,10 @@ type HaulStore = {
 }
 
 const useHaulSelector = () =>
-  useSelector<HaulStore, [string, TreasureHaulItem][]>(
+  useSelector<HaulStore, TreasureHaulStorage['items']>(
     createSelector(
       (state: HaulStore) => state.treasureHaul.items,
-      (items) => Object.entries(items),
+      (items) => items,
     )
   );
 

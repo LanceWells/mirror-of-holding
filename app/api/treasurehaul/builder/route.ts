@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   } = await request.json() as TreasureHaulPayload;
 
   const thisRoom: TreasureHaulPayload = {
-    haul: [],
+    haul: {},
     roomName: "",
     previewImageSrc: "",
   }
@@ -21,13 +21,13 @@ export async function POST(request: Request) {
       }
     )
   } else {
-    const validItems = haul.filter((item) => (
+    const validItems = Object.entries(haul).filter(([key, item]) => (
       item.itemName &&
       item.src &&
       item.type
     ));
   
-    thisRoom.haul = validItems;
+    thisRoom.haul = Object.fromEntries(validItems);
   }
 
   if (!roomName) {
