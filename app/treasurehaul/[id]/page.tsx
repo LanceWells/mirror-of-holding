@@ -35,15 +35,15 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     return metadata;
   }
 
-  const thisHaulObj = thisHaul as unknown as TreasureHaulPayload;
+  const thisHaulObj = thisHaul as unknown as {item: TreasureHaulPayload};
 
-  if (thisHaulObj.roomName) {
-    metadata.title = thisHaulObj.roomName;
+  if (thisHaulObj.item.roomName) {
+    metadata.title = thisHaulObj.item.roomName;
   }
 
-  if (thisHaulObj.previewImageSrc) {
+  if (thisHaulObj.item.previewImageSrc) {
     metadata.openGraph = metadata.openGraph ?? {};
-    metadata.openGraph.images = [thisHaulObj.previewImageSrc];
+    metadata.openGraph.images = [thisHaulObj.item.previewImageSrc];
   }
 
   return metadata;
