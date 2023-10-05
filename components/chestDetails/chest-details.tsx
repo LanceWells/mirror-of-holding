@@ -12,15 +12,6 @@ export default function ChestDetails(props: ChestDetailsProps) {
     chestName,
   } = props;
 
-  // let imageSrc = '/woodenStaticChest.png';
-  // if (chestIconURL === 'bag') {
-  //   imageSrc = '/woodenStaticChest.png';
-  // } else if (chestIconURL === 'chest') {
-  //   imageSrc = '/woodenStaticChest.png';
-  // } else {
-  //   imageSrc = chestIconURL.url;
-  // }
-
   return (
     <div className={clsx(
       ['flex', 'justify-items-baseline', 'justify-center']
