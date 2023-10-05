@@ -36,7 +36,7 @@ export default function BuilderToolbar() {
       text: `Successfully created a chest!`,
       duration: null,
       icon: 'success',
-      url: `${window.location.protocol}://${window.location.host}/treasurehaul/${roomID}`
+      url: `${window.location.protocol}//${window.location.host}/treasurehaul/${roomID}`
     }));
   }, [haul, chestDetails])
 
