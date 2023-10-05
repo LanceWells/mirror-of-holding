@@ -27,7 +27,7 @@ export default function Builder() {
     >
       <div className={clsx(
         ['w-screen', 'h-screen', 'overflow-y-hidden'],
-        ['grid', 'grid-rows-[min-content auto]', 'content-center', 'gap-y-8']
+        ['grid', 'grid-rows-[min-content_auto]', 'content-center', 'gap-y-8']
       )}>
         <ChestDetailsContainer />
         <ContentsPanel />

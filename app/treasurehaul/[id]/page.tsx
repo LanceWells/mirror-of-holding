@@ -10,6 +10,7 @@ import { Suspense } from 'react';
 import DrawerContainer from '@/components/treasurehaul/chest/drawer-container';
 import HaulContents from '@/components/treasurehaul/chest/haul-contents';
 import ChestItemDetailsPane from '@/components/treasurehaul/chest/item-details-pane';
+import ChestDetails from '@/components/chestDetails/chest-details';
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const id = params.id;
@@ -30,12 +31,12 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       id: idAsNum,
     }
   });
-  
+
   if (!thisHaul || !thisHaul.id || !thisHaul.item) {
     return metadata;
   }
 
-  const thisHaulObj = thisHaul as unknown as {item: TreasureHaulPayload};
+  const thisHaulObj = thisHaul as unknown as { item: TreasureHaulPayload };
 
   if (thisHaulObj.item.roomName) {
     metadata.title = thisHaulObj.item.roomName;
@@ -82,7 +83,7 @@ async function HaulContentsLoader(props: { roomID: string }) {
       id: idAsNum,
     }
   });
-  
+
   if (!thisHaul || !thisHaul.item || typeof thisHaul.item !== 'object' || !(thisHaul.item as any)['haul']) {
     return (<div></div>);
   }
@@ -90,6 +91,12 @@ async function HaulContentsLoader(props: { roomID: string }) {
   const thisHaulObj = (thisHaul.item as TreasureHaulPayload);
 
   return (
-    <HaulContents haul={thisHaulObj} />
+    <div className={clsx(
+      ['w-screen', 'h-screen', 'overflow-y-hidden'],
+      ['grid', 'grid-rows-[min-content_1fr]', 'content-center', 'gap-y-2']
+    )}>
+      <ChestDetails chestName={thisHaulObj.roomName} />
+      <HaulContents haul={thisHaulObj} />
+    </div>
   )
 }

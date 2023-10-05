@@ -14,7 +14,8 @@ export default function ChestDetails(props: ChestDetailsProps) {
 
   return (
     <div className={clsx(
-      ['flex', 'justify-items-baseline', 'justify-center']
+      ['flex', 'justify-items-baseline', 'justify-center'],
+      ['mt-8'],
     )}>
       <h1 className={clsx(
         medievalSharp.className,

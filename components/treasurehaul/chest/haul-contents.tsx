@@ -41,8 +41,6 @@ export default function HaulContents(props: HaulContentsProps) {
 
   return (
     <div className={clsx(
-      ['absolute'],
-      ['h-full', 'w-full'],
       ['flex', 'justify-center', 'items-center'],
     )}>
       <HaulOpenButton imageSrc={haul.previewImageSrc} />
