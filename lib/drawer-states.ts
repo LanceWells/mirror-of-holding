@@ -1,4 +1,4 @@
-export const HaulBuilderDrawerStates = ['PickBaseItem', 'EditDetails'] as const;
+export const HaulBuilderDrawerStates = ['PickBaseItem', 'EditDetails', 'EditChestDetails'] as const;
 export type HaulBuilderDrawerStates = typeof HaulBuilderDrawerStates[number];
 
 export const ChestDrawerStates = ['ViewDetails'] as const;

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { TreasureHaulItem } from "../treasurehaul/treasure-haul-payload";
 import { HaulBuilderDrawerStates } from "../drawer-states";
 import { ToastEntry } from "@/components/toast/toast-types";
+import { ChestIconOptions } from "@/components/chestDetails/chest-details-options";
 
 const DefaultTreasureHaul = {
   name: "",
@@ -16,6 +17,11 @@ const DefaultTreasureHaul = {
   editorDrawerOpen: null as null | HaulBuilderDrawerStates,
   baseItemSearch: '',
   toasts: [] as [string, ToastEntry][],
+  chestDetails: {
+    chestName: 'A mysterious chest',
+    chestIconOption: 'chest' as ChestIconOptions,
+    chestIconURL: ChestIconOptions['chest'] as string,
+  }
 }
 
 export type TreasureHaulStorage = typeof DefaultTreasureHaul;
@@ -80,6 +86,11 @@ const TreasureHaulSlice = createSlice({
       if (removeIndex >= 0) {
         state.toasts.splice(removeIndex, 1);
       }
+    },
+    setChestDetails(state, action: PayloadAction<TreasureHaulStorage['chestDetails']>) {
+      state.chestDetails.chestIconURL = action.payload.chestIconURL;
+      state.chestDetails.chestIconOption = action.payload.chestIconOption;
+      state.chestDetails.chestName = action.payload.chestName;
     }
   },
 });
@@ -136,6 +147,14 @@ const useToastSelector = () =>
     )
   )
 
+const useChestDetailsSelector = () =>
+  useSelector<HaulStore, TreasureHaulStorage['chestDetails']>(
+    createSelector(
+      (state: HaulStore) => state.treasureHaul.chestDetails,
+      (details) => details,
+    )
+  )
+
 export default TreasureHaulSlice;
 
 export const {
@@ -147,6 +166,7 @@ export const {
   setBuilderBaseItemSearch,
   setToast,
   removeToast,
+  setChestDetails,
 } = TreasureHaulSlice.actions;
 
 export {
@@ -156,5 +176,6 @@ export {
   useDrawerOpenSelector,
   useSearchTermSelector,
   useToastSelector,
+  useChestDetailsSelector,
   DefaultTreasureHaul,
 };

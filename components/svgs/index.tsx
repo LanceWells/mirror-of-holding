@@ -5,6 +5,8 @@ import CloseIcon from './close-svgrepo.svg';
 import LoadingIcon from './loading.svg';
 import SuccessIcon from './success.svg';
 import CopyIcon from './copy.svg';
+import ScrollQuillIcon from './scroll-quill.svg';
+import CircleIcon from './circle.svg';
 
 export {
   TreasureChestOpenIcon,
@@ -14,4 +16,6 @@ export {
   LoadingIcon,
   SuccessIcon,
   CopyIcon,
+  ScrollQuillIcon,
+  CircleIcon,
 }

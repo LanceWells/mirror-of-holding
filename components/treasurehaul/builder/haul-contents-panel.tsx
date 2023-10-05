@@ -5,7 +5,6 @@ import { setDisplayedItem, setDrawerOpen, useHaulSelector } from "@/lib/store/tr
 import ItemCard from "../item-card";
 import clsx from "clsx";
 import { useDispatch } from "react-redux";
-import { HaulBuilderDrawerStates } from "@/lib/drawer-states";
 
 export default function ContentsPanel() {
   const haul = useHaulSelector();
@@ -34,9 +33,6 @@ export default function ContentsPanel() {
 
   return (
     <div className={clsx(
-      'absolute',
-      'h-full',
-      'w-full',
       'justify-center',
       'items-center',
       'flex',
@@ -56,7 +52,23 @@ export default function ContentsPanel() {
         'flex-wrap',
         'md:w-[80%]',
         'w-[90%]',
+        'min-h-[240px]',
+        'overflow-y-auto',
+        'max-h-[80vh]'
       )}>
+        <div className={clsx(
+          'absolute',
+          'z-20',
+          'text-center',
+          'text-lg',
+          'dark:text-white',
+          effectsItems.length > 0
+            ? 'hidden'
+            : 'visible'
+        )}>
+          <p>Nothing here yet!</p>
+          <p>Click the <b>plus sign</b> in the toolbar to get started 🙂</p>
+        </div>
         {effectsItems}
       </div>
     </div>

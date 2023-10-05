@@ -1,22 +1,21 @@
-"use client"
+"use client";
 
-import { removeToast, useToastSelector } from "@/lib/store/treasure-haul";
 import clsx from "clsx";
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
 import { ToastEntry } from "./toast-types";
 import { CloseIcon, CopyIcon, SuccessIcon } from "../svgs";
 import { Tooltip } from "flowbite-react";
 
-export default function ToastFeed() {
-  const toasts = useToastSelector();
-  const dispatch = useDispatch();
+export type ToastFeedProps = {
+  onCloseToast: (key: string) => void;
+  toasts: [string, ToastEntry][];
+}
 
-  const closeToast = (key: string) => {
-    dispatch(
-      removeToast({ toastKey: key }),
-    );
-  }
+export default function ToastFeed(props: ToastFeedProps) {
+  const {
+    onCloseToast,
+    toasts,
+  } = props;
 
   const toastContainers = useMemo(() => toasts.map(([key, value], i) => {
     let icon = (<></>);
@@ -34,7 +33,7 @@ export default function ToastFeed() {
     return (
       <ToastContainer
         toastKey={key}
-        onClose={closeToast}
+        onClose={() => onCloseToast(key)}
         toast={value}
         toastIndex={i}
         key={key}
@@ -143,7 +142,7 @@ function ToastContainer(props: ToastContainerProps) {
       </span>
       <div className={clsx(
         ['[grid-area:url]'],
-        ['bg-slate-700', 'text-white'],
+        ['dark:bg-slate-700', 'bg-slate-300', 'text-white'],
         ['text-center'],
         ['p-1', 'm-1'],
         ['rounded-lg'],

@@ -87,7 +87,7 @@ async function HaulContentsLoader(props: { roomID: string }) {
     return (<div></div>);
   }
 
-  const thisHaulObj = (thisHaul.item as TreasureHaulPayload).haul;
+  const thisHaulObj = (thisHaul.item as TreasureHaulPayload);
 
   return (
     <HaulContents haul={thisHaulObj} />

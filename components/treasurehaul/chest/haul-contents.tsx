@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { setDisplayedItem, setDrawerOpen } from "@/lib/store/chest-haul";
 
 export type HaulContentsProps = {
-  haul: TreasureHaulPayload['haul'];
+  haul: TreasureHaulPayload;
 }
 
 export default function HaulContents(props: HaulContentsProps) {
@@ -18,7 +18,7 @@ export default function HaulContents(props: HaulContentsProps) {
 
   const dispatch = useDispatch();
 
-  const items = Object.entries(haul)
+  const items = Object.entries(haul.haul)
     .map(([key, item], i) => (
       <div data-item-card className={clsx(
         'animate-fold_in',
@@ -45,7 +45,7 @@ export default function HaulContents(props: HaulContentsProps) {
       ['h-full', 'w-full'],
       ['flex', 'justify-center', 'items-center'],
     )}>
-      <HaulOpenButton />
+      <HaulOpenButton imageSrc={haul.previewImageSrc} />
       <div className={clsx(
         ['bg-white', 'dark:bg-slate-900'],
         ['border', 'border-gray-200', 'dark:border-gray-700'],

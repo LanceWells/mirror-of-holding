@@ -1,7 +1,7 @@
 "use client"
 
-import { AddIcon, LoadingIcon, TreasureChestOpenIcon } from "@/components/svgs";
-import { setDrawerOpen, setToast, useHaulNameSelector, useHaulSelector } from "@/lib/store/treasure-haul";
+import { AddIcon, LoadingIcon, ScrollQuillIcon, TreasureChestOpenIcon } from "@/components/svgs";
+import { setDrawerOpen, setToast, useChestDetailsSelector, useHaulSelector } from "@/lib/store/treasure-haul";
 import { TreasureHaulPayload } from "@/lib/treasurehaul/treasure-haul-payload";
 import clsx from "clsx";
 import { Tooltip } from "flowbite-react";
@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 
 export default function BuilderToolbar() {
   const haul = useHaulSelector();
-  const haulName = useHaulNameSelector();
+  const chestDetails = useChestDetailsSelector();
   const dispatch = useDispatch();
 
   const [isCreatingChest, setIsCreatingChest] = useState(false);
@@ -18,8 +18,8 @@ export default function BuilderToolbar() {
   const handleCreate = useCallback(async () => {
     const payload: TreasureHaulPayload = {
       haul,
-      previewImageSrc: '',
-      roomName: 'A mysterious chest',
+      previewImageSrc: chestDetails.chestIconURL,
+      roomName: chestDetails.chestName,
     }
 
     setIsCreatingChest(true);
@@ -36,9 +36,9 @@ export default function BuilderToolbar() {
       text: `Successfully created a chest!`,
       duration: null,
       icon: 'success',
-      url: `https://${window.location.hostname}/treasurehaul/${roomID}`
+      url: `${window.location.protocol}://${window.location.host}/treasurehaul/${roomID}`
     }));
-  }, [haul])
+  }, [haul, chestDetails])
 
   return (
     <div className={clsx(
@@ -54,7 +54,7 @@ export default function BuilderToolbar() {
       [
         'grid',
         'grid-flow-col', 'md:grid-flow-row',
-        'justify-center', 'items-center', 'justify-items-center'
+        'md:justify-center', 'items-center', 'justify-items-center'
       ],
       ['shadow-md'],
     )}>
@@ -69,8 +69,8 @@ export default function BuilderToolbar() {
             ['fill-gray-900', 'dark:fill-gray-50'],
             ['w-32', 'h-32'],
             isCreatingChest
-            ? 'hidden'
-            : 'visible'
+              ? 'hidden'
+              : 'visible'
           )} />
           <LoadingIcon className={clsx(
             ['fill-gray-900', 'dark:fill-gray-50'],
@@ -98,6 +98,21 @@ export default function BuilderToolbar() {
             'stroke-gray-50',
             'w-12',
             'h-12',
+          )} />
+        </button>
+      </Tooltip>
+      <Tooltip content="Edit chest details">
+        <button
+          onClick={() => dispatch(setDrawerOpen('EditChestDetails'))}
+          className={clsx(
+            ['rounded-full'],
+            ['w-12', 'h-12'],
+            ['p-0'],
+            ['flex', 'place-content-center', 'items-center'],
+          )}>
+          <ScrollQuillIcon className={clsx(
+            ['fill-gray-900', 'dark:fill-gray-50'],
+            ['w-32', 'h-32'],
           )} />
         </button>
       </Tooltip>

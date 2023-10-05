@@ -98,7 +98,7 @@ export default function ItemCard(props: ItemCardProps) {
       }}
       className={clsx(
         onClick
-          ? ['hover:border-slate-100']
+          ? ['dark:hover:border-cyan-100', 'hover:border-cyan-600']
           : ['pointer-events-none'],
         'drop-shadow-md',
         'transition-all',
@@ -127,6 +127,10 @@ export default function ItemCard(props: ItemCardProps) {
           'rounded-lg',
           'justify-self-center',
           'border-none',
+          // The card border needs some small adjustments. The scaling makes
+          // a precise CSS placement tough without these translations.
+          '-translate-x-[0.1px]',
+          'translate-y-[2px]',
         )}
         height={128}
         width={128}

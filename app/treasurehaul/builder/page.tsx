@@ -7,7 +7,9 @@ import DrawerContainer from "@/components/treasurehaul/builder/drawer-container"
 import BaseItemSetup from "@/components/treasurehaul/builder/base-item-setup";
 import ItemSelector from "@/components/treasurehaul/builder/item-selector";
 import ItemDetailsPane from "@/components/treasurehaul/builder/item-details-pane";
-import ToastFeed from "@/components/toast/toast-feed";
+import ToastFeedContainer from "@/components/treasurehaul/builder/toast-feed-container";
+import ChestDetailsEditor from "@/components/treasurehaul/builder/chest-details-editor";
+import ChestDetailsContainer from "@/components/treasurehaul/builder/chest-details-container";
 
 // export const runtime = 'edge'
 export const preferredRegion = 'home';
@@ -23,15 +25,22 @@ export default function Builder() {
         'dark:bg-slate-950',
       )}
     >
-      <ContentsPanel />
+      <div className={clsx(
+        ['w-screen', 'h-screen', 'overflow-y-hidden'],
+        ['grid', 'grid-rows-[min-content auto]', 'content-center', 'gap-y-8']
+      )}>
+        <ChestDetailsContainer />
+        <ContentsPanel />
+      </div>
       <DrawerContainer
         drawerStates={{
           PickBaseItem: (<BaseItemSetup itemSelector={(<ItemSelector />)} />),
           EditDetails: (<ItemDetailsPane />),
+          EditChestDetails: (<ChestDetailsEditor />),
         }}
       />
       <BuilderToolbar />
-      <ToastFeed />
+      <ToastFeedContainer />
     </main>
   );
 }
