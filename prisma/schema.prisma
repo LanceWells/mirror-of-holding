@@ -73,14 +73,9 @@ enum OutfitType {
 }
 
 // 
-// Treasure Chests
+// Treasure Hauls
 // 
 // 
-
-model TreasureHaul {
-  id    Int @id @default(autoincrement())
-  item  Json
-}
 
 enum BaseItemType {
   Weapon
@@ -90,16 +85,28 @@ enum BaseItemType {
   Consumable
 }
 
+model TreasureHaul {
+  id          String @id @default(uuid()) @db.Uuid
+  item        Json
+  chat        Json
+}
+
+model Player {
+  publicID    String @id @default(uuid()) @db.Uuid
+  privateID   String @default(uuid()) @db.Uuid
+  name        String
+}
+
 model Tag {
-  id    Int @id @default(autoincrement())
-  tag   String
-  items BaseItem[]
+  id          String @id @default(uuid()) @db.Uuid
+  tag         String
+  items       BaseItem[]
 }
 
 model BaseItem {
-  id    Int @id @default(autoincrement())
-  name  String
-  type  BaseItemType
-  src   String
-  tags  Tag[]
+  id          String @id @default(uuid()) @db.Uuid
+  name        String
+  type        BaseItemType
+  src         String
+  tags        Tag[]
 }
