@@ -19,20 +19,12 @@ export default async function ItemSelector(props: ItemSelectorProps) {
 
   return (
     <div className={clsx(
-      'bg-white',
-      'dark:bg-gray-700',
-      'border-gray-200',
-      'dark:border-gray-900',
-      'bg-gradient-to-br',
-      'rounded-lg',
-      'border',
-      'shadow-sm',
-      'grid',
-      'grid-cols-3',
-      'justify-items-center',
-      'items-start',
-      'overflow-y-auto',
-      'overflow-x-hidden',
+      ['bg-white', 'dark:bg-gray-700', 'bg-gradient-to-br'],
+      ['border', 'border-gray-200', 'dark:border-gray-900'],
+      ['rounded-lg'],
+      ['shadow-sm'],
+      ['flex', 'flex-wrap', 'justify-center'],
+      ['overflow-y-auto', 'overflow-x-hidden'],
     )}>
       <BlankItemContainer />
       {itemOptions}

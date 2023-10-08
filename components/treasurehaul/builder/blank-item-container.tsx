@@ -1,12 +1,10 @@
 "use client";
 
 import { AddIcon } from "@/components/svgs";
-import { HaulBuilderDrawerStates } from "@/lib/drawer-states";
 import { addItemToHaul, setDrawerOpen } from "@/lib/store/treasure-haul";
 import { TreasureHaulItemFromBlank } from "@/lib/treasurehaul/treasure-haul-payload";
 import clsx from "clsx";
 import { Tooltip } from "flowbite-react";
-import Image from "next/image";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 

@@ -6,12 +6,13 @@ import ItemCard from "../item-card";
 import HaulOpenButton from "./open-button";
 import { useDispatch } from "react-redux";
 import { setDisplayedItem, setDrawerOpen } from "@/lib/store/chest-haul";
+import HaulContents from "@/components/haulContents/haul-contents";
 
 export type HaulContentsProps = {
   haul: TreasureHaulPayload;
 }
 
-export default function HaulContents(props: HaulContentsProps) {
+export default function HaulContentsContainer(props: HaulContentsProps) {
   const {
     haul,
   } = props;
@@ -37,25 +38,12 @@ export default function HaulContents(props: HaulContentsProps) {
         />
       </div>
     )
-  );
+    );
 
   return (
-    <div className={clsx(
-      ['flex', 'justify-center', 'items-center'],
-    )}>
+    <HaulContents>
       <HaulOpenButton imageSrc={haul.previewImageSrc} />
-      <div className={clsx(
-        ['bg-white', 'dark:bg-slate-900'],
-        ['border', 'border-gray-200', 'dark:border-gray-700'],
-        ['shadow-md'],
-        ['rounded-lg'],
-        ['flex', 'items-center', 'justify-center', 'justify-items-center', 'flex-wrap'],
-        ['w-[90%]', 'md:w-[80%]'],
-        ['h-[90%]', 'md:h-[80%]'],
-        ['overflow-y-auto'],
-      )}>
-        {items}
-      </div>
-    </div>
+      {items}
+    </HaulContents>
   )
 }

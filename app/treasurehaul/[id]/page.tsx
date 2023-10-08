@@ -8,9 +8,9 @@ import { Metadata } from 'next';
 import clsx from 'clsx';
 import { Suspense } from 'react';
 import DrawerContainer from '@/components/treasurehaul/chest/drawer-container';
-import HaulContents from '@/components/treasurehaul/chest/haul-contents';
 import ChestItemDetailsPane from '@/components/treasurehaul/chest/item-details-pane';
 import ChestDetails from '@/components/chestDetails/chest-details';
+import HaulContentsContainer from '@/components/treasurehaul/chest/haul-contents-container';
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const id = params.id;
@@ -59,14 +59,14 @@ export default function TreasureHaul({ params }: { params: { id: string } }) {
       'dark:bg-slate-950',
       'top-0',
     )}>
+      <Suspense fallback={'Loading'}>
+        <HaulContentsLoader roomID={params.id} />
+      </Suspense>
       <DrawerContainer
         drawerStates={{
           ViewDetails: (<ChestItemDetailsPane />),
         }}
       />
-      <Suspense fallback={'Loading'}>
-        <HaulContentsLoader roomID={params.id} />
-      </Suspense>
     </main>
   );
 }
@@ -93,10 +93,10 @@ async function HaulContentsLoader(props: { roomID: string }) {
   return (
     <div className={clsx(
       ['w-screen', 'h-screen', 'overflow-y-hidden'],
-      ['grid', 'grid-rows-[min-content_1fr]', 'content-center', 'gap-y-2']
+      ['grid', 'grid-rows-[min-content_auto]', 'content-center', 'gap-y-8']
     )}>
       <ChestDetails chestName={thisHaulObj.roomName} />
-      <HaulContents haul={thisHaulObj} />
+      <HaulContentsContainer haul={thisHaulObj} />
     </div>
   )
 }
