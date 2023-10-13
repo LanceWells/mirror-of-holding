@@ -19,7 +19,6 @@ export default function Drawer<T extends string>(props: DrawerProps<T>) {
     drawerOpen,
   } = props;
 
-  // const drawerOpen = useDrawerOpenSelector() as keyof typeof drawerStates | null;
   const drawerChild = drawerOpen ? drawerStates[drawerOpen] : (<></>);
 
   return (

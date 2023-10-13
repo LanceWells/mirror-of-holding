@@ -5,14 +5,41 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { useEffect, useMemo } from "react";
 import Spinner from "../spinner/spinner";
 import Image from "next/image";
+import { setUserInfo, useUserInfo } from "@/lib/store/user";
+import { RandomUserDetails } from "@/lib/random-name/random-name";
+import { useDispatch } from "react-redux";
 
 export type PageToolbarProps = {};
 
 export default function PageToolbar() {
   const session = useSession();
+  const userInfo = useUserInfo();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.debug(session);
+
+    const sessionHasDetails =
+      session &&
+      session.data &&
+      session.data.user &&
+      session.data.user.name &&
+      session.data.user.image &&
+      session.data.user.email;
+
+    const userIsAlreadyAnonymous = userInfo.type === 'anon';
+
+    if (sessionHasDetails) {
+      dispatch(setUserInfo({
+        type: 'user',
+        id: session.data!.user!.email!,
+        name: session.data!.user!.name!,
+        avatarSrc: session.data!.user!.image!,
+      }));
+    } else if (!userIsAlreadyAnonymous) {
+      const newRandomUser = RandomUserDetails();
+      dispatch(setUserInfo(newRandomUser));
+    }
   }, [session]);
 
   const avatar = useMemo(() => {

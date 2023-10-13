@@ -1,6 +1,7 @@
 "use client"
 
-import { setBuilderBaseItemSearch } from "@/lib/store/treasure-haul";
+import { TreasureHaulStorage, setBuilderBaseItemSearch } from "@/lib/store/treasure-haul";
+import { BaseItemType, ItemTag } from "@prisma/client";
 import { useDebounce } from "@uidotdev/usehooks";
 import { TextInput } from "flowbite-react";
 import { useEffect, useState } from "react"
@@ -12,7 +13,31 @@ export default function BuilderSearch() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setBuilderBaseItemSearch(deboucedSearchTerm));
+    const searchVals = deboucedSearchTerm.split(' ');
+    const terms: TreasureHaulStorage['baseItemSearch'] = searchVals.map((val) => {
+      const tagTerm = /tag:(\w+)/.exec(val);
+      if (tagTerm && tagTerm[1] in ItemTag) {
+        return {
+          type: 'tag',
+          tag: tagTerm[1] as ItemTag
+        }
+      }
+
+      const typeTerm = /type:(\w+)/.exec(val);
+      if (typeTerm && typeTerm[1] in BaseItemType) {
+        return {
+          type: 'itemType',
+          itemType: typeTerm[1] as BaseItemType,
+        };
+      }
+
+      return {
+        type: 'name',
+        name: val,
+      };
+    });
+
+    dispatch(setBuilderBaseItemSearch(terms));
   }, [deboucedSearchTerm, dispatch])
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { LoadImage } from "@/lib/canvas-processing";
-import { ItemEffectFlaming, ItemEffectOptions, TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
+import { ItemEffectFlaming, ItemEffectOptions, ItemToCardBack, TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
 import clsx from "clsx";
 import { MedievalSharp } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
@@ -89,6 +89,8 @@ export default function ItemCard(props: ItemCardProps) {
     item.src,
   ]);
 
+  const cardBack = ItemToCardBack[item.type];
+
   return (
     <button
       onClick={() => {
@@ -117,9 +119,8 @@ export default function ItemCard(props: ItemCardProps) {
         'items-center',
       )}
       style={{
-        backgroundImage: 'url(/cards/weapon.png)',
+        backgroundImage: cardBack,
         animationFillMode: 'both',
-        // animationDelay: '2500ms',
       }}
     >
       <canvas
@@ -129,7 +130,6 @@ export default function ItemCard(props: ItemCardProps) {
           'border-none',
           // The card border needs some small adjustments. The scaling makes
           // a precise CSS placement tough without these translations.
-          '-translate-x-[0.1px]',
           'translate-y-[2px]',
         )}
         height={128}

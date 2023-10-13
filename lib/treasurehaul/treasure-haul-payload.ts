@@ -206,9 +206,20 @@ function TreasureHaulItemFromBlank() : TreasureHaulItem {
   }
 }
 
+const ItemToCardBack: {
+  [key in BaseItemType]: string
+} = {
+  Armor: 'url(/cards/weapon.png)',
+  Consumable: 'url(/cards/weapon.png)',
+  MagicItem: 'url(/cards/weapon.png)',
+  Treasure: 'url(/cards/treasure.png)',
+  Weapon: 'url(/cards/weapon.png)',
+}
+
 export {
   TreasureHaulMoneyType,
   TreasureHaulItemFromBase,
   TreasureHaulItemFromMoney,
   TreasureHaulItemFromBlank,
+  ItemToCardBack,
 }

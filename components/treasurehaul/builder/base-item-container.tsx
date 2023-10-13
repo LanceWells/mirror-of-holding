@@ -1,6 +1,6 @@
 "use client";
 
-import { addItemToHaul, setDrawerOpen, useSearchTermSelector } from "@/lib/store/treasure-haul";
+import { TreasureHaulStorage, addItemToHaul, setDrawerOpen, useSearchTermSelector } from "@/lib/store/treasure-haul";
 import { TreasureHaulItemFromBase } from "@/lib/treasurehaul/treasure-haul-payload";
 import { BaseItem } from "@prisma/client";
 import clsx from "clsx";
@@ -29,6 +29,19 @@ export default function BaseItemContainer(props: BaseItemProps) {
     dispatch(setDrawerOpen(null));
   }, [dispatch]);
 
+  const showItem = !searchTerm || searchTerm.some((t) => {
+    if (t.type === 'tag') {
+      return item.tags.includes(t.tag);
+    }
+    if (t.type === 'itemType') {
+      return item.type === t.itemType;
+    }
+    if (t.type === 'name') {
+      return item.name.toLowerCase().includes(t.name.toLowerCase());
+    }
+    return false;
+  });
+
   return (
     <Tooltip className='pointer-events-none' content={item.name}>
       <button
@@ -42,7 +55,7 @@ export default function BaseItemContainer(props: BaseItemProps) {
           'm-2',
           'rounded-md',
           'drop-shadow-sm',
-          item.name.toUpperCase().includes(searchTerm)
+          showItem
             ? ['visible']
             : ['hidden']
         )}

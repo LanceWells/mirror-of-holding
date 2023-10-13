@@ -1,7 +1,6 @@
 // Prisma does not support Edge without the Data Proxy currently
 // export const runtime = 'edge'
 export const preferredRegion = 'home';
-export const dynamic = 'force-dynamic';
 import prisma from '../../../lib/prisma'
 import { TreasureHaulPayload } from '@/lib/treasurehaul/treasure-haul-payload';
 import { Metadata } from 'next';
@@ -14,7 +13,6 @@ import HaulContentsContainer from '@/components/treasurehaul/chest/haul-contents
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const id = params.id;
-  const idAsNum = Number.parseInt(id);
 
   const metadata: Metadata = {
     title: 'A mysterious chest . . .',
@@ -28,7 +26,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
   const thisHaul = await prisma.treasureHaul.findFirst({
     where: {
-      id: idAsNum,
+      id,
     }
   });
 
@@ -76,11 +74,9 @@ async function HaulContentsLoader(props: { roomID: string }) {
     roomID,
   } = props;
 
-  const idAsNum = Number.parseInt(roomID);
-
   const thisHaul = await prisma.treasureHaul.findFirst({
     where: {
-      id: idAsNum,
+      id: roomID,
     }
   });
 
@@ -96,7 +92,7 @@ async function HaulContentsLoader(props: { roomID: string }) {
       ['grid', 'grid-rows-[min-content_auto]', 'content-center', 'gap-y-8']
     )}>
       <ChestDetails chestName={thisHaulObj.roomName} />
-      <HaulContentsContainer haul={thisHaulObj} />
+      <HaulContentsContainer haul={thisHaulObj} id={thisHaul.id} />
     </div>
   )
 }

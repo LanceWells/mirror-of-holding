@@ -20,15 +20,15 @@ export async function POST(request: Request) {
         status: 400,
       }
     )
-  } else {
-    const validItems = Object.entries(haul).filter(([key, item]) => (
-      item.itemName &&
-      item.src &&
-      item.type
-    ));
-  
-    thisRoom.haul = Object.fromEntries(validItems);
   }
+  
+  const validItems = Object.entries(haul).filter(([key, item]) => (
+    item.itemName &&
+    item.src &&
+    item.type
+  ));
+
+  thisRoom.haul = Object.fromEntries(validItems);
 
   if (!roomName) {
     return new Response(
@@ -47,7 +47,8 @@ export async function POST(request: Request) {
   const createdHaul = await prisma.treasureHaul.create({
     data: {
       item: thisRoom,
-    }
+      chat: {},
+    },
   });
 
   return new Response(JSON.stringify({

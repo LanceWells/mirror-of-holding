@@ -4,6 +4,11 @@ import { TreasureHaulItem } from "../treasurehaul/treasure-haul-payload";
 import { HaulBuilderDrawerStates } from "../drawer-states";
 import { ToastEntry } from "@/components/toast/toast-types";
 import { ChestIconOptions } from "@/components/chestDetails/chest-details-options";
+import { BaseItemType, ItemTag } from "@prisma/client";
+
+const TagSearchTypes = {
+  Tag: "Tag",
+}
 
 const DefaultTreasureHaul = {
   name: "",
@@ -15,7 +20,11 @@ const DefaultTreasureHaul = {
     itemKey: string,
   },
   editorDrawerOpen: null as null | HaulBuilderDrawerStates,
-  baseItemSearch: '',
+  baseItemSearch: [] as (
+    | { type: "tag", tag: ItemTag }
+    | { type: "name", name: string }
+    | { type: "itemType", itemType: BaseItemType }
+  )[],
   toasts: [] as [string, ToastEntry][],
   chestDetails: {
     chestName: 'A mysterious chest',
@@ -67,8 +76,8 @@ const TreasureHaulSlice = createSlice({
     setDrawerOpen(state, action: PayloadAction<TreasureHaulStorage['editorDrawerOpen']>) {
       state.editorDrawerOpen = action.payload;
     },
-    setBuilderBaseItemSearch(state, action: PayloadAction<string>) {
-      state.baseItemSearch = action.payload.toUpperCase();
+    setBuilderBaseItemSearch(state, action: PayloadAction<TreasureHaulStorage['baseItemSearch']>) {
+      state.baseItemSearch = action.payload;
     },
     setToast(state, action: PayloadAction<ToastEntry>) {
       let newToast: ToastEntry = {

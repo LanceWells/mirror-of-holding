@@ -85,22 +85,28 @@ enum BaseItemType {
   Consumable
 }
 
+enum ItemTag {
+  Small
+  Large
+  Ranged
+  Melee
+  Potion
+  TwoHanded
+  AnimalPart
+  Ring
+  Necklace
+}
+
 model TreasureHaul {
   id          String @id @default(uuid()) @db.Uuid
-  item        Json
-  chat        Json
+  item        Json @unique
+  chat        Json @unique
 }
 
 model Player {
-  publicID    String @id @default(uuid()) @db.Uuid
-  privateID   String @default(uuid()) @db.Uuid
+  email       String @id
   name        String
-}
-
-model Tag {
-  id          String @id @default(uuid()) @db.Uuid
-  tag         String
-  items       BaseItem[]
+  imageSrc    String
 }
 
 model BaseItem {
@@ -108,5 +114,5 @@ model BaseItem {
   name        String
   type        BaseItemType
   src         String
-  tags        Tag[]
+  tags        ItemTag[]
 }

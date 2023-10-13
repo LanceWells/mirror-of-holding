@@ -23,7 +23,7 @@ export default async function ItemSelector(props: ItemSelectorProps) {
       ['border', 'border-gray-200', 'dark:border-gray-900'],
       ['rounded-lg'],
       ['shadow-sm'],
-      ['flex', 'flex-wrap', 'justify-center'],
+      ['flex', 'flex-wrap', 'justify-center', 'content-start'],
       ['overflow-y-auto', 'overflow-x-hidden'],
     )}>
       <BlankItemContainer />

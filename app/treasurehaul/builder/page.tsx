@@ -43,7 +43,6 @@ export default function Builder() {
       />
       <BuilderToolbar />
       <ToastFeedContainer />
-      <PageToolbar />
     </main>
   );
 }
