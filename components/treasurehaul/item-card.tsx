@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { LoadImage } from "@/lib/canvas-processing";
+import { LoadImage } from '@/lib/canvas-processing';
 import {
   ItemEffectFlaming,
   ItemEffectOptions,
   ItemEffectUniformParticles,
   ItemToCardBack,
   TreasureHaulItem,
-} from "@/lib/treasurehaul/treasure-haul-payload";
-import { TrigOptimizer } from "@/lib/trigopt/trig-optimizer";
-import clsx from "clsx";
-import { MedievalSharp } from "next/font/google";
-import { useEffect, useRef, useState } from "react";
+} from '@/lib/treasurehaul/treasure-haul-payload';
+import { TrigOptimizer } from '@/lib/trigopt/trig-optimizer';
+import clsx from 'clsx';
+import { MedievalSharp } from 'next/font/google';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export type ItemCardProps = {
   item: TreasureHaulItem;
@@ -92,7 +92,7 @@ export default function ItemCard(props: ItemCardProps) {
         effects: item.effects,
         emitter,
       });
-      
+
       lastTime = timestamp;
       animationFrameID = requestAnimationFrame(animateCard);
     }
@@ -103,7 +103,7 @@ export default function ItemCard(props: ItemCardProps) {
     });
   }, [canvasRef, imgs, item, itemKey]);
 
-  const loadImages = async () => {
+  const loadImages = useCallback(async () => {
     const [src, noise, patchyNoise, particle] = await Promise.all([
       LoadImage(item.src),
       LoadImage('/noise.png'),
@@ -117,12 +117,14 @@ export default function ItemCard(props: ItemCardProps) {
       noise,
       patchyNoise,
       particle,
-    })
-  }
+    });
+  }, [item.src]);
+
 
   useEffect(() => { loadImages(); }, [
     itemKey,
     item.src,
+    loadImages,
   ]);
 
   const cardBack = ItemToCardBack[item.type];
@@ -131,7 +133,7 @@ export default function ItemCard(props: ItemCardProps) {
     <button
       onClick={() => {
         if (onClick) {
-          onClick(itemKey)
+          onClick(itemKey);
         }
       }}
       className={clsx(
@@ -211,19 +213,19 @@ const Effects: {
    * slowly scrolling a parallaxing noise across the image, and performing a color-dodge on the
    * existing sprite.
    */
-  enchanted: ({ctx, imgs, time}) => {
+  enchanted: ({ ctx, imgs, time }) => {
     const timeIter = time * 0.035 % 128;
     ctx.clearRect(0, 0, 128, 128);
 
     ctx.globalAlpha = 1.0;
     ctx.globalCompositeOperation = 'source-over';
     ctx.drawImage(imgs.src, 0, 0, 128, 128);
-  
+
     ctx.globalAlpha = 0.4;
     ctx.globalCompositeOperation = 'source-atop';
     ctx.drawImage(imgs.noise, timeIter, 0, 128, 128);
     ctx.drawImage(imgs.noise, timeIter - 128, 0, 128, 128);
-  
+
     ctx.globalAlpha = 1.0;
     ctx.globalCompositeOperation = 'color-dodge';
     ctx.drawImage(imgs.src, 0, 0, 128, 128);
@@ -241,7 +243,7 @@ const Effects: {
    * - Drawing a gradient over the noise, using the color uniform.
    * - Drawing the original image back on to the canvas.
    */
-  flaming: ({ctx, imgs, time, offscreenCtx, effects}) => {
+  flaming: ({ ctx, imgs, time, offscreenCtx, effects }) => {
     const timeIter = time * 0.035 % 128;
     ctx.clearRect(0, 0, 128, 128);
 
@@ -261,12 +263,12 @@ const Effects: {
       r: Math.floor(midTone.r / 2),
       g: Math.floor(midTone.r / 2),
       b: Math.floor(midTone.r / 2),
-    }
+    };
     const tint = {
       r: Math.min(midTone.r * 1.25, 255),
       g: Math.min(midTone.r * 1.25, 255),
       b: Math.min(midTone.r * 1.25, 255),
-    }
+    };
 
     const gradient = ctx.createLinearGradient(128, 128, 0, 0);
     gradient.addColorStop(0, 'white');
@@ -293,9 +295,9 @@ const Effects: {
    * Otherwise, this works by using a lot of sin/cos logic to make the sparkles move in a neat lil
    * pattern.
    */
-  sparkles: ({ctx, imgs, time, effects}) => {
+  sparkles: ({ ctx, imgs, time, effects }) => {
     const theseEffects = effects.uniforms as ItemEffectUniformParticles;
-    
+
     ctx.clearRect(0, 0, 128, 128);
 
     const particles: {
@@ -307,7 +309,7 @@ const Effects: {
     for (let i = 1; i <= theseEffects.particleFrequency; i++) {
       const radians = (2 * Math.PI / 128) * timeIter + (2 * Math.PI * i / theseEffects.particleFrequency);
       const distanceRadians = (2 * Math.PI / 128 * timeIter);
-      
+
       const x = theseEffects.emitterX
         + (Math.cos(radians) * theseEffects.emitterRadius)
         * Math.sin(distanceRadians);
@@ -315,10 +317,10 @@ const Effects: {
       const y = theseEffects.emitterY
         + (Math.sin(radians) * theseEffects.emitterRadius)
         * Math.sin(distanceRadians);
-      
+
       particles.push({ x, y });
     }
-    
+
     ctx.globalCompositeOperation = 'source-over';
     ctx.drawImage(imgs.src, 0, 0, 128, 128);
     particles.forEach((p) => {
@@ -326,7 +328,7 @@ const Effects: {
     });
   },
 
-  particles: ({ctx, imgs, time, delta, effects, emitter}) => {
+  particles: ({ ctx, imgs, time, delta, effects, emitter }) => {
     const theseEffects = effects.uniforms as ItemEffectUniformParticles;
     ctx.clearRect(0, 0, 128, 128);
 
@@ -347,7 +349,7 @@ const Effects: {
     // particles now - particles then
     const particlesToCreate = Math.floor(time / t) - Math.floor((time - delta) / t);
 
-    
+
     for (let i = 0; i < particlesToCreate; i++) {
       const direction = 2 * Math.PI * Math.random();
 
@@ -384,11 +386,11 @@ const Effects: {
     });
   },
 
-  none: ({ctx, imgs}) => {
+  none: ({ ctx, imgs }) => {
     ctx.clearRect(0, 0, 128, 128);
 
     ctx.globalAlpha = 1.0;
     ctx.globalCompositeOperation = 'source-over';
     ctx.drawImage(imgs.src, 0, 0, 128, 128);
   }
-}
+};

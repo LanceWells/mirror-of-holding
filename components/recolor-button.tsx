@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import { useCallback, useMemo, useState } from "react";
-import { ArrowContainer, Popover } from "react-tiny-popover";
-import { MemoizedRecolorSwatch } from "./recolor-swatch";
-import { OutfitType } from "@prisma/client";
-import { ColorGroup, ColorReplacement } from "@/lib/colors";
-import { useDispatch } from "react-redux";
-import { setFilter } from "@/lib/store/character-body";
+import clsx from 'clsx';
+import { useCallback, useMemo, useState } from 'react';
+import { ArrowContainer, Popover } from 'react-tiny-popover';
+import { MemoizedRecolorSwatch } from './recolor-swatch';
+import { OutfitType } from '@prisma/client';
+import { ColorGroup, ColorReplacement } from '@/lib/colors';
+import { useDispatch } from 'react-redux';
+import { setFilter } from '@/lib/store/character-body';
 
 export type RecolorButtonProps = JSX.IntrinsicElements['button'] & {
   colorReplacement: ColorReplacement;
@@ -30,7 +30,7 @@ export default function RecolorButton(props: RecolorButtonProps) {
 
   const onClickOutside = useCallback(() => {
     setIsPopoverOpen(false);
-  }, [popverOpen]);
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -44,7 +44,7 @@ export default function RecolorButton(props: RecolorButtonProps) {
       }
     }));
     // tell store to update. add filter from original 
-  }, [displayedColor, dispatch]);
+  }, [dispatch, colorReplacement, outfit]);
 
   const swatch = (
     <MemoizedRecolorSwatch

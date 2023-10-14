@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
-import React, { useCallback } from "react"
-import Image from "next/image";
-import clsx from "clsx";
-import { useDispatch } from "react-redux";
-import { OutfitType } from "@prisma/client";
-import { CharacterBodyLayer, updateParts } from "@/lib/store/character-body";
+import React, { useCallback } from 'react';
+import Image from 'next/image';
+import clsx from 'clsx';
+import { useDispatch } from 'react-redux';
+import { OutfitType } from '@prisma/client';
+import { CharacterBodyLayer, updateParts } from '@/lib/store/character-body';
 
 export type PartButtonProps = JSX.IntrinsicElements['button'] & {
   src: HTMLImageElement['src'];
@@ -32,8 +32,8 @@ export default function OutfitButton(props: PartButtonProps) {
           parts,
         }
       )
-    ), [dispatch]
-  )
+    ), [dispatch, outfitType, parts]
+  );
 
   return (
     <button
@@ -59,5 +59,5 @@ export default function OutfitButton(props: PartButtonProps) {
         height={48}
       />
     </button>
-  )
+  );
 }

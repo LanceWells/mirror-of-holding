@@ -1,14 +1,14 @@
-"use client"
+'use client';
 
-import { TreasureHaulStorage, setBuilderBaseItemSearch } from "@/lib/store/treasure-haul";
-import { BaseItemType, ItemTag } from "@prisma/client";
-import { useDebounce } from "@uidotdev/usehooks";
-import { TextInput } from "flowbite-react";
-import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux";
+import { TreasureHaulStorage, setBuilderBaseItemSearch } from '@/lib/store/treasure-haul';
+import { BaseItemType, ItemTag } from '@prisma/client';
+import { useDebounce } from '@uidotdev/usehooks';
+import { TextInput } from 'flowbite-react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 export default function BuilderSearch() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const deboucedSearchTerm = useDebounce(searchTerm, 300);
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ export default function BuilderSearch() {
         return {
           type: 'tag',
           tag: tagTerm[1] as ItemTag
-        }
+        };
       }
 
       const typeTerm = /type:(\w+)/.exec(val);
@@ -38,12 +38,12 @@ export default function BuilderSearch() {
     });
 
     dispatch(setBuilderBaseItemSearch(terms));
-  }, [deboucedSearchTerm, dispatch])
+  }, [deboucedSearchTerm, dispatch]);
 
   return (
     <TextInput
       onChange={(e) => setSearchTerm(e.target.value)}
       value={searchTerm}
       placeholder="Search for an existing item" />
-  )
+  );
 }

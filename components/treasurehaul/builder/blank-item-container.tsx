@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { AddIcon } from "@/components/svgs";
-import { addItemToHaul, setDrawerOpen } from "@/lib/store/treasure-haul";
-import { TreasureHaulItemFromBlank } from "@/lib/treasurehaul/treasure-haul-payload";
-import clsx from "clsx";
-import { Tooltip } from "flowbite-react";
-import { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { AddIcon } from '@/components/svgs';
+import { addItemToHaul, setDrawerOpen } from '@/lib/store/treasure-haul';
+import { TreasureHaulItemFromBlank } from '@/lib/treasurehaul/treasure-haul-payload';
+import clsx from 'clsx';
+import { Tooltip } from 'flowbite-react';
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
 export default function BlankItemContainer() {
   const dispatch = useDispatch();

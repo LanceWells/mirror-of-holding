@@ -18,4 +18,4 @@ export {
   CopyIcon,
   ScrollQuillIcon,
   CircleIcon,
-}
+};

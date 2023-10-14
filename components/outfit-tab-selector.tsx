@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { updateTab, useOutfitTabSelector } from "@/lib/store/character-body";
+import { updateTab, useOutfitTabSelector } from '@/lib/store/character-body';
 import {
   OutfitType,
-} from "@prisma/client";
-import clsx from "clsx";
-import { useCallback } from "react";
-import { useDispatch } from "react-redux";
+} from '@prisma/client';
+import clsx from 'clsx';
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
 export type OutfitTabSelectorProps = {
   outfitType: OutfitType;
@@ -22,7 +22,7 @@ export default function OutfitTabSelector(props: OutfitTabSelectorProps) {
   const dispatch = useDispatch();
   const handleClick = useCallback(() => 
     dispatch(updateTab(outfitType)),
-    [dispatch],
+    [dispatch, outfitType],
   );
 
   return (

@@ -1,16 +1,16 @@
-"use client"
+'use client';
 
-import { TreasureHaulPayload } from "@/lib/treasurehaul/treasure-haul-payload"
-import clsx from "clsx";
-import ItemCard from "../item-card";
-import HaulOpenButton from "./open-button";
-import { useDispatch } from "react-redux";
-import { setDisplayedItem, setDrawerOpen } from "@/lib/store/chest-haul";
-import HaulContents from "@/components/haulContents/haul-contents";
-import { supabase } from "@/lib/supabase/client";
-import { useEffect, useState } from "react";
-import { RealtimeChannel } from "@supabase/supabase-js";
-import { StateOptions, useUserInfo } from "@/lib/store/user";
+import { TreasureHaulPayload } from '@/lib/treasurehaul/treasure-haul-payload';
+import clsx from 'clsx';
+import ItemCard from '../item-card';
+import HaulOpenButton from './open-button';
+import { useDispatch } from 'react-redux';
+import { setDisplayedItem, setDrawerOpen } from '@/lib/store/chest-haul';
+import HaulContents from '@/components/haulContents/haul-contents';
+import { supabase } from '@/lib/supabase/client';
+import { useEffect, useState } from 'react';
+import { RealtimeChannel } from '@supabase/supabase-js';
+import { StateOptions, useUserInfo } from '@/lib/store/user';
 
 export type HaulContentsProps = {
   haul: TreasureHaulPayload;
@@ -52,8 +52,8 @@ export default function HaulContentsContainer(props: HaulContentsProps) {
     return () => {
       newChannel.unsubscribe();
       supabase.removeChannel(newChannel);
-    }
-  }, [userInfo]);
+    };
+  }, [userInfo, id]);
 
   const items = Object.entries(haul.haul)
     .map(([key, item], i) => (
@@ -103,5 +103,5 @@ export default function HaulContentsContainer(props: HaulContentsProps) {
       </button>
       {items}
     </HaulContents>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import SkeletonImage from "@/components/skeleton/skeleton-image";
-import clsx from "clsx";
+import SkeletonImage from '@/components/skeleton/skeleton-image';
+import clsx from 'clsx';
 
 export default function ItemSelectorSkeleton() {
   return (
@@ -17,5 +17,5 @@ export default function ItemSelectorSkeleton() {
       <SkeletonImage />
       <SkeletonImage />
     </div>
-  )
+  );
 }

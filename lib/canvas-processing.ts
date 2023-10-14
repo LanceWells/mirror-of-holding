@@ -1,15 +1,15 @@
 import {
   OutfitType,
   PartType,
-} from "@prisma/client";
+} from '@prisma/client';
 import {
   BodyPartOrderConfig,
   OutfitLayerConfig,
   OutfitLayerType,
   OutfitLayerTypeOrderConfig,
-} from "./outfit-configuration";
-import { ColorGroup, ColorGroupCount, DefaultColorForPallete, HexStringToRGB, RGBToHexString } from "./colors";
-import { CharacterBody, BodyPart_Client, ColorFilter, BodyLayout_Client } from "./store/character-body";
+} from './outfit-configuration';
+import { ColorGroup, ColorGroupCount, DefaultColorForPallete, HexStringToRGB, RGBToHexString } from './colors';
+import { CharacterBody, BodyPart_Client, ColorFilter, BodyLayout_Client } from './store/character-body';
 
 export const ImageCentering = 32;
 export const ImageScaling = 4;
@@ -169,12 +169,12 @@ export const DrawOutlineProcessing: PostProcessing = async (img) => {
      y: (img.adjustments.y) - s,
    }
  };
-}
+};
 
 export function ConstructColorReplacementProcessing(filter: ColorFilter): PostProcessing {
   return async (img: ProcessedImage) => {
     const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d');
     if (!ctx) { return; }
 
     ctx.drawImage(img.img, 0, 0);
@@ -203,7 +203,7 @@ export function ConstructColorReplacementProcessing(filter: ColorFilter): PostPr
       }
     }
 
-    ctx.putImageData(imgData, 0, 0)
+    ctx.putImageData(imgData, 0, 0);
 
     const dataURL = canvas.toDataURL();
     const newImg = await LoadImage(dataURL);
@@ -267,7 +267,7 @@ export function CalculateDrawingCoords(
     y += adjustments.y;
   }
 
-  return {x, y}
+  return {x, y};
 }
 
 /**
@@ -310,7 +310,7 @@ export async function ProcessImages(
         x: processed.adjustments.x,
         y: processed.adjustments.y,
       },
-    )
+    );
 
     return {
       x: coords.x,
@@ -354,7 +354,7 @@ export async function ProcessImages(
       outlineImage.img,
       (ImageCentering / 8) + (outlineImage.adjustments?.x ?? 0),
       -(ImageCentering / 3) + (outlineImage.adjustments?.y ?? 0)
-    )
+    );
   }
   ctx.drawImage(processedCanvas, (ImageCentering / 8), -(ImageCentering / 3));
   ctx.setTransform(1, 0, 0, 1, 0, 0);

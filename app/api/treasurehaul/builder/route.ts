@@ -1,5 +1,5 @@
 import { TreasureHaulPayload } from '@/lib/treasurehaul/treasure-haul-payload';
-import prisma from '../../../../lib/prisma'
+import prisma from '../../../../lib/prisma';
 
 export async function POST(request: Request) {
   const {
@@ -10,16 +10,16 @@ export async function POST(request: Request) {
 
   const thisRoom: TreasureHaulPayload = {
     haul: {},
-    roomName: "",
-    previewImageSrc: "",
-  }
+    roomName: '',
+    previewImageSrc: '',
+  };
 
   if (!haul) {
     return new Response(
       'Invalid haul type', {
         status: 400,
       }
-    )
+    );
   }
   
   const validItems = Object.entries(haul).filter(([key, item]) => (
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       'Invaild room name', {
         status: 400,
       }
-    )
+    );
   } else {
     thisRoom.roomName = roomName;
   }
@@ -47,7 +47,6 @@ export async function POST(request: Request) {
   const createdHaul = await prisma.treasureHaul.create({
     data: {
       item: thisRoom,
-      chat: {},
     },
   });
 
@@ -56,5 +55,5 @@ export async function POST(request: Request) {
   }), {
       status: 200,
     },
-  )
+  );
 }

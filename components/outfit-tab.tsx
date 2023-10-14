@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { OutfitType } from '@prisma/client';
 import clsx from 'clsx';

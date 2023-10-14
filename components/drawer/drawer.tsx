@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import { ReactNode } from "react";
-import { CloseIcon } from "../svgs";
+import clsx from 'clsx';
+import { ReactNode } from 'react';
+import { CloseIcon } from '../svgs';
 
 export type DrawerProps<T extends string> = {
   drawerStates: {
@@ -72,5 +72,5 @@ export default function Drawer<T extends string>(props: DrawerProps<T>) {
         drawerOpen ? 'opacity-100' : 'opacity-0',
       )} />
     </div>
-  )
+  );
 }

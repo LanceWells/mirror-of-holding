@@ -1,7 +1,7 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { BodyPart, PartType, OutfitType, BodyLayout } from "@prisma/client";
-import { useSelector } from "react-redux";
-import { ColorGroup, ColorReplacement } from "../colors";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { BodyPart, PartType, OutfitType, BodyLayout } from '@prisma/client';
+import { useSelector } from 'react-redux';
+import { ColorGroup, ColorReplacement } from '../colors';
 
 export type BodyPart_Client = Pick<BodyPart, 'anchorX' | 'anchorY' | 'name' | 'partType' | 'src'>;
 

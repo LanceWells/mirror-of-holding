@@ -99,8 +99,7 @@ enum ItemTag {
 
 model TreasureHaul {
   id          String @id @default(uuid()) @db.Uuid
-  item        Json @unique
-  chat        Json @unique
+  item        Json
 }
 
 model Player {

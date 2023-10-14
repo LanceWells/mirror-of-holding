@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { ChestIconOptions } from "@/components/chestDetails/chest-details-options";
-import Spinner from "@/components/spinner/spinner";
-import { setChestDetails, setDrawerOpen, useChestDetailsSelector } from "@/lib/store/treasure-haul";
-import clsx from "clsx";
-import { Button, Label, Select, TextInput } from "flowbite-react";
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { ChestIconOptions } from '@/components/chestDetails/chest-details-options';
+import Spinner from '@/components/spinner/spinner';
+import { setChestDetails, setDrawerOpen, useChestDetailsSelector } from '@/lib/store/treasure-haul';
+import clsx from 'clsx';
+import { Button, Label, Select, TextInput } from 'flowbite-react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 const imageLoadDelay = 2000;
 
@@ -17,7 +17,7 @@ export default function ChestDetailsEditor() {
   const chestOptions = [
     ...Object.entries(ChestIconOptions),
   ].map((option) => (
-    <option>
+    <option key={option[0]}>
       {option[0]}
     </option>
   ));
@@ -41,8 +41,8 @@ export default function ChestDetailsEditor() {
     imgTimerRef.current = setTimeout(() => {
       setIsLoadingImage(false);
       setDeboucedURL(formData.chestIconURL);
-    }, imageLoadDelay)
-  }, [formData.chestIconURL])
+    }, imageLoadDelay);
+  }, [formData.chestIconURL]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,7 +54,7 @@ export default function ChestDetailsEditor() {
     }));
 
     dispatch(setDrawerOpen(null));
-  }
+  };
 
   return (
     <div className={clsx(
@@ -144,5 +144,5 @@ export default function ChestDetailsEditor() {
         </Button>
       </form>
     </div>
-  )
+  );
 }

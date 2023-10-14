@@ -1,4 +1,4 @@
-import prisma from '../lib/prisma'
+import prisma from '../lib/prisma';
 import { OutfitType, PartType } from '@prisma/client';
 import OutfitButton from '@/components/outfit-button';
 import CharacterCanvas from '@/components/character-canvas';
@@ -60,7 +60,7 @@ export default async function Home() {
         name={o.name}
         outfitType={o.outfitType}
         parts={parts}
-        src={srcPart?.src ?? ""} />
+        src={srcPart?.src ?? ''} />
     ));
   }
 

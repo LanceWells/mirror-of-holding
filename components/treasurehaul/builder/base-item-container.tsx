@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { TreasureHaulStorage, addItemToHaul, setDrawerOpen, useSearchTermSelector } from "@/lib/store/treasure-haul";
-import { TreasureHaulItemFromBase } from "@/lib/treasurehaul/treasure-haul-payload";
-import { BaseItem } from "@prisma/client";
-import clsx from "clsx";
-import { Tooltip } from "flowbite-react";
-import Image from "next/image";
-import { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { TreasureHaulStorage, addItemToHaul, setDrawerOpen, useSearchTermSelector } from '@/lib/store/treasure-haul';
+import { TreasureHaulItemFromBase } from '@/lib/treasurehaul/treasure-haul-payload';
+import { BaseItem } from '@prisma/client';
+import clsx from 'clsx';
+import { Tooltip } from 'flowbite-react';
+import Image from 'next/image';
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
 type BaseItemProps = {
   item: BaseItem;
@@ -27,7 +27,7 @@ export default function BaseItemContainer(props: BaseItemProps) {
     }));
 
     dispatch(setDrawerOpen(null));
-  }, [dispatch]);
+  }, [dispatch, item]);
 
   const showItem = !searchTerm || searchTerm.some((t) => {
     if (t.type === 'tag') {

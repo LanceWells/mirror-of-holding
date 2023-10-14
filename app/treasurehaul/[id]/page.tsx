@@ -1,7 +1,7 @@
 // Prisma does not support Edge without the Data Proxy currently
 // export const runtime = 'edge'
 export const preferredRegion = 'home';
-import prisma from '../../../lib/prisma'
+import prisma from '../../../lib/prisma';
 import { TreasureHaulPayload } from '@/lib/treasurehaul/treasure-haul-payload';
 import { Metadata } from 'next';
 import clsx from 'clsx';
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
         'https://jagtjjiirouufnquzlhr.supabase.co/storage/v1/object/public/mirror-of-holding/TreasureHaul/Icons/WoodenStaticChest.png?t=2023-10-02T17%3A18%3A41.919Z'
       ]
     }
-  }
+  };
 
   const thisHaul = await prisma.treasureHaul.findFirst({
     where: {
@@ -94,5 +94,5 @@ async function HaulContentsLoader(props: { roomID: string }) {
       <ChestDetails chestName={thisHaulObj.roomName} />
       <HaulContentsContainer haul={thisHaulObj} id={thisHaul.id} />
     </div>
-  )
+  );
 }

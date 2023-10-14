@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useDisplayedItemSelector } from "@/lib/store/chest-haul";
-import { TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
-import clsx from "clsx";
-import ItemCard from "../item-card";
+import { useDisplayedItemSelector } from '@/lib/store/chest-haul';
+import { TreasureHaulItem } from '@/lib/treasurehaul/treasure-haul-payload';
+import clsx from 'clsx';
+import ItemCard from '../item-card';
 
 export default function ChestItemDetailsPane() {
   const displayedItem = useDisplayedItemSelector();
@@ -16,7 +16,7 @@ export default function ChestItemDetailsPane() {
         )
       }
     </div>
-  )
+  );
 }
 
 type ItemDetailsContentsProps = {
@@ -52,5 +52,5 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
         {description}
       </p>
     </div>
-  )
+  );
 }

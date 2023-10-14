@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { useEffect, useMemo } from "react";
-import Spinner from "../spinner/spinner";
-import Image from "next/image";
-import { setUserInfo, useUserInfo } from "@/lib/store/user";
-import { RandomUserDetails } from "@/lib/random-name/random-name";
-import { useDispatch } from "react-redux";
+import { useEffect, useMemo } from 'react';
+import Spinner from '../spinner/spinner';
+import Image from 'next/image';
+import { setUserInfo, useUserInfo } from '@/lib/store/user';
+import { RandomUserDetails } from '@/lib/random-name/random-name';
+import { useDispatch } from 'react-redux';
 
 export type PageToolbarProps = {};
 
@@ -40,11 +40,11 @@ export default function PageToolbar() {
       const newRandomUser = RandomUserDetails();
       dispatch(setUserInfo(newRandomUser));
     }
-  }, [session]);
+  }, [session, dispatch, userInfo.type]);
 
   const avatar = useMemo(() => {
     if (!session) {
-      return (<>...</>)
+      return (<>...</>);
     }
     switch (session.status) {
       case 'loading': return (<Spinner className="w-4 h-4" />);
@@ -75,9 +75,9 @@ export default function PageToolbar() {
             alt="Profile Picture"
           />
         </button>
-      )
+      );
     }
-  }, [session])
+  }, [session]);
 
   return (
     <div className={clsx(

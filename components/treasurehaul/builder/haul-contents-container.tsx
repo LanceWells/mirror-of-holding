@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useHaulSelector, setDisplayedItem, setDrawerOpen } from "@/lib/store/treasure-haul";
-import clsx from "clsx";
-import { useMemo } from "react";
-import { useDispatch } from "react-redux";
-import ItemCard from "../item-card";
-import HaulContents from "@/components/haulContents/haul-contents";
+import { useHaulSelector, setDisplayedItem, setDrawerOpen } from '@/lib/store/treasure-haul';
+import clsx from 'clsx';
+import { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import ItemCard from '../item-card';
+import HaulContents from '@/components/haulContents/haul-contents';
 
 export default function HaulContentsContainer() {
   const haul = useHaulSelector();
@@ -30,7 +30,7 @@ export default function HaulContentsContainer() {
         />
       )),
     [haul, dispatch]
-  )
+  );
 
   return (
     <HaulContents>

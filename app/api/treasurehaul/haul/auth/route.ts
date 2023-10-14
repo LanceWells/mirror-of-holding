@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
       'Unauthenticated', {
         status: 401,
       }
-    )
+    );
   }
 
   if (!session.user) {
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       'Unauthenticated - no user', {
         status: 401,
       }
-    )
+    );
   }
 
   if (!session.user.email) {
@@ -26,6 +26,6 @@ export async function GET(request: NextRequest) {
       'Unauthenticated - no email', {
         status: 401,
       }
-    )
+    );
   }
 }

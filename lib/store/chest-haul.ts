@@ -1,13 +1,13 @@
-import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
-import { TreasureHaulItem, TreasureHaulPayload } from "../treasurehaul/treasure-haul-payload";
-import { ChestDrawerStates } from "../drawer-states";
-import { useSelector } from "react-redux";
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
+import { TreasureHaulItem, TreasureHaulPayload } from '../treasurehaul/treasure-haul-payload';
+import { ChestDrawerStates } from '../drawer-states';
+import { useSelector } from 'react-redux';
 
 const DefaultChestHaul = {
   items: {} as TreasureHaulPayload['haul'],
   displayedItem: null as null | TreasureHaulItem,
   editorDrawerOpen: null as null | ChestDrawerStates,
-}
+};
 
 export type ChestHaulStorage = typeof DefaultChestHaul;
 

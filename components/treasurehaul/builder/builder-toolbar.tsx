@@ -1,12 +1,12 @@
-"use client"
+'use client';
 
-import { AddIcon, LoadingIcon, ScrollQuillIcon, TreasureChestOpenIcon } from "@/components/svgs";
-import { setDrawerOpen, setToast, useChestDetailsSelector, useHaulSelector } from "@/lib/store/treasure-haul";
-import { TreasureHaulPayload } from "@/lib/treasurehaul/treasure-haul-payload";
-import clsx from "clsx";
-import { Tooltip } from "flowbite-react";
-import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { AddIcon, LoadingIcon, ScrollQuillIcon, TreasureChestOpenIcon } from '@/components/svgs';
+import { setDrawerOpen, setToast, useChestDetailsSelector, useHaulSelector } from '@/lib/store/treasure-haul';
+import { TreasureHaulPayload } from '@/lib/treasurehaul/treasure-haul-payload';
+import clsx from 'clsx';
+import { Tooltip } from 'flowbite-react';
+import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 export default function BuilderToolbar() {
   const haul = useHaulSelector();
@@ -20,7 +20,7 @@ export default function BuilderToolbar() {
       haul,
       previewImageSrc: chestDetails.chestIconURL,
       roomName: chestDetails.chestName,
-    }
+    };
 
     setIsCreatingChest(true);
 
@@ -33,12 +33,12 @@ export default function BuilderToolbar() {
     const { roomID } = await resp.json() as { roomID: number };
     setIsCreatingChest(false);
     dispatch(setToast({
-      text: `Successfully created a chest!`,
+      text: 'Successfully created a chest!',
       duration: null,
       icon: 'success',
       url: `${window.location.protocol}//${window.location.host}/treasurehaul/${roomID}`
     }));
-  }, [haul, chestDetails])
+  }, [haul, chestDetails, dispatch]);
 
   return (
     <div className={clsx(
@@ -117,5 +117,5 @@ export default function BuilderToolbar() {
         </button>
       </Tooltip>
     </div>
-  )
+  );
 }

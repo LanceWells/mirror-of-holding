@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import { MedievalSharp } from "next/font/google";
+import clsx from 'clsx';
+import { MedievalSharp } from 'next/font/google';
 
 export type ChestDetailsProps = {
   chestName: string;

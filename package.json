@@ -49,6 +49,8 @@
     "@svgr/webpack": "^8.1.0",
     "@types/ms": "^0.7.31",
     "@types/validator": "^13.11.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
     "immer": "^10.0.2",
     "prisma": "^5.2.0",
     "turbo": "^1.10.13"

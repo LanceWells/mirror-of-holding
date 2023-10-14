@@ -1,8 +1,8 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import CharacterBodySlice from "./character-body";
-import TreasureHaulSlice from "./treasure-haul";
-import ChestHaulSlice from "./chest-haul";
-import UserSlice from "./user";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import CharacterBodySlice from './character-body';
+import TreasureHaulSlice from './treasure-haul';
+import ChestHaulSlice from './chest-haul';
+import UserSlice from './user';
 
 const reducer = combineReducers({
   characterBody: CharacterBodySlice.reducer,

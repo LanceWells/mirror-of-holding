@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import { ReactNode, useEffect, useMemo, useState } from "react";
-import { ToastEntry } from "./toast-types";
-import { CloseIcon, CopyIcon, SuccessIcon } from "../svgs";
-import { Tooltip } from "flowbite-react";
+import clsx from 'clsx';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ToastEntry } from './toast-types';
+import { CloseIcon, CopyIcon, SuccessIcon } from '../svgs';
+import { Tooltip } from 'flowbite-react';
 
 export type ToastFeedProps = {
   onCloseToast: (key: string) => void;
@@ -40,7 +40,7 @@ export default function ToastFeed(props: ToastFeedProps) {
         icon={icon}
       />
     );
-  }), [toasts])
+  }), [toasts, onCloseToast]);
 
   return (
     <div className={clsx(
@@ -74,7 +74,7 @@ function ToastContainer(props: ToastContainerProps) {
     if (toast.duration) {
       setTimeout(() => onClose(toastKey), toast.duration);
     }
-  }, []);
+  }, [onClose, toast.duration, toastKey]);
 
   const onClickCopy = () => {
     if (!toast.url) { return; }
@@ -83,7 +83,7 @@ function ToastContainer(props: ToastContainerProps) {
       .then(() => {
         setCopyText('Copied!');
       });
-  }
+  };
 
   return (
     <div
@@ -164,7 +164,7 @@ function ToastContainer(props: ToastContainerProps) {
             onMouseLeave={() => {
               // The tooltip changes before it disappears, so changing the text immediately makes it
               // flash, which aint purdy.
-              setTimeout(() => setCopyText('Copy URL'), 100)
+              setTimeout(() => setCopyText('Copy URL'), 100);
             }}
             onClick={onClickCopy}
             className="bg-white rounded-lg translate-y-[2px]"

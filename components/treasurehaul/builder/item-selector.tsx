@@ -1,8 +1,8 @@
-import { BaseItem } from "@prisma/client";
-import prisma from '../../../lib/prisma'
-import BaseItemContainer from "./base-item-container";
-import clsx from "clsx";
-import BlankItemContainer from "./blank-item-container";
+import { BaseItem } from '@prisma/client';
+import prisma from '../../../lib/prisma';
+import BaseItemContainer from './base-item-container';
+import clsx from 'clsx';
+import BlankItemContainer from './blank-item-container';
 
 type ItemSelectorProps = {};
 
@@ -14,7 +14,7 @@ export default async function ItemSelector(props: ItemSelectorProps) {
   const haul = await LoadBaseItems();
 
   const itemOptions = haul.map((item) => (
-    <BaseItemContainer item={item}/>
+    <BaseItemContainer key={item.id} item={item}/>
   ));
 
   return (

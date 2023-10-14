@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { CircleIcon } from "@/components/svgs";
-import clsx from "clsx";
-import { useCallback, useState } from "react";
-import isURL from "validator/lib/isURL";
+import { CircleIcon } from '@/components/svgs';
+import clsx from 'clsx';
+import { useCallback, useState } from 'react';
+import isURL from 'validator/lib/isURL';
 
 export type HaulOpenButtonProps = {
   imageSrc: string;
@@ -26,7 +26,7 @@ export default function HaulOpenButton(props: HaulOpenButtonProps) {
       c.style.pointerEvents = 'auto';
     });
     setVisible(false);
-  }, [])
+  }, []);
 
   return (
     <button
@@ -66,5 +66,5 @@ export default function HaulOpenButton(props: HaulOpenButtonProps) {
         mouseOverButton && 'animate-shadow',
       )} />
     </button>
-  )
+  );
 }

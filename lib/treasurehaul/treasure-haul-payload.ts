@@ -1,5 +1,5 @@
-import { BaseItem, BaseItemType } from "@prisma/client";
-import { randomInt } from "crypto";
+import { BaseItem, BaseItemType } from '@prisma/client';
+import { randomInt } from 'crypto';
 
 export type TreasureHaulPayload = {
   haul: {
@@ -81,7 +81,7 @@ export const ItemEffectOptions: {
   sparkles: 'sparkles',
   particles: 'particles',
   none: 'none',
-}
+};
 
 function GenerateTreasureDetails(
   count: number,
@@ -94,27 +94,27 @@ function GenerateTreasureDetails(
     case TreasureHaulMoneyType.Coins: {
       if (count === 1) {
         return {
-          name: "A single copper coin",
+          name: 'A single copper coin',
           src: '/money/coins/single.png',
         };
       }
       if (count < 500) {
         return {
-          name: "A modest coinpurse",
+          name: 'A modest coinpurse',
           src: '/money/coins/purse.png',
         };
       }
       if (count < 100000) {
         return {
-          name: "A sizeable stack of coins",
+          name: 'A sizeable stack of coins',
           src: '/money/coins/mound.png',
         };
       }
       else {
         return {
-          name: "A grand wealth",
+          name: 'A grand wealth',
           src: '/money/coins/chest.png',
-        }
+        };
       }
     }
     case TreasureHaulMoneyType.Gems: {
@@ -123,7 +123,7 @@ function GenerateTreasureDetails(
         'emerald',
         'ruby',
         'sapphire',
-      ]
+      ];
 
       const gemIndex = randomInt(src.length);
 
@@ -139,7 +139,7 @@ function GenerateTreasureDetails(
       return {
         name: `A ${condition} ${src[gemIndex]}`,
         src: `/money/gems/${src[gemIndex]}.png`,
-      }
+      };
     }
     case TreasureHaulMoneyType.Jewelry: {
       const src = [
@@ -194,7 +194,7 @@ function GenerateTreasureDetails(
       return {
         name: 'A forgotten treasure',
         src: '/money/coins/purse.png',
-      }
+      };
     }
   }
 }
@@ -225,11 +225,11 @@ function TreasureHaulItemFromMoney(
 function TreasureHaulItemFromBlank() : TreasureHaulItem {
   return {
     effects: { type: 'none' },
-    itemName: "A brand new item",
-    src: "",
+    itemName: 'A brand new item',
+    src: '',
     type: BaseItemType.MagicItem,
     description: '',
-  }
+  };
 }
 
 const ItemToCardBack: {
@@ -240,7 +240,7 @@ const ItemToCardBack: {
   MagicItem: 'url(/cards/weapon.png)',
   Treasure: 'url(/cards/treasure.png)',
   Weapon: 'url(/cards/weapon.png)',
-}
+};
 
 export {
   TreasureHaulMoneyType,
@@ -248,4 +248,4 @@ export {
   TreasureHaulItemFromMoney,
   TreasureHaulItemFromBlank,
   ItemToCardBack,
-}
+};

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Drawer, { DrawerProps } from "@/components/drawer/drawer";
-import { ChestDrawerStates } from "@/lib/drawer-states";
-import { setDrawerOpen, useDrawerOpenSelector } from "@/lib/store/chest-haul";
-import { useDispatch } from "react-redux";
+import Drawer, { DrawerProps } from '@/components/drawer/drawer';
+import { ChestDrawerStates } from '@/lib/drawer-states';
+import { setDrawerOpen, useDrawerOpenSelector } from '@/lib/store/chest-haul';
+import { useDispatch } from 'react-redux';
 
 type DrawerContainerProps = {
   drawerStates: DrawerProps<ChestDrawerStates>['drawerStates']
@@ -23,5 +23,5 @@ export default function DrawerContainer(props: DrawerContainerProps) {
       drawerOpen={drawerOpen}
       onClose={() => dispatch(setDrawerOpen(null))}
     />
-  )
+  );
 }

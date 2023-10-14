@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import ChestDetails from "@/components/chestDetails/chest-details";
-import { useChestDetailsSelector } from "@/lib/store/treasure-haul";
+import ChestDetails from '@/components/chestDetails/chest-details';
+import { useChestDetailsSelector } from '@/lib/store/treasure-haul';
 
 export default function ChestDetailsContainer() {
   const chestDetails = useChestDetailsSelector();

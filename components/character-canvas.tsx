@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { DrawOutlineProcessing, SortDrawingLayers, ProcessImages, PostProcessing, ConstructColorReplacementProcessing } from "@/lib/canvas-processing";
-import { useFilters, useLayoutSelector, useOutfitSelector } from "@/lib/store/character-body";
-import { OutfitType, PartType } from "@prisma/client";
-import { useEffect, useRef } from "react"
+import { DrawOutlineProcessing, SortDrawingLayers, ProcessImages, PostProcessing, ConstructColorReplacementProcessing } from '@/lib/canvas-processing';
+import { useFilters, useLayoutSelector, useOutfitSelector } from '@/lib/store/character-body';
+import { OutfitType, PartType } from '@prisma/client';
+import { useEffect, useRef } from 'react';
 
 /**
  * A canvas used to render a character's image.
@@ -56,16 +56,16 @@ export default function CharacterCanvas() {
     const drawCmds = SortDrawingLayers(
       character,
       processing,
-    )
+    );
 
     ProcessImages(
       canvasRef.current,
       drawCmds,
       layouts,
     );
-  }, [canvasRef, character, filters]);
+  }, [canvasRef, character, filters, layouts]);
 
   return (
     <canvas className="h-full" ref={canvasRef}/>
-  )
+  );
 }

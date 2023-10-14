@@ -1,6 +1,6 @@
-import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit"
-import Cookies from "js-cookie"
-import { useSelector } from "react-redux";
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
 
 export const USER_COOKIES_KEY = 'user-data';
 
@@ -19,14 +19,14 @@ const getDefaultUserInfo = (): UserState['userInfo'] => {
         type: 'anon',
         id: parsedStoredInfo.id,
         name: parsedStoredInfo.name,
-      }
+      };
     }
   }
 
   return {
     type: 'loading',
   };
-}
+};
 
 export type StateOptions = {
   type: 'loading'
@@ -47,7 +47,7 @@ export type UserState = {
 
 const DefaultUserState: UserState = {
   userInfo: getDefaultUserInfo()
-}
+};
 
 const UserSlice = createSlice({
   name: 'user',
@@ -83,4 +83,4 @@ export const {
 
 export {
   useUserInfo,
-}
+};

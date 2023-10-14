@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { removeItemFromHaul, setDrawerOpen, updateItemInHaul, useDisplayedItemSelector } from "@/lib/store/treasure-haul";
-import ItemCard from "../item-card";
-import clsx from "clsx";
-import { ItemEffectOptions, ItemEffectUniformColor, ItemEffectUniformParticles, TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
-import { Button, Label, RangeSlider, Select, TextInput, Textarea } from "flowbite-react";
-import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { HuePicker, HuePickerProps } from "react-color";
+import { removeItemFromHaul, setDrawerOpen, updateItemInHaul, useDisplayedItemSelector } from '@/lib/store/treasure-haul';
+import ItemCard from '../item-card';
+import clsx from 'clsx';
+import { ItemEffectOptions, ItemEffectUniformColor, ItemEffectUniformParticles, TreasureHaulItem } from '@/lib/treasurehaul/treasure-haul-payload';
+import { Button, Label, RangeSlider, Select, TextInput, Textarea } from 'flowbite-react';
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { HuePicker, HuePickerProps } from 'react-color';
 import { produce } from 'immer';
 
 export default function ItemDetailsPane() {
@@ -22,7 +22,7 @@ export default function ItemDetailsPane() {
         />
       )}
     </div>
-  )
+  );
 }
 
 type ItemDetailsContentsProps = {
@@ -55,7 +55,7 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
     }));
 
     dispatch(setDrawerOpen(null));
-  }
+  };
 
   const handleClickDelete = useCallback(() => {
     if (!confirmDelete) {
@@ -70,11 +70,11 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
         setDrawerOpen(null)
       );
     }
-  }, [confirmDelete])
+  }, [confirmDelete, dispatch, itemKey]);
 
   const effectOptions = useMemo(
     () => Object.keys(ItemEffectOptions)
-      .map((effect) => (<option>{effect}</option>)),
+      .map((effect) => (<option key={effect}>{effect}</option>)),
     []
   );
 
@@ -148,13 +148,13 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
             onChange={(e) => {
               let effects: TreasureHaulItem['effects'] = {
                 type: 'none',
-              }
+              };
 
               switch (e.target.value as ItemEffectOptions) {
                 case 'enchanted':
                   effects = {
                     type: 'enchanted'
-                  }
+                  };
                   break;
 
                 case 'flaming': effects = {
@@ -166,7 +166,7 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
                       b: 0,
                     }
                   }
-                }
+                };
                   break;
 
                 case 'sparkles': effects = {
@@ -179,7 +179,7 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
                     particleLifetime: 50,
                     particleSpeed: 0,
                   }
-                }
+                };
                   break;
 
                 case 'particles': effects = {
@@ -192,13 +192,13 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
                     particleLifetime: 300,
                     particleSpeed: 0.05,
                   }
-                }
+                };
               }
 
               setFormData({
                 ...formData,
                 effects,
-              })
+              });
             }}
           >
             {effectOptions}
@@ -210,7 +210,7 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
               const updatedColor = produce(formData, (draft) => {
                 draft.effects.uniforms = {
                   color: color.rgb,
-                }
+                };
               });
               setFormData(updatedColor);
             },
@@ -238,7 +238,7 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
         }
       </Button>
     </div>
-  )
+  );
 }
 
 type UniformFieldsProps = {
@@ -271,7 +271,7 @@ function UniformFields(props: UniformFieldsProps) {
         </div>
       )
       : (<></>)
-    , [effects]);
+    , [effects, colorSettings.onChangeColor]);
 
   const particleOptions = useMemo(() =>
     effects.type === 'particles'
@@ -352,12 +352,12 @@ function UniformFields(props: UniformFieldsProps) {
         </div>
       )
       : (<></>)
-    , [effects]);
+    , [effects, particleSettings]);
 
   return (
     <div>
       {colorPicker}
       {particleOptions}
     </div>
-  )
+  );
 }

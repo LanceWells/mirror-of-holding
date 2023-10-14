@@ -1,16 +1,16 @@
 // Prisma does not support Edge without the Data Proxy currently
 
-import clsx from "clsx";
-import BuilderToolbar from "@/components/treasurehaul/builder/builder-toolbar";
-import DrawerContainer from "@/components/treasurehaul/builder/drawer-container";
-import BaseItemSetup from "@/components/treasurehaul/builder/base-item-setup";
-import ItemSelector from "@/components/treasurehaul/builder/item-selector";
-import ItemDetailsPane from "@/components/treasurehaul/builder/item-details-pane";
-import ToastFeedContainer from "@/components/treasurehaul/builder/toast-feed-container";
-import ChestDetailsEditor from "@/components/treasurehaul/builder/chest-details-editor";
-import ChestDetailsContainer from "@/components/treasurehaul/builder/chest-details-container";
-import HaulContentsContainer from "@/components/treasurehaul/builder/haul-contents-container";
-import PageToolbar from "@/components/page-toolbar/page-toolbar";
+import clsx from 'clsx';
+import BuilderToolbar from '@/components/treasurehaul/builder/builder-toolbar';
+import DrawerContainer from '@/components/treasurehaul/builder/drawer-container';
+import BaseItemSetup from '@/components/treasurehaul/builder/base-item-setup';
+import ItemSelector from '@/components/treasurehaul/builder/item-selector';
+import ItemDetailsPane from '@/components/treasurehaul/builder/item-details-pane';
+import ToastFeedContainer from '@/components/treasurehaul/builder/toast-feed-container';
+import ChestDetailsEditor from '@/components/treasurehaul/builder/chest-details-editor';
+import ChestDetailsContainer from '@/components/treasurehaul/builder/chest-details-container';
+import HaulContentsContainer from '@/components/treasurehaul/builder/haul-contents-container';
+import PageToolbar from '@/components/page-toolbar/page-toolbar';
 
 // export const runtime = 'edge'
 export const preferredRegion = 'home';

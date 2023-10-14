@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import ToastFeed from "@/components/toast/toast-feed";
-import { removeToast, useToastSelector } from "@/lib/store/treasure-haul";
-import { useDispatch } from "react-redux";
+import ToastFeed from '@/components/toast/toast-feed';
+import { removeToast, useToastSelector } from '@/lib/store/treasure-haul';
+import { useDispatch } from 'react-redux';
 
 export default function ToastFeedContainer() {
   const toasts = useToastSelector();
@@ -12,12 +12,12 @@ export default function ToastFeedContainer() {
     dispatch(removeToast({
       toastKey,
     }));
-  }
+  };
 
   return (
     <ToastFeed
       onCloseToast={onCloseToast}
       toasts={toasts}
     />
-  )
+  );
 }

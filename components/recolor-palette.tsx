@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { LoadImage } from "@/lib/canvas-processing";
-import { ColorInput, ColorReplacement, GroupColors, RGBToHexString } from "@/lib/colors";
-import { OutfitType } from "@prisma/client";
-import clsx from "clsx";
-import { useLayoutEffect, useState } from "react";
-import RecolorButton from "./recolor-button";
-import { useOutfitSelector, useOutfitTabSelector } from "@/lib/store/character-body";
+import { LoadImage } from '@/lib/canvas-processing';
+import { ColorInput, ColorReplacement, GroupColors, RGBToHexString } from '@/lib/colors';
+import { OutfitType } from '@prisma/client';
+import clsx from 'clsx';
+import { useLayoutEffect, useState } from 'react';
+import RecolorButton from './recolor-button';
+import { useOutfitSelector, useOutfitTabSelector } from '@/lib/store/character-body';
 
 async function GetImagePalletes(
   imgSrcs: string[],
@@ -75,10 +75,11 @@ export default function RecolorPalette(props: RecolorPaletteProps) {
 
     const outfitImages = Object.values(outfit[outfitTab] ?? {}).map((v) => v.src);
     GetImagePalletes(outfitImages, setColors);
-  }, [outfit]);
+  }, [outfit, outfitTab, thisTab]);
 
   const ces = colors.map((c) => (
     <RecolorButton
+      key={c.displayColor}
       id={c.displayColor}
       colorReplacement={c}
       outfit={thisTab}

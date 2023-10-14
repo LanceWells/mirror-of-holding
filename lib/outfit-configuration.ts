@@ -1,7 +1,7 @@
 import {
   OutfitType,
   PartType,
-} from "@prisma/client";
+} from '@prisma/client';
 
 enum OutfitLayerType {
   Skin,
@@ -55,13 +55,13 @@ const BodyPartOrderConfig: BodyPartOrderConfig = {
   FaceAccessory:   8,
   LeftArm:         9,
   LeftLeg:        10,
-}
+};
 
 const OutfitLayerTypeOrderConfig: OutfitLayerTypeOrderConfig = {
   Skin:     0,
   Clothing: 1,
   Armour:   2,
-}
+};
 
 const OutfitThumbnailConfig: OutfitThumbnailConfig = {
   Body:           PartType.Head,
@@ -76,7 +76,7 @@ const OutfitThumbnailConfig: OutfitThumbnailConfig = {
   Top:            PartType.Body,
   Vest:           PartType.Body,
   ArmAccessory:   PartType.LeftArm,
-}
+};
 
 export {
   OutfitLayerType,

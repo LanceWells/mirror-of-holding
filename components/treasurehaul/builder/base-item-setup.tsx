@@ -1,7 +1,7 @@
-import clsx from "clsx";
-import { ReactNode } from "react";
-import BuilderSearch from "./builder-search";
-import { MagnifyingGlassIcon } from "@/components/svgs";
+import clsx from 'clsx';
+import { ReactNode } from 'react';
+import BuilderSearch from './builder-search';
+import { MagnifyingGlassIcon } from '@/components/svgs';
 
 export default function BaseItemSetup(props: { itemSelector: ReactNode }) {
   return (
@@ -34,5 +34,5 @@ export default function BaseItemSetup(props: { itemSelector: ReactNode }) {
         {props.itemSelector}
       </div>
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { StateOptions } from "../store/user";
+import { StateOptions } from '../store/user';
 
 export function RandomUserDetails(): Extract<StateOptions, {type: 'anon'}> {
   const adjNum = Math.floor(Math.random() * adjectives.length);
@@ -16,7 +16,7 @@ export function RandomUserDetails(): Extract<StateOptions, {type: 'anon'}> {
     type: 'anon',
     id: `${adj}-${cla}-${ani}-${randomNum}`,
     name: `${adj} ${cla} ${ani}`,
-  }
+  };
 }
 
 const adjectives = [

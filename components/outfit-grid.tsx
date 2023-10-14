@@ -18,14 +18,14 @@ export default async function OutfitGrid(props: OutfitGridProps) {
       <OutfitTabSelector
         key={`${o}-tab-selector`}
         outfitType={o as OutfitType} />
-    ))
+    ));
 
   const tabs = Object.keys(OutfitType)
     .map((o) => (
       <OutfitTab key={`${o}-tab`} outfitType={o as OutfitType}>
         {outfits.get(o as OutfitType)}
       </OutfitTab>
-    ))
+    ));
 
   return (
     <div className='grid grid-cols-1 grid-rows-[125px_1fr] sm:w-full md:max-w-screen-lg'>

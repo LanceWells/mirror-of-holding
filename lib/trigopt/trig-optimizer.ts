@@ -17,7 +17,7 @@ class TrigCache {
   }
 
   cos(val: number) {
-    const cacheKey = Math.round(val * 100)
+    const cacheKey = Math.round(val * 100);
     if (!this.cosCache[cacheKey]) {
       this.cosCache[cacheKey] = Math.cos(val);
     }

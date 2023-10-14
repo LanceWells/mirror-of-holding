@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import { LoadingIcon } from "../svgs";
+import clsx from 'clsx';
+import { LoadingIcon } from '../svgs';
 
 export type SpinnerProps = {
   show?: boolean;

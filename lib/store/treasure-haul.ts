@@ -1,17 +1,17 @@
-import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
-import { TreasureHaulItem } from "../treasurehaul/treasure-haul-payload";
-import { HaulBuilderDrawerStates } from "../drawer-states";
-import { ToastEntry } from "@/components/toast/toast-types";
-import { ChestIconOptions } from "@/components/chestDetails/chest-details-options";
-import { BaseItemType, ItemTag } from "@prisma/client";
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+import { TreasureHaulItem } from '../treasurehaul/treasure-haul-payload';
+import { HaulBuilderDrawerStates } from '../drawer-states';
+import { ToastEntry } from '@/components/toast/toast-types';
+import { ChestIconOptions } from '@/components/chestDetails/chest-details-options';
+import { BaseItemType, ItemTag } from '@prisma/client';
 
 const TagSearchTypes = {
-  Tag: "Tag",
-}
+  Tag: 'Tag',
+};
 
 const DefaultTreasureHaul = {
-  name: "",
+  name: '',
   items: {} as {
     [P: string]: TreasureHaulItem
   },
@@ -21,9 +21,9 @@ const DefaultTreasureHaul = {
   },
   editorDrawerOpen: null as null | HaulBuilderDrawerStates,
   baseItemSearch: [] as (
-    | { type: "tag", tag: ItemTag }
-    | { type: "name", name: string }
-    | { type: "itemType", itemType: BaseItemType }
+    | { type: 'tag', tag: ItemTag }
+    | { type: 'name', name: string }
+    | { type: 'itemType', itemType: BaseItemType }
   )[],
   toasts: [] as [string, ToastEntry][],
   chestDetails: {
@@ -31,7 +31,7 @@ const DefaultTreasureHaul = {
     chestIconOption: 'chest' as ChestIconOptions,
     chestIconURL: ChestIconOptions['chest'] as string,
   }
-}
+};
 
 export type TreasureHaulStorage = typeof DefaultTreasureHaul;
 
@@ -54,7 +54,7 @@ const TreasureHaulSlice = createSlice({
       state.displayedItem = {
         item,
         itemKey,
-      }
+      };
     },
     removeItemFromHaul(state, action: PayloadAction<{ key: string }>) {
       delete state.items[action.payload.key];
@@ -70,7 +70,7 @@ const TreasureHaulSlice = createSlice({
         state.displayedItem = {
           item: thisItem,
           itemKey: action.payload.itemKey,
-        }
+        };
       }
     },
     setDrawerOpen(state, action: PayloadAction<TreasureHaulStorage['editorDrawerOpen']>) {
@@ -130,7 +130,7 @@ const useDisplayedItemSelector = () =>
       (state: HaulStore) => state.treasureHaul.displayedItem,
       (item) => item,
     )
-  )
+  );
 
 const useDrawerOpenSelector = () =>
   useSelector<HaulStore, TreasureHaulStorage['editorDrawerOpen']>(
@@ -138,7 +138,7 @@ const useDrawerOpenSelector = () =>
       (state: HaulStore) => state.treasureHaul.editorDrawerOpen,
       (open) => open,
     )
-  )
+  );
 
 const useSearchTermSelector = () =>
   useSelector<HaulStore, TreasureHaulStorage['baseItemSearch']>(
@@ -146,7 +146,7 @@ const useSearchTermSelector = () =>
       (state: HaulStore) => state.treasureHaul.baseItemSearch,
       (search) => search,
     )
-  )
+  );
 
 const useToastSelector = () =>
   useSelector<HaulStore, TreasureHaulStorage['toasts']>(
@@ -154,7 +154,7 @@ const useToastSelector = () =>
       (state: HaulStore) => state.treasureHaul.toasts,
       (toasts) => toasts,
     )
-  )
+  );
 
 const useChestDetailsSelector = () =>
   useSelector<HaulStore, TreasureHaulStorage['chestDetails']>(
@@ -162,7 +162,7 @@ const useChestDetailsSelector = () =>
       (state: HaulStore) => state.treasureHaul.chestDetails,
       (details) => details,
     )
-  )
+  );
 
 export default TreasureHaulSlice;
 

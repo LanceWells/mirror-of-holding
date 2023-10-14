@@ -162,7 +162,7 @@ const DefaultColorForPallete: DefaultColorForPallete = {
     [ColorType.medium]: '#f04f78',
     [ColorType.tint]: '#ed8099'
   },
-}
+};
 
 /**
  * This array represents a slice of a color wheel, where each degree (0 - 360), represents a
@@ -566,15 +566,15 @@ export type ColorInput = {
  * @returns The RGB values represented as a hex string.
  */
 function RGBToHexString(rgb: RGB): string {
-  const r = `${rgb.r.toString(16).padStart(2, '0')}`
-  const g = `${rgb.g.toString(16).padStart(2, '0')}`
-  const b = `${rgb.b.toString(16).padStart(2, '0')}`
+  const r = `${rgb.r.toString(16).padStart(2, '0')}`;
+  const g = `${rgb.g.toString(16).padStart(2, '0')}`;
+  const b = `${rgb.b.toString(16).padStart(2, '0')}`;
 
   return `#${r}${g}${b}`;
 }
 
 function HexStringToRGB(hex: string): RGB {
-  const noHash = hex.replaceAll("#", "");
+  const noHash = hex.replaceAll('#', '');
   const r = parseInt(noHash.substring(0, 2), 16);
   const g = parseInt(noHash.substring(2, 4), 16);
   const b = parseInt(noHash.substring(4, 6), 16);
@@ -700,16 +700,16 @@ function GroupColors(colors: ColorInput[]): ColorReplacement[] {
     if (cMax === cMin) {
       h = 0;
     } else if (cMax === r) {
-      h = (60 * (g - b) / delta + 360) % 360
+      h = (60 * (g - b) / delta + 360) % 360;
     } else if (cMax === g) {
-      h = (60 * (b - r) / delta + 120) % 360
+      h = (60 * (b - r) / delta + 120) % 360;
     } else if (cMax === b) {
-      h = (60 * (r - g) / delta + 240) % 360
+      h = (60 * (r - g) / delta + 240) % 360;
     }
 
     const v = cMax * 100;
 
-    const colorGroup = ColorWheel[Math.round(h)]
+    const colorGroup = ColorWheel[Math.round(h)];
     colorSet.add(colorGroup);
 
     const colorList = colorMap.get(colorGroup) ?? [];
@@ -732,10 +732,10 @@ function GroupColors(colors: ColorInput[]): ColorReplacement[] {
         if (colorSet.has(adjacentColor)) {
           colorGroup.push(...mapAdjacentColors(adjacentColor));
         }
-      })
+      });
 
     return colorGroup;
-  }
+  };
 
   const groupAdjacentColors = (): ColorGroup[][] => {
     const colorGroups: ColorGroup[][] = [];
@@ -751,7 +751,7 @@ function GroupColors(colors: ColorInput[]): ColorReplacement[] {
     }
 
     return colorGroups;
-  }
+  };
 
   const groups = groupAdjacentColors();
 
@@ -763,7 +763,7 @@ function GroupColors(colors: ColorInput[]): ColorReplacement[] {
         colorValue: color.colorValue,
         rgb: color.colorHex,
         count: color.count,
-      }))
+      }));
     });
 
     const primary = colorSets.sort((a, b) => b.count - a.count)[0];

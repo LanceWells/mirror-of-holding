@@ -1,6 +1,6 @@
-import { ColorGroup, DefaultColorForPallete } from "@/lib/colors";
-import clsx from "clsx";
-import { memo, useCallback } from "react";
+import { ColorGroup, DefaultColorForPallete } from '@/lib/colors';
+import clsx from 'clsx';
+import { memo, useCallback } from 'react';
 
 type RecolorSwatchProps = {
   onSelectColor: (color: ColorGroup) => void;
@@ -35,7 +35,7 @@ export default function RecolorSwatch(props: RecolorSwatchProps) {
         />
       );
     }
-  )
+  );
 
   return (
     <div className={clsx(
