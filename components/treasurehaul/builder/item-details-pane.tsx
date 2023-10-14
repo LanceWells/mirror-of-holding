@@ -156,6 +156,7 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
                     type: 'enchanted'
                   }
                   break;
+
                 case 'flaming': effects = {
                   type: 'flaming',
                   uniforms: {
@@ -166,7 +167,32 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
                     }
                   }
                 }
-                break;
+                  break;
+
+                case 'sparkles': effects = {
+                  type: 'sparkles',
+                  uniforms: {
+                    emitterX: 62,
+                    emitterY: 62,
+                    emitterRadius: 30,
+                    particleFrequency: 5,
+                    particleLifetime: 50,
+                    particleSpeed: 0,
+                  }
+                }
+                  break;
+                
+                  case 'particles': effects = {
+                    type: 'particles',
+                    uniforms: {
+                      emitterX: 32,
+                      emitterY: 32,
+                      emitterRadius: 30,
+                      particleFrequency: 10,
+                      particleLifetime: 1000,
+                      particleSpeed: 0.01,
+                    }
+                  }
               }
 
               setFormData({
@@ -221,30 +247,24 @@ function UniformFields(props: UniformFieldsProps) {
     colorSettings,
   } = props;
 
+  const colorPicker = useMemo(() =>
+    effects.type === 'flaming'
+      ? (
+        <div className='grid'>
+          <Label value="Effect Color" />
+          <HuePicker
+            className="justify-self-center"
+            color={effects.uniforms.color}
+            onChange={colorSettings.onChangeColor}
+          />
+        </div>
+      )
+      : (<></>)
+    , [effects]);
+
   return (
     <div>
-      <div className={clsx(
-        'grid',
-        effects.uniforms && effects.uniforms.color
-          ? 'visible'
-          : 'hidden'
-      )}>
-        <Label value="Effect Color" />
-        <HuePicker
-          className="justify-self-center"
-          color={effects.uniforms && effects.uniforms.color ? {
-              r: effects.uniforms.color.r,
-              g: effects.uniforms.color.g,
-              b: effects.uniforms.color.b,
-            } : {
-              r: 255,
-              g: 255,
-              b: 255,
-            }
-          }
-          onChange={colorSettings.onChangeColor}
-        />
-      </div>
+      {colorPicker}
     </div>
   )
 }

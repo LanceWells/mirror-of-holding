@@ -17,6 +17,22 @@ export type ItemEffectUniformColor = {
   }
 }
 
+export type ItemEffectUniformParticles = {
+  emitterX: number;
+  emitterY: number;
+  emitterRadius: number;
+  particleFrequency: number;
+  particleLifetime: number;
+  particleSpeed: number;
+}
+
+enum TreasureHaulMoneyType {
+  Coins,
+  Gems,
+  Jewelry,
+  Paintings,
+}
+
 export type ItemEffectNone = {
   type: 'none';
   uniforms?: undefined;
@@ -32,11 +48,14 @@ export type ItemEffectEnchanted = {
   uniforms?: undefined;
 }
 
-enum TreasureHaulMoneyType {
-  Coins,
-  Gems,
-  Jewelry,
-  Paintings,
+export type ItemEffectSparkles = {
+  type: 'sparkles';
+  uniforms: ItemEffectUniformParticles;
+}
+
+export type ItemEffectParticles = {
+  type: 'particles';
+  uniforms: ItemEffectUniformParticles;
 }
 
 export type TreasureHaulItem = {
@@ -44,7 +63,12 @@ export type TreasureHaulItem = {
   src: string;
   type: BaseItemType;
   description: string;
-  effects: ItemEffectNone | ItemEffectFlaming | ItemEffectEnchanted;
+  effects:
+    | ItemEffectNone
+    | ItemEffectFlaming
+    | ItemEffectEnchanted
+    | ItemEffectSparkles
+    | ItemEffectParticles;
 }
 
 export type ItemEffectOptions = TreasureHaulItem['effects']['type'];
@@ -54,6 +78,8 @@ export const ItemEffectOptions: {
 } = {
   enchanted: 'enchanted',
   flaming: 'flaming',
+  sparkles: 'sparkles',
+  particles: 'particles',
   none: 'none',
 }
 
