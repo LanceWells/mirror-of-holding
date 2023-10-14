@@ -28,6 +28,7 @@ type Emitter = {
     xAcc: number,
     yAcc: number,
     createdAt: number,
+    rotation: number,
   }[]
 }
 
@@ -358,6 +359,7 @@ const Effects: {
         xAcc: 0,
         yAcc: 0,
         createdAt: (time - delta + (t * i)),
+        rotation: direction,
       };
 
       emitter.particles.push(particle);
@@ -371,7 +373,14 @@ const Effects: {
       const elapsedTime = time - p.createdAt;
       const x = (p.xAcc * 0.5 * elapsedTime) + p.x0 + (p.xv0 * elapsedTime);
       const y = (p.yAcc * 0.5 * elapsedTime) + p.y0 + (p.yv0 * elapsedTime);
+
+      const xCenter = x + (imgs.particle.width / 2);
+      const yCenter = y + (imgs.particle.height / 2);
+      ctx.translate(xCenter, yCenter);
+      ctx.rotate(p.rotation);
+      ctx.translate(-xCenter, -yCenter);
       ctx.drawImage(imgs.particle, x, y, imgs.particle.width, imgs.particle.height);
+      ctx.resetTransform();
     });
   },
 

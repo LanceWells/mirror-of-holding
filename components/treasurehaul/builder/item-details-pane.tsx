@@ -316,12 +316,12 @@ function UniformFields(props: UniformFieldsProps) {
           <div>
             <Label value='Particle Frequency' />
             <RangeSlider
-              max={100}
+              max={1000}
               min={1}
-              value={effects.uniforms.particleFrequency}
+              value={effects.uniforms.particleFrequency * 10}
               onChange={(e) => particleSettings.onChangeParticle({
                 ...effects.uniforms,
-                particleFrequency: Number.parseInt(e.target.value),
+                particleFrequency: Number.parseInt(e.target.value) / 10,
               })}
             />
           </div>
