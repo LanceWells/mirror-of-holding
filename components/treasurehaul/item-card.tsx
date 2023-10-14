@@ -10,7 +10,6 @@ import {
 } from "@/lib/treasurehaul/treasure-haul-payload";
 import { TrigOptimizer } from "@/lib/trigopt/trig-optimizer";
 import clsx from "clsx";
-import { timeStamp } from "console";
 import { MedievalSharp } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
 
@@ -343,11 +342,11 @@ const Effects: {
 
     // pfreq = 10; 10 pps. Every 1000 / pfreq we should have 1.
     const t = 1000 / theseEffects.particleFrequency;
+
     // particles now - particles then
     const particlesToCreate = Math.floor(time / t) - Math.floor((time - delta) / t);
 
     
-    // const particlesToCreate = Math.floor(delta / 1000 * theseEffects.particleFrequency);
     for (let i = 0; i < particlesToCreate; i++) {
       const direction = 2 * Math.PI * Math.random();
 
@@ -372,7 +371,7 @@ const Effects: {
       const elapsedTime = time - p.createdAt;
       const x = (p.xAcc * 0.5 * elapsedTime) + p.x0 + (p.xv0 * elapsedTime);
       const y = (p.yAcc * 0.5 * elapsedTime) + p.y0 + (p.yv0 * elapsedTime);
-      ctx.drawImage(imgs.particle, x, y, imgs.particle.width * 2, imgs.particle.height * 2);
+      ctx.drawImage(imgs.particle, x, y, imgs.particle.width, imgs.particle.height);
     });
   },
 

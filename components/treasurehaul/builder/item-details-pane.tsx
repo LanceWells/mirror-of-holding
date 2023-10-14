@@ -3,8 +3,8 @@
 import { removeItemFromHaul, setDrawerOpen, updateItemInHaul, useDisplayedItemSelector } from "@/lib/store/treasure-haul";
 import ItemCard from "../item-card";
 import clsx from "clsx";
-import { ItemEffectOptions, ItemEffectUniformColor, TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
-import { Button, Label, Select, TextInput, Textarea } from "flowbite-react";
+import { ItemEffectOptions, ItemEffectUniformColor, ItemEffectUniformParticles, TreasureHaulItem } from "@/lib/treasurehaul/treasure-haul-payload";
+import { Button, Label, RangeSlider, Select, TextInput, Textarea } from "flowbite-react";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { HuePicker, HuePickerProps } from "react-color";
@@ -181,18 +181,18 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
                   }
                 }
                   break;
-                
-                  case 'particles': effects = {
-                    type: 'particles',
-                    uniforms: {
-                      emitterX: 32,
-                      emitterY: 32,
-                      emitterRadius: 30,
-                      particleFrequency: 10,
-                      particleLifetime: 1000,
-                      particleSpeed: 0.01,
-                    }
+
+                case 'particles': effects = {
+                  type: 'particles',
+                  uniforms: {
+                    emitterX: 32,
+                    emitterY: 32,
+                    emitterRadius: 30,
+                    particleFrequency: 100,
+                    particleLifetime: 300,
+                    particleSpeed: 0.05,
                   }
+                }
               }
 
               setFormData({
@@ -206,15 +206,22 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
         </div>
         <UniformFields
           colorSettings={{
-            color: (formData.effects as any)['color'],
             onChangeColor: (color) => {
               const updatedColor = produce(formData, (draft) => {
                 draft.effects.uniforms = {
                   color: color.rgb,
                 }
-              })
+              });
               setFormData(updatedColor);
             },
+          }}
+          particleSettings={{
+            onChangeParticle: (newParticleSettings) => {
+              const updatedSettings = produce(formData, (draft) => {
+                draft.effects.uniforms = newParticleSettings;
+              });
+              setFormData(updatedSettings);
+            }
           }}
           effects={formData.effects}
         />
@@ -236,8 +243,11 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
 
 type UniformFieldsProps = {
   effects: TreasureHaulItem['effects'];
-  colorSettings: ItemEffectUniformColor & {
+  colorSettings: {
     onChangeColor: HuePickerProps['onChange'];
+  },
+  particleSettings: {
+    onChangeParticle: (newSettings: ItemEffectUniformParticles) => void;
   }
 }
 
@@ -245,6 +255,7 @@ function UniformFields(props: UniformFieldsProps) {
   const {
     effects,
     colorSettings,
+    particleSettings,
   } = props;
 
   const colorPicker = useMemo(() =>
@@ -262,9 +273,91 @@ function UniformFields(props: UniformFieldsProps) {
       : (<></>)
     , [effects]);
 
+  const particleOptions = useMemo(() =>
+    effects.type === 'particles'
+      ? (
+        <div className='grid'>
+          <div>
+            <Label value='Emitter X' />
+            <RangeSlider
+              max={128}
+              min={0}
+              value={effects.uniforms.emitterX}
+              onChange={(e) => particleSettings.onChangeParticle({
+                ...effects.uniforms,
+                emitterX: Number.parseInt(e.target.value),
+              })}
+            />
+          </div>
+          <div>
+            <Label value='Emitter Y' />
+            <RangeSlider
+              max={128}
+              min={0}
+              value={effects.uniforms.emitterY}
+              onChange={(e) => particleSettings.onChangeParticle({
+                ...effects.uniforms,
+                emitterY: Number.parseInt(e.target.value),
+              })}
+            />
+          </div>
+          <div>
+            <Label value='Emitter Radius' />
+            <RangeSlider
+              max={64}
+              min={0}
+              value={-effects.uniforms.emitterRadius}
+              onChange={(e) => particleSettings.onChangeParticle({
+                ...effects.uniforms,
+                emitterRadius: -Number.parseInt(e.target.value),
+              })}
+            />
+          </div>
+          <div>
+            <Label value='Particle Frequency' />
+            <RangeSlider
+              max={100}
+              min={1}
+              value={effects.uniforms.particleFrequency}
+              onChange={(e) => particleSettings.onChangeParticle({
+                ...effects.uniforms,
+                particleFrequency: Number.parseInt(e.target.value),
+              })}
+            />
+          </div>
+          <div>
+            <Label value='Particle Lifetime' />
+            <RangeSlider
+              max={5000}
+              min={1}
+              value={effects.uniforms.particleLifetime}
+              onChange={(e) => particleSettings.onChangeParticle({
+                ...effects.uniforms,
+                particleLifetime: Number.parseInt(e.target.value),
+              })}
+            />
+          </div>
+          <div>
+            <Label value='Particle Speed' />
+            <RangeSlider
+              max={100}
+              min={0}
+              value={effects.uniforms.particleSpeed * 1000}
+              onChange={(e) => particleSettings.onChangeParticle({
+                ...effects.uniforms,
+                particleSpeed: Number.parseInt(e.target.value) / 1000,
+              })}
+            />
+          </div>
+        </div>
+      )
+      : (<></>)
+    , [effects]);
+
   return (
     <div>
       {colorPicker}
+      {particleOptions}
     </div>
   )
 }
