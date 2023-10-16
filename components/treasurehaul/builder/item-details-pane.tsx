@@ -178,6 +178,9 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
                     particleFrequency: 5,
                     particleLifetime: 50,
                     particleSpeed: 0,
+                    attractorStrength: 0,
+                    attractorX: 0,
+                    attractorY: 0,
                   }
                 };
                   break;
@@ -191,6 +194,9 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
                     particleFrequency: 100,
                     particleLifetime: 300,
                     particleSpeed: 0.05,
+                    attractorStrength: 0,
+                    attractorX: 0,
+                    attractorY: 0,
                   }
                 };
               }
@@ -346,6 +352,42 @@ function UniformFields(props: UniformFieldsProps) {
               onChange={(e) => particleSettings.onChangeParticle({
                 ...effects.uniforms,
                 particleSpeed: Number.parseInt(e.target.value) / 1000,
+              })}
+            />
+          </div>
+          <div>
+            <Label value='Attractor X' />
+            <RangeSlider
+              max={128}
+              min={0}
+              value={effects.uniforms.attractorX}
+              onChange={(e) => particleSettings.onChangeParticle({
+                ...effects.uniforms,
+                particleSpeed: Number.parseInt(e.target.value),
+              })}
+            />
+          </div>
+          <div>
+            <Label value='Attractor Y' />
+            <RangeSlider
+              max={128}
+              min={0}
+              value={effects.uniforms.particleSpeed}
+              onChange={(e) => particleSettings.onChangeParticle({
+                ...effects.uniforms,
+                particleSpeed: Number.parseInt(e.target.value),
+              })}
+            />
+          </div>
+          <div>
+            <Label value='Attractor Strength' />
+            <RangeSlider
+              max={100}
+              min={0}
+              value={effects.uniforms.particleSpeed * 100}
+              onChange={(e) => particleSettings.onChangeParticle({
+                ...effects.uniforms,
+                particleSpeed: Number.parseInt(e.target.value) / 100,
               })}
             />
           </div>

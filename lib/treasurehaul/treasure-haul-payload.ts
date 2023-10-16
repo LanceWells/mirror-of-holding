@@ -24,6 +24,9 @@ export type ItemEffectUniformParticles = {
   particleFrequency: number;
   particleLifetime: number;
   particleSpeed: number;
+  attractorX: number;
+  attractorY: number;
+  attractorStrength: number;
 }
 
 enum TreasureHaulMoneyType {
@@ -58,6 +61,11 @@ export type ItemEffectParticles = {
   uniforms: ItemEffectUniformParticles;
 }
 
+export type ItemEffectWebGPU = {
+  type: 'webgpu';
+  uniforms?: undefined;
+}
+
 export type TreasureHaulItem = {
   itemName: string;
   src: string;
@@ -68,7 +76,8 @@ export type TreasureHaulItem = {
     | ItemEffectFlaming
     | ItemEffectEnchanted
     | ItemEffectSparkles
-    | ItemEffectParticles;
+    | ItemEffectParticles
+    | ItemEffectWebGPU;
 }
 
 export type ItemEffectOptions = TreasureHaulItem['effects']['type'];
@@ -80,6 +89,7 @@ export const ItemEffectOptions: {
   flaming: 'flaming',
   sparkles: 'sparkles',
   particles: 'particles',
+  webgpu: 'webgpu',
   none: 'none',
 };
 

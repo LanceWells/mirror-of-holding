@@ -35,7 +35,6 @@ export default function HaulContentsContainer() {
   return (
     <HaulContents>
       <div className={clsx(
-        ['absolute'],
         ['z-20'],
         ['text-center', 'text-lg'],
         ['dark:text-white'],

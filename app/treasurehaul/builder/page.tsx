@@ -10,7 +10,6 @@ import ToastFeedContainer from '@/components/treasurehaul/builder/toast-feed-con
 import ChestDetailsEditor from '@/components/treasurehaul/builder/chest-details-editor';
 import ChestDetailsContainer from '@/components/treasurehaul/builder/chest-details-container';
 import HaulContentsContainer from '@/components/treasurehaul/builder/haul-contents-container';
-import PageToolbar from '@/components/page-toolbar/page-toolbar';
 
 // export const runtime = 'edge'
 export const preferredRegion = 'home';
@@ -20,8 +19,8 @@ export default function Builder() {
   return (
     <main
       className={clsx(
-        'min-h-screen',
-        'max-h-screen',
+        'min-h-[100dvh]',
+        'max-h-[100dvh]',
         'bg-slate-50',
         'dark:bg-slate-950',
         'top-0',
