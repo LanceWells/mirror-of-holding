@@ -36,7 +36,6 @@ export default function Drawer<T extends string>(props: DrawerProps<T>) {
         ['top-0', 'left-0'],
         ['z-50'],
         ['h-full', 'w-96'],
-        ['p-4'],
         ['overflow-y-auto', 'overflow-x-hidden'],
         ['pointer-events-auto'],
         ['transition-transform'],
@@ -45,7 +44,7 @@ export default function Drawer<T extends string>(props: DrawerProps<T>) {
         <button
           onClick={onClose}
           className={clsx(
-            ['absolute', 'top-0', 'right-0'],
+            ['fixed', 'top-0', 'left-0'],
             ['bg-slate-300', 'hover:bg-slate-200', 'dark:bg-slate-900', 'dark:hover:bg-slate-700'],
             ['transition-colors'],
             ['z-50'],

@@ -1,6 +1,7 @@
 'use client';
 
 import { LoadImage } from '@/lib/canvas-processing';
+import { RGBToHexString } from '@/lib/colors';
 import {
   ItemEffectFlaming,
   ItemEffectOptions,
@@ -16,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 export type ItemCardProps = {
   item: TreasureHaulItem;
   itemKey: string;
+  className?: string;
   onClick?: (itemKey: string) => void;
 }
 
@@ -39,6 +41,7 @@ export default function ItemCard(props: ItemCardProps) {
     item,
     itemKey,
     onClick,
+    className,
   } = props;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -255,7 +258,7 @@ export default function ItemCard(props: ItemCardProps) {
     // if (navigator.gpu) {
     //   runWebGPUShaders();
     // } else {
-      animationFrameID = requestAnimationFrame(animateCard);
+    animationFrameID = requestAnimationFrame(animateCard);
     // }
 
     return (() => {
@@ -269,7 +272,7 @@ export default function ItemCard(props: ItemCardProps) {
       LoadImage('/noise.png'),
       LoadImage('/firenoise.png'),
       // TODO: load this from uniform.
-      LoadImage('/particles/sparkle.png'),
+      LoadImage('/particles/sparkle-gray.png'),
     ]);
 
     setImgs({
@@ -296,26 +299,28 @@ export default function ItemCard(props: ItemCardProps) {
           onClick(itemKey);
         }
       }}
-      className={clsx(
-        onClick
-          ? ['dark:hover:border-cyan-100', 'hover:border-cyan-600']
-          : ['pointer-events-none'],
-        'drop-shadow-md',
-        'transition-all',
-        'rounded-xl',
-        'border-4',
-        'border-transparent',
-        'w-[192px]',
-        'h-[256px]',
-        'grid',
-        'grid-rows-[min-content_1fr]',
-        'gap-y-6',
-        'm-2',
-        'bg-no-repeat',
-        'bg-center',
-        'bg-cover',
-        'items-center',
-      )}
+      className={
+        clsx(
+          className,
+          onClick
+            ? ['dark:hover:border-cyan-100', 'hover:border-cyan-600']
+            : ['pointer-events-none'],
+          'drop-shadow-md',
+          'transition-all',
+          'rounded-xl',
+          'border-4',
+          'border-transparent',
+          'w-[192px]',
+          'h-[256px]',
+          'grid',
+          'grid-rows-[min-content_1fr]',
+          'gap-y-6',
+          'm-2',
+          'bg-no-repeat',
+          'bg-center',
+          'bg-cover',
+          'items-center',
+        )}
       style={{
         backgroundImage: cardBack,
         animationFillMode: 'both',
@@ -491,8 +496,8 @@ const Effects: {
     });
   },
 
-  particles: ({ ctx, imgs, time, delta, effects, emitter }) => {
-    const theseEffects = effects.uniforms as ItemEffectUniformParticles;
+  particles: ({ ctx, imgs, time, delta, effects, emitter, offscreenCtx }) => {
+    const eff = effects.uniforms as ItemEffectUniformParticles;
     ctx.clearRect(0, 0, 128, 128);
 
     /**
@@ -504,23 +509,24 @@ const Effects: {
      */
 
     emitter.particles = emitter.particles
-      .filter((p) => (time - p.createdAt) < theseEffects.particleLifetime);
+      .filter((p) => (time - p.createdAt) < eff.particleLifetime);
 
     // pfreq = 10; 10 pps. Every 1000 / pfreq we should have 1.
-    const t = 1000 / theseEffects.particleFrequency;
+    const t = 1000 / eff.particleFrequency;
 
     // particles now - particles then
     const particlesToCreate = Math.floor(time / t) - Math.floor((time - delta) / t);
 
 
     for (let i = 0; i < particlesToCreate; i++) {
-      const direction = 2 * Math.PI * Math.random();
+      const dirVariance = (eff.emitterCone / 2) - (Math.random() * eff.emitterCone);
+      const direction = eff.emitterDirection + dirVariance;
 
       const particle: Emitter['particles'][number] = {
-        x0: (Math.random() - 0.5) * theseEffects.emitterRadius + theseEffects.emitterX,
-        y0: (Math.random() - 0.5) * theseEffects.emitterRadius + theseEffects.emitterY,
-        xv0: (TrigOptimizer.sin(direction) * theseEffects.particleSpeed),
-        yv0: (TrigOptimizer.cos(direction) * theseEffects.particleSpeed),
+        x0: (Math.random() - 0.5) * eff.emitterRadius + eff.emitterX,
+        y0: (Math.random() - 0.5) * eff.emitterRadius + eff.emitterY,
+        xv0: (TrigOptimizer.sin(direction) * eff.particleSpeed),
+        yv0: (TrigOptimizer.cos(direction) * eff.particleSpeed),
         xAcc: 0,
         yAcc: 0,
         createdAt: (time - delta + (t * i)),
@@ -539,13 +545,33 @@ const Effects: {
       const x = (p.xAcc * 0.5 * elapsedTime) + p.x0 + (p.xv0 * elapsedTime);
       const y = (p.yAcc * 0.5 * elapsedTime) + p.y0 + (p.yv0 * elapsedTime);
 
+      const lifePercentage = elapsedTime / eff.particleLifetime;
+      const scale = eff.startSize + (eff.endSize - eff.startSize) * lifePercentage;
+      const color = {
+        r: eff.startColor.r + (eff.endColor.r - eff.startColor.r) * lifePercentage,
+        g: eff.startColor.g + (eff.endColor.g - eff.startColor.g) * lifePercentage,
+        b: eff.startColor.b + (eff.endColor.b - eff.startColor.b) * lifePercentage,
+        a: eff.startColor.a + (eff.endColor.a - eff.startColor.a) * lifePercentage,
+      };
+
       const xCenter = x + (imgs.particle.width / 2);
       const yCenter = y + (imgs.particle.height / 2);
-      ctx.translate(xCenter, yCenter);
-      ctx.rotate(p.rotation);
-      ctx.translate(-xCenter, -yCenter);
-      ctx.drawImage(imgs.particle, x, y, imgs.particle.width, imgs.particle.height);
-      ctx.resetTransform();
+      ctx.globalCompositeOperation = 'source-over';
+      offscreenCtx.translate(xCenter, yCenter);
+      offscreenCtx.rotate(p.rotation);
+      offscreenCtx.scale(scale, scale);
+      offscreenCtx.translate(-xCenter, -yCenter);
+      offscreenCtx.drawImage(imgs.particle, x, y, imgs.particle.width, imgs.particle.height);
+      offscreenCtx.resetTransform();
+
+      offscreenCtx.globalCompositeOperation = 'source-atop';
+      // offscreenCtx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
+      offscreenCtx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+      offscreenCtx.fillRect(0, 0, 128, 128);
+
+      ctx.drawImage(offscreenCtx.canvas, 0, 0);
+      offscreenCtx.globalCompositeOperation = 'source-over';
+      offscreenCtx.clearRect(0, 0, 128, 128);
     });
   },
 

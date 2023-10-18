@@ -9,6 +9,19 @@ export type TreasureHaulPayload = {
   previewImageSrc: string;
 }
 
+export type RGBColor = {
+  r: number;
+  g: number;
+  b: number;
+}
+
+export type RGBAColor = {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
 export type ItemEffectUniformColor = {
   color: {
     r: number;
@@ -20,6 +33,8 @@ export type ItemEffectUniformColor = {
 export type ItemEffectUniformParticles = {
   emitterX: number;
   emitterY: number;
+  emitterDirection: number;
+  emitterCone: number;
   emitterRadius: number;
   particleFrequency: number;
   particleLifetime: number;
@@ -27,6 +42,10 @@ export type ItemEffectUniformParticles = {
   attractorX: number;
   attractorY: number;
   attractorStrength: number;
+  startSize: number;
+  endSize: number;
+  startColor: RGBAColor;
+  endColor: RGBAColor;
 }
 
 enum TreasureHaulMoneyType {
@@ -53,7 +72,7 @@ export type ItemEffectEnchanted = {
 
 export type ItemEffectSparkles = {
   type: 'sparkles';
-  uniforms: ItemEffectUniformParticles;
+  uniforms?: undefined;
 }
 
 export type ItemEffectParticles = {

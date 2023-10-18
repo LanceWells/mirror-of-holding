@@ -7,7 +7,7 @@ import { ItemEffectOptions, ItemEffectUniformColor, ItemEffectUniformParticles, 
 import { Button, Label, RangeSlider, Select, TextInput, Textarea } from 'flowbite-react';
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { HuePicker, HuePickerProps } from 'react-color';
+import { AlphaPicker, HuePicker, HuePickerProps } from 'react-color';
 import { produce } from 'immer';
 
 export default function ItemDetailsPane() {
@@ -83,9 +83,15 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
       'grid',
       'h-full',
       'items-end',
-      'grid-rows-[min-content_min-content_1fr]'
+      'grid-rows-[min-content_min-content_1fr]',
     )}>
-      <div className="flex justify-center">
+      <div className={clsx(
+        ['sticky', 'top-0', 'z-10'],
+        ['justify-self-center', 'w-full'],
+        ['flex', 'justify-center'],
+        ['bg-gray-100', 'dark:bg-gray-800', 'shadow-md'],
+      )}>
+        {/* <div className="sticky top-0 z-10 justify-self-center w-full flex justify-center bg-current box-border"> */}
         <ItemCard
           item={formData}
           itemKey={itemKey}
@@ -96,6 +102,7 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
           'grid',
           'grid-cols-1',
           'gap-y-4',
+          'p-4',
         )}
         onSubmit={handleSubmit}
       >
@@ -171,17 +178,6 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
 
                 case 'sparkles': effects = {
                   type: 'sparkles',
-                  uniforms: {
-                    emitterX: 62,
-                    emitterY: 62,
-                    emitterRadius: 30,
-                    particleFrequency: 5,
-                    particleLifetime: 50,
-                    particleSpeed: 0,
-                    attractorStrength: 0,
-                    attractorX: 0,
-                    attractorY: 0,
-                  }
                 };
                   break;
 
@@ -191,12 +187,18 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
                     emitterX: 32,
                     emitterY: 32,
                     emitterRadius: 30,
-                    particleFrequency: 100,
-                    particleLifetime: 300,
+                    emitterCone: 360,
+                    emitterDirection: 45,
+                    particleFrequency: 50,
+                    particleLifetime: 100,
                     particleSpeed: 0.05,
                     attractorStrength: 0,
                     attractorX: 0,
                     attractorY: 0,
+                    startSize: 1,
+                    endSize: 1,
+                    startColor: { r: 255, g: 255, b: 0, a: 1.0 },
+                    endColor: { r: 255, g: 255, b: 0, a: 1.0 },
                   }
                 };
               }
@@ -282,114 +284,187 @@ function UniformFields(props: UniformFieldsProps) {
   const particleOptions = useMemo(() =>
     effects.type === 'particles'
       ? (
-        <div className='grid'>
-          <div>
-            <Label value='Emitter X' />
-            <RangeSlider
-              max={128}
-              min={0}
-              value={effects.uniforms.emitterX}
-              onChange={(e) => particleSettings.onChangeParticle({
-                ...effects.uniforms,
-                emitterX: Number.parseInt(e.target.value),
-              })}
-            />
+        <div className='grid gap-y-6'>
+          <div className='flex flex-col border border-gray-400 px-5 py-2 rounded-md gap-y-2'>
+            <Label value='Emitter' className='absolute -translate-y-6 bg-gray-100 dark:bg-gray-800 p-1' />
+            <div>
+              <Label value='Emitter X' />
+              <RangeSlider
+                max={128}
+                min={0}
+                value={effects.uniforms.emitterX}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  emitterX: Number.parseInt(e.target.value),
+                })}
+              />
+            </div>
+            <div>
+              <Label value='Emitter Y' />
+              <RangeSlider
+                max={128}
+                min={0}
+                value={effects.uniforms.emitterY}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  emitterY: Number.parseInt(e.target.value),
+                })}
+              />
+            </div>
+            <div>
+              <Label value='Emitter Radius' />
+              <RangeSlider
+                max={64}
+                min={0}
+                value={effects.uniforms.emitterRadius}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  emitterRadius: Number.parseInt(e.target.value),
+                })}
+              />
+            </div>
+            <div>
+              <Label value='Emitter Cone' />
+              <RangeSlider
+                max={360}
+                min={0}
+                value={effects.uniforms.emitterCone}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  emitterCone: Number.parseInt(e.target.value),
+                })}
+              />
+            </div>
+            <div>
+              <Label value='Emitter Direction' />
+              <RangeSlider
+                max={360}
+                min={1}
+                value={effects.uniforms.emitterDirection}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  emitterDirection: Number.parseInt(e.target.value),
+                })}
+              />
+            </div>
           </div>
-          <div>
-            <Label value='Emitter Y' />
-            <RangeSlider
-              max={128}
-              min={0}
-              value={effects.uniforms.emitterY}
-              onChange={(e) => particleSettings.onChangeParticle({
-                ...effects.uniforms,
-                emitterY: Number.parseInt(e.target.value),
-              })}
-            />
+          <div className='flex flex-col border border-gray-400 px-5 py-2 rounded-md gap-y-2'>
+            <Label value='Particle' className='absolute -translate-y-6 bg-gray-100 dark:bg-gray-800 p-1' />
+            <div>
+              <Label value='Particle Frequency' />
+              <RangeSlider
+                max={300}
+                min={1}
+                value={effects.uniforms.particleFrequency * 10}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  particleFrequency: Number.parseInt(e.target.value) / 10,
+                })}
+              />
+            </div>
+            <div>
+              <Label value='Particle Lifetime' />
+              <RangeSlider
+                max={1000}
+                min={1}
+                value={effects.uniforms.particleLifetime}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  particleLifetime: Number.parseInt(e.target.value),
+                })}
+              />
+            </div>
+            <div>
+              <Label value='Particle Speed' />
+              <RangeSlider
+                max={100}
+                min={0}
+                value={effects.uniforms.particleSpeed * 1000}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  particleSpeed: Number.parseInt(e.target.value) / 1000,
+                })}
+              />
+            </div>
           </div>
-          <div>
-            <Label value='Emitter Radius' />
-            <RangeSlider
-              max={64}
-              min={0}
-              value={-effects.uniforms.emitterRadius}
-              onChange={(e) => particleSettings.onChangeParticle({
-                ...effects.uniforms,
-                emitterRadius: -Number.parseInt(e.target.value),
-              })}
-            />
-          </div>
-          <div>
-            <Label value='Particle Frequency' />
-            <RangeSlider
-              max={1000}
-              min={1}
-              value={effects.uniforms.particleFrequency * 10}
-              onChange={(e) => particleSettings.onChangeParticle({
-                ...effects.uniforms,
-                particleFrequency: Number.parseInt(e.target.value) / 10,
-              })}
-            />
-          </div>
-          <div>
-            <Label value='Particle Lifetime' />
-            <RangeSlider
-              max={5000}
-              min={1}
-              value={effects.uniforms.particleLifetime}
-              onChange={(e) => particleSettings.onChangeParticle({
-                ...effects.uniforms,
-                particleLifetime: Number.parseInt(e.target.value),
-              })}
-            />
-          </div>
-          <div>
-            <Label value='Particle Speed' />
-            <RangeSlider
-              max={100}
-              min={0}
-              value={effects.uniforms.particleSpeed * 1000}
-              onChange={(e) => particleSettings.onChangeParticle({
-                ...effects.uniforms,
-                particleSpeed: Number.parseInt(e.target.value) / 1000,
-              })}
-            />
-          </div>
-          <div>
-            <Label value='Attractor X' />
-            <RangeSlider
-              max={128}
-              min={0}
-              value={effects.uniforms.attractorX}
-              onChange={(e) => particleSettings.onChangeParticle({
-                ...effects.uniforms,
-                particleSpeed: Number.parseInt(e.target.value),
-              })}
-            />
-          </div>
-          <div>
-            <Label value='Attractor Y' />
-            <RangeSlider
-              max={128}
-              min={0}
-              value={effects.uniforms.particleSpeed}
-              onChange={(e) => particleSettings.onChangeParticle({
-                ...effects.uniforms,
-                particleSpeed: Number.parseInt(e.target.value),
-              })}
-            />
-          </div>
-          <div>
-            <Label value='Attractor Strength' />
-            <RangeSlider
-              max={100}
-              min={0}
-              value={effects.uniforms.particleSpeed * 100}
-              onChange={(e) => particleSettings.onChangeParticle({
-                ...effects.uniforms,
-                particleSpeed: Number.parseInt(e.target.value) / 100,
-              })}
-            />
+          <div className='flex flex-col border border-gray-400 px-5 py-2 rounded-md gap-y-2'>
+            <Label value='Lifetime' className='absolute -translate-y-6 bg-gray-100 dark:bg-gray-800 p-1' />
+            <div>
+              <Label value='Start Size' />
+              <RangeSlider
+                max={100}
+                min={0}
+                value={effects.uniforms.startSize * 100}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  startSize: Number.parseInt(e.target.value) / 100,
+                })}
+              />
+            </div>
+            <div>
+              <Label value='End Size' />
+              <RangeSlider
+                max={100}
+                min={0}
+                value={effects.uniforms.endSize * 100}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  endSize: Number.parseInt(e.target.value) / 100,
+                })}
+              />
+            </div>
+            <div className='max-w-full box-border'>
+              <Label value='Start Color' />
+              <HuePicker
+                // HACK: Using the max w constraint. There's probably some box border fix that works.
+                className="justify-self-center max-w-[95%]"
+                color={effects.uniforms.startColor}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  startColor: {
+                    ...e.rgb,
+                    a: effects.uniforms.startColor.a,
+                  }
+                })}
+              />
+              <AlphaPicker
+                className="justify-self-center max-w-[95%]"
+                color={effects.uniforms.startColor}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  startColor: {
+                    ...effects.uniforms.startColor,
+                    a: e.rgb.a ?? 1.0,
+                  }
+                })}
+              />
+            </div>
+            <div className='max-w-full box-border'>
+              <Label value='End Color' />
+              <HuePicker
+                // HACK: Using the max w constraint. There's probably some box border fix that works.
+                className="justify-self-center max-w-[95%]"
+                color={effects.uniforms.endColor}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  endColor: {
+                    ...e.rgb,
+                    a: effects.uniforms.endColor.a,
+                  }
+                })}
+              />
+              <AlphaPicker
+                className="justify-self-center max-w-[95%]"
+                color={effects.uniforms.endColor}
+                onChange={(e) => particleSettings.onChangeParticle({
+                  ...effects.uniforms,
+                  endColor: {
+                    ...effects.uniforms.endColor,
+                    a: e.rgb.a ?? 1.0,
+                  }
+                })}
+              />
+            </div>
           </div>
         </div>
       )
