@@ -25,7 +25,7 @@ export default function Drawer<T extends string>(props: DrawerProps<T>) {
     <div className={clsx(
       ['fixed'],
       ['left-0', 'top-0'],
-      ['z-40'],
+      ['z-30'],
       ['w-screen', 'h-screen'],
       ['grid', 'grid-cols-[min-content_1fr]'],
       ['pointer-events-none'],

@@ -58,7 +58,7 @@ enum TreasureHaulMoneyType {
 export type ItemEffectNone = {
   type: 'none';
   uniforms?: undefined;
-} 
+}
 
 export type ItemEffectFlaming = {
   type: 'flaming';
@@ -80,8 +80,8 @@ export type ItemEffectParticles = {
   uniforms: ItemEffectUniformParticles;
 }
 
-export type ItemEffectWebGPU = {
-  type: 'webgpu';
+export type ItemEffectWebGL2 = {
+  type: 'webgl2';
   uniforms?: undefined;
 }
 
@@ -91,12 +91,12 @@ export type TreasureHaulItem = {
   type: BaseItemType;
   description: string;
   effects:
-    | ItemEffectNone
-    | ItemEffectFlaming
-    | ItemEffectEnchanted
-    | ItemEffectSparkles
-    | ItemEffectParticles
-    | ItemEffectWebGPU;
+  | ItemEffectNone
+  | ItemEffectFlaming
+  | ItemEffectEnchanted
+  | ItemEffectSparkles
+  | ItemEffectParticles
+  | ItemEffectWebGL2;
 }
 
 export type ItemEffectOptions = TreasureHaulItem['effects']['type'];
@@ -108,7 +108,7 @@ export const ItemEffectOptions: {
   flaming: 'flaming',
   sparkles: 'sparkles',
   particles: 'particles',
-  webgpu: 'webgpu',
+  webgl2: 'webgl2',
   none: 'none',
 };
 
@@ -119,7 +119,7 @@ function GenerateTreasureDetails(
   name: string;
   src: string;
 } {
-  switch(type) {
+  switch (type) {
     case TreasureHaulMoneyType.Coins: {
       if (count === 1) {
         return {
@@ -251,7 +251,7 @@ function TreasureHaulItemFromMoney(
   };
 }
 
-function TreasureHaulItemFromBlank() : TreasureHaulItem {
+function TreasureHaulItemFromBlank(): TreasureHaulItem {
   return {
     effects: { type: 'none' },
     itemName: 'A brand new item',

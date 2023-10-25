@@ -15,8 +15,16 @@
         "react"
     ],
     "rules": {
-        "quotes": ["error", "single"],
+        "quotes": [
+            "error",
+            "single"
+        ],
         "semi": "error",
-        "@next/next/no-img-element": "off"
+        "@next/next/no-img-element": "off",
+        "no-tabs": "error",
+        "indent": [
+            "error",
+            2
+        ]
     }
 }

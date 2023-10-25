@@ -25,10 +25,12 @@ export default function BuilderToolbar() {
     setIsCreatingChest(true);
 
     const resp = await fetch(
-      '/api/treasurehaul/builder', {
-      body: JSON.stringify(payload),
-      method: 'POST',
-    });
+      '/api/treasurehaul/builder',
+      {
+        body: JSON.stringify(payload),
+        method: 'POST',
+      }
+    );
 
     const { roomID } = await resp.json() as { roomID: number };
     setIsCreatingChest(false);
@@ -46,7 +48,7 @@ export default function BuilderToolbar() {
       ['dark:bg-slate-600', 'dark:border-gray-600'],
       ['w-[90%]', 'md:h-72', 'md:w-16'],
       ['-translate-x-1/2', 'md:-translate-y-1/2',],
-      ['z-30'],
+      ['z-20'],
       ['left-1/2', 'bottom-4', 'md:top-1/2', 'md:left-12'],
       ['fixed'],
       ['rounded-full'],

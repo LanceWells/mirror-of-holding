@@ -10,6 +10,7 @@ import ToastFeedContainer from '@/components/treasurehaul/builder/toast-feed-con
 import ChestDetailsEditor from '@/components/treasurehaul/builder/chest-details-editor';
 import ChestDetailsContainer from '@/components/treasurehaul/builder/chest-details-container';
 import HaulContentsContainer from '@/components/treasurehaul/builder/haul-contents-container';
+import PixiOverlay from '@/components/pixi-overlay/pixi-overlay';
 
 // export const runtime = 'edge'
 export const preferredRegion = 'home';
@@ -42,6 +43,7 @@ export default function Builder() {
       />
       <BuilderToolbar />
       <ToastFeedContainer />
+      <PixiOverlay />
     </main>
   );
 }

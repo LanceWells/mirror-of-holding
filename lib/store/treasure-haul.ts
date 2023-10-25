@@ -30,7 +30,12 @@ const DefaultTreasureHaul = {
     chestName: 'A mysterious chest',
     chestIconOption: 'chest' as ChestIconOptions,
     chestIconURL: ChestIconOptions['chest'] as string,
-  }
+  },
+  cardVisiblity: {} as {
+    [canvasKey: string]: {
+      itemKey: string;
+    }
+  },
 };
 
 export type TreasureHaulStorage = typeof DefaultTreasureHaul;
@@ -100,6 +105,14 @@ const TreasureHaulSlice = createSlice({
       state.chestDetails.chestIconURL = action.payload.chestIconURL;
       state.chestDetails.chestIconOption = action.payload.chestIconOption;
       state.chestDetails.chestName = action.payload.chestName;
+    },
+    setCardVisibility(state, action: PayloadAction<{ canvasKey: string; itemKey: string }>) {
+      state.cardVisiblity[action.payload.canvasKey] = {
+        itemKey: action.payload.itemKey,
+      };
+    },
+    removeCardVisibility(state, action: PayloadAction<{ canvasKey: string }>) {
+      delete state.cardVisiblity[action.payload.canvasKey];
     }
   },
 });
@@ -164,6 +177,14 @@ const useChestDetailsSelector = () =>
     )
   );
 
+const useCardVisibilitySelector = () =>
+  useSelector<HaulStore, TreasureHaulStorage['cardVisiblity']>(
+    createSelector(
+      (state: HaulStore) => state.treasureHaul.cardVisiblity,
+      (cardVisiblity) => cardVisiblity,
+    )
+  );
+
 export default TreasureHaulSlice;
 
 export const {
@@ -176,6 +197,8 @@ export const {
   setToast,
   removeToast,
   setChestDetails,
+  setCardVisibility,
+  removeCardVisibility,
 } = TreasureHaulSlice.actions;
 
 export {
@@ -186,5 +209,6 @@ export {
   useSearchTermSelector,
   useToastSelector,
   useChestDetailsSelector,
+  useCardVisibilitySelector,
   DefaultTreasureHaul,
 };

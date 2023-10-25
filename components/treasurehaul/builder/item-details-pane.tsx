@@ -176,11 +176,6 @@ function ItemDetailsContents(props: ItemDetailsContentsProps) {
                 };
                   break;
 
-                case 'sparkles': effects = {
-                  type: 'sparkles',
-                };
-                  break;
-
                 case 'particles': effects = {
                   type: 'particles',
                   uniforms: {

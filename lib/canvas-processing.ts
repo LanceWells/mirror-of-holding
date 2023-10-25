@@ -44,7 +44,7 @@ export function SortDrawingLayers(
         part,
         postProcessing,
       };
-      
+
       groupedLayers[partType as PartType] = partLayer;
     });
   });
@@ -127,48 +127,38 @@ export type DrawCommand = {
   * @returns The image with the rendered outline.
   */
 export const DrawOutlineProcessing: PostProcessing = async (img) => {
- // https://stackoverflow.com/a/28416298/17503966
- const canvas = document.createElement('canvas');
- const ctx = canvas.getContext('2d');
- if (!ctx) { return; }
+  // https://stackoverflow.com/a/28416298/17503966
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) { return; }
 
- let dArr = [
-   // -1, -1,
-   //  1, -1,
-   // -1,  1,
-   //  1,  1,
+  let dArr = [0, -1, -1, 0, 1, 0, 0, 1],
+    s = 1,
+    i = 0,
+    x = 1,
+    y = 1;
 
-    0, -1,
-   -1,  0,
-    1,  0,
-    0,  1,
- ],
-   s = 1,
-   i = 0,
-   x = 1,
-   y = 1;
+  for (; i < dArr.length; i += 2) {
+    ctx.drawImage(img.img, x + dArr[i] * s, y + dArr[i + 1] * s);
+  }
 
- for (; i < dArr.length; i+= 2) {
-   ctx.drawImage(img.img, x + dArr[i]*s, y + dArr[i+1]*s);
- }
+  ctx.globalCompositeOperation = 'source-in';
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
- ctx.globalCompositeOperation = 'source-in';
- ctx.fillStyle = 'black';
- ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.drawImage(img.img, x, y);
 
- ctx.globalCompositeOperation = 'source-over';
- ctx.drawImage(img.img, x, y);
+  const dataURL = canvas.toDataURL();
+  const newImg = await LoadImage(dataURL);
 
- const dataURL = canvas.toDataURL();
- const newImg = await LoadImage(dataURL);
-
- return {
-   img: newImg,
-   adjustments: {
-     x: (img.adjustments.x) - s,
-     y: (img.adjustments.y) - s,
-   }
- };
+  return {
+    img: newImg,
+    adjustments: {
+      x: (img.adjustments.x) - s,
+      y: (img.adjustments.y) - s,
+    }
+  };
 };
 
 export function ConstructColorReplacementProcessing(filter: ColorFilter): PostProcessing {
@@ -190,16 +180,16 @@ export function ConstructColorReplacementProcessing(filter: ColorFilter): PostPr
     for (let i = 0; i < imgData.data.length; i += 4) {
       const
         r = imgData.data[i],
-        g = imgData.data[i+1],
-        b = imgData.data[i+2];
-      
-      const thisHex = RGBToHexString({r, g, b});
+        g = imgData.data[i + 1],
+        b = imgData.data[i + 2];
+
+      const thisHex = RGBToHexString({ r, g, b });
       let replace = hexMap.get(thisHex);
       if (replace) {
         const newRGB = HexStringToRGB(replace);
-        imgData.data[i]    = newRGB.r;
-        imgData.data[i+1]  = newRGB.g;
-        imgData.data[i+2]  = newRGB.b;
+        imgData.data[i] = newRGB.r;
+        imgData.data[i + 1] = newRGB.g;
+        imgData.data[i + 2] = newRGB.b;
       }
     }
 
@@ -243,7 +233,7 @@ export function CalculateDrawingCoords(
   adjustments?: DrawingCoords,
 ): DrawingCoords {
   let x = ImageCentering, y = ImageCentering;
-    
+
   // Layouts are relative positions from the body to the "focal point" of the part. For example,
   // we could have -2/+3 for our X/Y, which would mean that the focal point of the given part is
   // 2 pixels left, and 3 pixels down from the focal point of the body.
@@ -267,7 +257,7 @@ export function CalculateDrawingCoords(
     y += adjustments.y;
   }
 
-  return {x, y};
+  return { x, y };
 }
 
 /**
@@ -287,7 +277,7 @@ export async function ProcessImages(
 
   const imgPromises = cmds.map(async (c) => {
     if (!c.part) { return undefined; }
-    
+
     const imgUrl = c.part.src;
     const image = await LoadImage(imgUrl);
 
@@ -344,7 +334,7 @@ export async function ProcessImages(
     }
   }
 
-  const outlineImage = await DrawOutlineProcessing({img: outlineCanvas, adjustments: {x: 0, y: 0}});
+  const outlineImage = await DrawOutlineProcessing({ img: outlineCanvas, adjustments: { x: 0, y: 0 } });
 
   ctx.imageSmoothingEnabled = false;
   ctx.clearRect(0, 0, canvas.width, canvas.height);

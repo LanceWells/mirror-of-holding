@@ -1,7 +1,8 @@
 'use client';
 
 import { LoadImage } from '@/lib/canvas-processing';
-import { RGBToHexString } from '@/lib/colors';
+import { renderWithCanvasCtx, renderWithWebGL2Ctx } from '@/lib/card-render/card-render';
+import { removeCardVisibility, setCardVisibility } from '@/lib/store/treasure-haul';
 import {
   ItemEffectFlaming,
   ItemEffectOptions,
@@ -12,7 +13,8 @@ import {
 import { TrigOptimizer } from '@/lib/trigopt/trig-optimizer';
 import clsx from 'clsx';
 import { MedievalSharp } from 'next/font/google';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 export type ItemCardProps = {
   item: TreasureHaulItem;
@@ -52,219 +54,53 @@ export default function ItemCard(props: ItemCardProps) {
     particle?: HTMLImageElement,
   }>({});
 
+  const dispatch = useDispatch();
+
+  // We could have two cards with the same item key if one is visible in a drawer. That would give
+  // us multiple elements to observe. Make a unique key here instead.
+  const canvasKey = useMemo(() => {
+    return `${itemKey}_${Math.floor(Math.random() * 10000000)}`;
+  }, [itemKey]);
+
   useEffect(() => {
-    if (
-      !canvasRef || !canvasRef.current ||
-      !imgs || !imgs.noise || !imgs.src || !imgs.particle
-    ) {
-      return;
-    }
-
-    // const ctx = null;
-    const ctx = canvasRef.current.getContext('2d');
-    if (!ctx) {
-      return;
-    }
-
-    const offscreenCtx = new OffscreenCanvas(128, 128).getContext('2d');
-    if (!offscreenCtx) {
-      return;
-    }
-
-    ctx.imageSmoothingEnabled = false;
-
-    let animationFrameID: number | undefined = undefined;
-    let lastTime: number | undefined;
-    let emitter: Emitter = {
-      particles: [],
-    };
-
-    const runWebGPUShaders = async () => {
-      const adapter = await navigator.gpu.requestAdapter();
-      if (!adapter) {
-        console.debug('couldn\'t get the adapter, even though we support GPU!');
-        return;
-      }
-
-      const device = await adapter.requestDevice();
-      const context = canvasRef.current!.getContext('webgpu');
-      if (!context) {
-        console.debug('couldn\'t get the webGPU context for the canvas');
-        return;
-      }
-
-      const format = navigator.gpu.getPreferredCanvasFormat();
-      context.configure({
-        device,
-        format,
-        // Only saw this in MDN tutorial, not in the Chrome one.
-        alphaMode: 'premultiplied',
-      });
-
-      const code = `
-      @vertex fn vertexMain(
-        @builtin(vertex_index) i: u32
-      ) ->
-        @builtin(position) vec4f {
-        const pos = array(vec2f(0, 1), vec2f(-1, -1), vec2f(1, -1));
-        return vec4f(pos[i], 0, 1);
-      }
-      
-      @fragment fn fragmentMain() ->
-        @location(0) vec4f {
-        return vec4f(1, 0, 0, 1);
-      }
-      `;
-
-      const code2 = `
-      struct VertexOut {
-        @builtin(position) position: vec4f,
-        @location(0) color: vec4f
-      }
-
-      @vertex
-      fn vertexMain(
-        @location(0) position: vec4f,
-        @location(1) color: vec4f
-      ) -> VertexOut
-      {
-        var output: VertexOut;
-        output.position = position;
-        output.color = color;
-        return output;
-      }
-
-      @fragment
-      fn fragmentMain(fragData: VertexOut) ->
-      @location(0) vec4f
-      {
-        return fragData.color;
-      }
-      `;
-
-      // ---- Start of input param actions ----
-      const code2Vertices = new Float32Array([
-        -0.5, -0.5, +0.0, 1, 1, 0, 0, 1,
-        +0.0, +0.4, +0.0, 1, 0, 1, 0, 1,
-        +0.5, -0.5, +0.0, 1, 0, 0, 1, 1,
-      ]);
-
-      const code2VertexBuffer = device.createBuffer({
-        size: code2Vertices.byteLength,
-        usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
-      });
-
-      device.queue.writeBuffer(
-        code2VertexBuffer,
-        0,
-        code2Vertices,
-        0,
-        code2Vertices.length,
+    if (item.effects.type === 'webgl2') {
+      renderWithWebGL2Ctx(
+        canvasRef,
+        imgs,
+        item,
+        Effects,
       );
-
-      const code2VertexBuffers: GPURenderPipelineDescriptor['vertex']['buffers'] = [
-        {
-          attributes: [
-            {
-              shaderLocation: 0, // position
-              offset: 0,
-              format: 'float32x4',
-            },
-            {
-              shaderLocation: 1, // color
-              offset: 16,
-              format: 'float32x4',
-            },
-          ],
-          arrayStride: 32,
-          stepMode: 'vertex',
-        }
-      ];
-
-      const colorAttachments2: GPURenderPassDescriptor['colorAttachments'] = [
-        {
-          clearValue: { r: 0.0, g: 0.0, b: 0.0, a: 0.0 },
-          loadOp: 'clear',
-          storeOp: 'store',
-          view: context.getCurrentTexture().createView(),
-        },
-      ];
-      // ---- End of input param actions ----
-
-      const shaderModule = device.createShaderModule({
-        code: code2,
-      });
-
-      const pipeline = device.createRenderPipeline({
-        layout: 'auto',
-        vertex: {
-          module: shaderModule,
-          entryPoint: 'vertexMain',
-          buffers: code2VertexBuffers,
-        },
-        fragment: {
-          module: shaderModule,
-          entryPoint: 'fragmentMain',
-          targets: [{ format }]
-        },
-      });
-
-      const commandEncoder = device.createCommandEncoder();
-      const colorAttachments: GPURenderPassDescriptor['colorAttachments'] = [
-        {
-          view: context.getCurrentTexture().createView(),
-          loadOp: 'clear',
-          storeOp: 'store',
-        },
-      ];
-
-      const passEncoder = commandEncoder.beginRenderPass({
-        colorAttachments: colorAttachments2,
-      });
-      passEncoder.setPipeline(pipeline);
-      // --- more stuff for vars
-      passEncoder.setVertexBuffer(0, code2VertexBuffer);
-      // --- end more stuff for vars
-      passEncoder.draw(3);
-      passEncoder.end();
-      device.queue.submit([commandEncoder.finish()]);
-    };
-
-    function animateCard(timestamp: number) {
-      lastTime = lastTime || timestamp;
-
-      Effects[item.effects.type]({
-        ctx: ctx!,
-        imgs: {
-          noise: imgs.noise!,
-          particle: imgs.particle!,
-          patchyNoise: imgs.patchyNoise!,
-          src: imgs.src!,
-        },
-        time: timestamp,
-        delta: timestamp - lastTime,
-        offscreenCtx: offscreenCtx!,
-        effects: item.effects,
-        emitter,
-        webGPU: {
-
-        },
-      });
-
-      lastTime = timestamp;
-      animationFrameID = requestAnimationFrame(animateCard);
+    } else {
+      renderWithCanvasCtx(
+        canvasRef,
+        imgs,
+        item,
+        Effects,
+      );
     }
+  }, [canvasRef, imgs, item, itemKey]);
 
-    // if (navigator.gpu) {
-    //   runWebGPUShaders();
-    // } else {
-    animationFrameID = requestAnimationFrame(animateCard);
-    // }
+  // For use with the pixijs overlay. This lets us notify the overlay that we now have a rendered
+  // item card that can be watched.
+  useEffect(() => {
+    dispatch(setCardVisibility({
+      canvasKey,
+      itemKey,
+    }));
 
     return (() => {
-      cancelAnimationFrame(animationFrameID!);
+      dispatch(removeCardVisibility({
+        canvasKey,
+      }));
     });
-  }, [canvasRef, imgs, item, itemKey]);
+
+    // return (() => {
+    //   dispatch(setCardVisibility({
+    //     canvasKey,
+    //     itemKey,
+    //   }));
+    // });
+  }, [canvasKey, itemKey, dispatch]);
 
   const loadImages = useCallback(async () => {
     const [src, noise, patchyNoise, particle] = await Promise.all([
@@ -327,6 +163,15 @@ export default function ItemCard(props: ItemCardProps) {
       }}
     >
       <canvas
+        // // These data items let us query the exact bounding box of the canvas from another
+        // // component. The reason that we're doing this (which may seem hacky), is that it is a more
+        // // optimized option to get the box of an item versus saving this into something like a redux
+        // // store. Furthermore, this gets us the *precise* window coordinates for these items, rather
+        // // than the assumed location.
+        // data-item-canvas
+        // data-item-key={itemKey}
+        id={canvasKey}
+        data-item-canvas
         className={clsx(
           'rounded-lg',
           'justify-self-center',
@@ -583,7 +428,7 @@ const Effects: {
     ctx.drawImage(imgs.src, 0, 0, 128, 128);
   },
 
-  webgpu: () => {
+  webgl2: () => {
 
   },
 };
