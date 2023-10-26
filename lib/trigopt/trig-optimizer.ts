@@ -1,3 +1,5 @@
+const optPi = Math.round(Math.PI * 10000) / 10000;
+
 class TrigCache {
   private sinCache: number[];
   private cosCache: number[];
@@ -8,10 +10,9 @@ class TrigCache {
   }
 
   sin(val: number) {
-    // const cacheKey = Math.round(val / 2 * Math.PI * 360) % 360;
-    const cacheKey = val;
+    const cacheKey = Math.round(val) % 180;
     if (!this.sinCache[cacheKey]) {
-      const rads = val * Math.PI / 180;
+      const rads = val * optPi / 180;
       this.sinCache[cacheKey] = Math.sin(rads);
     }
 
@@ -19,10 +20,9 @@ class TrigCache {
   }
 
   cos(val: number) {
-    // const cacheKey = Math.round(val * 100);
-    const cacheKey = val;
+    const cacheKey = Math.round(val) % 180;
     if (!this.cosCache[cacheKey]) {
-      const rads = val * Math.PI / 180;
+      const rads = val * optPi / 180;
       this.cosCache[cacheKey] = Math.cos(rads);
     }
 

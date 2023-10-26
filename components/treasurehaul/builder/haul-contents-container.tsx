@@ -35,9 +35,9 @@ export default function HaulContentsContainer() {
   return (
     <HaulContents>
       <div className={clsx(
-        ['z-20'],
-        ['text-center', 'text-lg'],
-        ['dark:text-white'],
+        'z-20',
+        'text-center text-lg',
+        'dark:text-white',
         effectsItems.length > 0
           ? 'hidden'
           : 'visible'

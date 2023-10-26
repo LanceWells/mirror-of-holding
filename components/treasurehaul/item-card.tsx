@@ -216,9 +216,6 @@ const Effects: {
     offscreenCtx: OffscreenCanvasRenderingContext2D,
     effects: TreasureHaulItem['effects'],
     emitter: Emitter,
-    webGPU: {
-
-    },
   }) => void
 } = {
   /**

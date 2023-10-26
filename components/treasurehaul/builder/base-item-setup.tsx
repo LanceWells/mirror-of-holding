@@ -6,13 +6,11 @@ import { MagnifyingGlassIcon } from '@/components/svgs';
 export default function BaseItemSetup(props: { itemSelector: ReactNode }) {
   return (
     <div className={clsx(
-        'grid',
-        'grid-cols-[32px_1fr]',
-        'grid-rows-[auto_auto_auto_1fr]',
-        'gap-y-2',
-        'gap-x-1',
-        'h-full',
-      )}
+      'grid grid-cols-[32px_1fr] grid-rows-[auto_auto_auto_1fr]',
+      'gap-y-2 gap-x-1',
+      'h-full',
+      'p-4',
+    )}
       style={{
         gridTemplateAreas: `
           "title        title"
@@ -30,7 +28,7 @@ export default function BaseItemSetup(props: { itemSelector: ReactNode }) {
       <div className="[grid-area:search-box]">
         <BuilderSearch />
       </div>
-      <div className="[grid-area:options] grid">
+      <div className="[grid-area:options] grid overflow-y-auto">
         {props.itemSelector}
       </div>
     </div>

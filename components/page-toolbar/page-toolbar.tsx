@@ -81,11 +81,11 @@ export default function PageToolbar() {
 
   return (
     <div className={clsx(
-      ['absolute', 'top-0', 'w-screen', 'h-14', 'px-4'],
-      ['bg-white', 'dark:bg-slate-800'],
-      ['shadow-sm'],
-      ['border-b', 'dark:border-black'],
-      ['grid', 'items-center', 'justify-between', 'grid-cols-[max-content_max-content]'],
+      'top-0 w-screen h-14 px-4',
+      'bg-white dark:bg-slate-800',
+      'shadow-sm',
+      'border-b dark:border-black',
+      'grid items-center justify-between grid-cols-[max-content_max-content]',
     )}>
       <h1 className="text-black dark:text-white">
         Mirror Of Holding

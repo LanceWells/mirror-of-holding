@@ -14,17 +14,17 @@ export default async function ItemSelector(props: ItemSelectorProps) {
   const haul = await LoadBaseItems();
 
   const itemOptions = haul.map((item) => (
-    <BaseItemContainer key={item.id} item={item}/>
+    <BaseItemContainer key={item.id} item={item} />
   ));
 
   return (
     <div className={clsx(
-      ['bg-white', 'dark:bg-gray-700', 'bg-gradient-to-br'],
-      ['border', 'border-gray-200', 'dark:border-gray-900'],
-      ['rounded-lg'],
-      ['shadow-sm'],
-      ['flex', 'flex-wrap', 'justify-center', 'content-start'],
-      ['overflow-y-auto', 'overflow-x-hidden'],
+      'bg-white dark:bg-gray-700 bg-gradient-to-br',
+      'border border-gray-200 dark:border-gray-900',
+      'rounded-lg',
+      'shadow-sm',
+      'flex flex-wrap justify-center content-start',
+      'overflow-y-auto overflow-x-hidden',
     )}>
       <BlankItemContainer />
       {itemOptions}

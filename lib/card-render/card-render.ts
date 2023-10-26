@@ -97,6 +97,8 @@ export function renderWithCanvasCtx(
     animationFrameID = requestAnimationFrame(animateCard);
   }
 
+  // Commenting this out while I work on the PIXI JS implementation. If I decide to switch back to
+  // canvas rendering, un-commenting this will re-enable that loop.
   // animationFrameID = requestAnimationFrame(animateCard);
 
   return (() => {

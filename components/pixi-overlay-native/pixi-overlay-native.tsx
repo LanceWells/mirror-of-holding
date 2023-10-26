@@ -1,3 +1,5 @@
+'use client';
+
 import clsx from 'clsx';
 import { Application } from 'pixi.js';
 import { useRef, useEffect, useCallback } from 'react';
@@ -7,6 +9,8 @@ import {
   useDrawerOpenSelector,
   useHaulSelector,
 } from '@/lib/store/treasure-haul';
+import { TreasureHaulItem } from '@/lib/treasurehaul/treasure-haul-payload';
+import { ParticleState, PixiEffects } from '@/lib/card-render/pixi-effects';
 
 export default function PixiOverlay() {
   const canvasIDs = useCardVisibilitySelector();
@@ -19,6 +23,10 @@ export default function PixiOverlay() {
   const cardsRef = useRef<{
     [canvasKey: string]: {
       sprite: PIXI.Sprite;
+      item: TreasureHaulItem;
+      state: {
+        particles: ParticleState,
+      }
     }
   }>({});
 
@@ -42,15 +50,19 @@ export default function PixiOverlay() {
     }, 1000);
   }, []);
 
-  const resizeObserver = useRef<ResizeObserver>(
-    new ResizeObserver(() => {
-      recalculateBoundingBoxes();
-    })
+  const resizeObserver = useRef<ResizeObserver | null>(
+    null
   );
 
   useEffect(() => {
-    resizeObserver.current.observe(document.body);
-  });
+    if (ResizeObserver) {
+      resizeObserver.current = new ResizeObserver(() => {
+        recalculateBoundingBoxes();
+      });
+
+      resizeObserver.current.observe(document.body);
+    }
+  }, [recalculateBoundingBoxes]);
 
   useEffect(() => {
     recalculateBoundingBoxes();
@@ -105,8 +117,6 @@ export default function PixiOverlay() {
           },
         );
 
-        // newSprite.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-
         const thisBoundingRect = thisCanvas.getBoundingClientRect();
         newSprite.x = thisBoundingRect.x;
         newSprite.y = thisBoundingRect.y;
@@ -114,13 +124,26 @@ export default function PixiOverlay() {
 
         cardsRef.current[k] = {
           sprite: newSprite,
+          item,
+          state: {
+            particles: {
+              container: new PIXI.ParticleContainer(),
+              sprites: [],
+            }
+          }
         };
 
         app.stage.addChild(newSprite);
       }
     });
 
+    // Don't update on haul. That won't do anything because the visual components that we need to
+    // refer to won't exist until canvasIDs is updated.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvasIDs]);
+
+  // TODO: on haul change, update the cardsref object so that we can have the updated particle
+  // values, and know what to render when the values are changed.
 
   useEffect(() => {
     if (!appRef.current) {
@@ -128,16 +151,7 @@ export default function PixiOverlay() {
     }
 
     const app = appRef.current;
-
     app.stage.removeChildren();
-
-    const bunny = PIXI.Sprite.from('https://pixijs.com/assets/bunny.png');
-
-    app.stage.addChild(bunny);
-
-    bunny.anchor.set(0.5);
-    bunny.x = app.screen.width / 2;
-    bunny.y = app.screen.height / 2;
 
     if (app.ticker.count <= 1) {
       app.ticker.add((delta) => {
@@ -154,7 +168,22 @@ export default function PixiOverlay() {
           });
         }
 
-        bunny.rotation += 0.1 * delta;
+        Object.entries(cardsRef.current).forEach(([k, v]) => {
+          PixiEffects[v.item.effects.type]({
+            delta,
+            effects: v.item.effects,
+            imgs: {
+              noise: '',
+              particle: '',
+              patchyNoise: '',
+              src: '/particles/sparkle-gray.png',
+            },
+            time: Date.now(),
+            particles: v.state.particles,
+          });
+        });
+
+        // bunny.rotation += 0.1 * delta;
       });
     }
   }, [appRef]);
@@ -162,7 +191,7 @@ export default function PixiOverlay() {
   return (
     <canvas
       className={clsx(
-        ['fixed', 'z-40', 'pointer-events-none']
+        ['fixed', 'top-0', 'z-40', 'pointer-events-none']
       )}
       ref={canvasRef}
     />

@@ -10,7 +10,7 @@ import ToastFeedContainer from '@/components/treasurehaul/builder/toast-feed-con
 import ChestDetailsEditor from '@/components/treasurehaul/builder/chest-details-editor';
 import ChestDetailsContainer from '@/components/treasurehaul/builder/chest-details-container';
 import HaulContentsContainer from '@/components/treasurehaul/builder/haul-contents-container';
-import PixiOverlay from '@/components/pixi-overlay/pixi-overlay';
+import PixiOverlay from '@/components/pixi-overlay-native/pixi-overlay-native';
 
 // export const runtime = 'edge'
 export const preferredRegion = 'home';
@@ -18,22 +18,14 @@ export const dynamic = 'force-dynamic';
 
 export default function Builder() {
   return (
-    <main
-      className={clsx(
-        'min-h-[100dvh]',
-        'max-h-[100dvh]',
-        'bg-slate-50',
-        'dark:bg-slate-950',
-        'top-0',
-      )}
-    >
-      <div className={clsx(
-        ['w-screen', 'h-screen', 'overflow-y-hidden'],
-        ['grid', 'grid-rows-[min-content_auto]', 'content-center', 'gap-y-8']
-      )}>
-        <ChestDetailsContainer />
-        <HaulContentsContainer />
-      </div>
+    <main className={clsx(
+      'bg-slate-50 dark:bg-slate-950',
+      'overflow-hidden',
+      'h-full',
+      'grid grid-rows-[min-content_1fr_0px_0px_0px_0px]',
+    )}>
+      <ChestDetailsContainer />
+      <HaulContentsContainer />
       <DrawerContainer
         drawerStates={{
           PickBaseItem: (<BaseItemSetup itemSelector={(<ItemSelector />)} />),
