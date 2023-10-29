@@ -12,7 +12,7 @@ export default function HaulContents(props: PropsWithChildren<HaulContentsProps>
     <div className={clsx(
       'flex justify-center items-center overflow-y-auto',
     )}>
-      <div className={clsx(
+      <div id='haul-contents' className={clsx(
         'bg-white', 'dark:bg-slate-900',
         'border', 'border-gray-200', 'dark:border-gray-700',
         'shadow-md',

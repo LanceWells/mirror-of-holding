@@ -62,6 +62,39 @@ export default function ItemCard(props: ItemCardProps) {
     return `${itemKey}_${Math.floor(Math.random() * 10000000)}`;
   }, [itemKey]);
 
+  // useEffect(() => {
+  //   if (!canvasRef.current) {
+  //     return;
+  //   }
+
+  //   if (IntersectionObserver) {
+  //     const haulBox = document.getElementById('haul-contents');
+
+  //     iObserver.current = new IntersectionObserver((entries) => {
+  //       entries.forEach((entry) => {
+  //         if (entry.isIntersecting) {
+  //           const elem = entry.target;
+  //           if (entry.intersectionRatio !== 1) {
+  //             dispatch(removeCardVisibility({
+  //               canvasKey,
+  //             }));
+  //           } else {
+  //             dispatch(setCardVisibility({
+  //               canvasKey,
+  //               itemKey,
+  //             }));
+  //           }
+  //         }
+  //       });
+  //     }, {
+  //       root: haulBox,
+  //       threshold: [0.99],
+  //     });
+
+  //     iObserver.current.observe(canvasRef.current);
+  //   }
+  // }, [canvasRef, canvasKey, dispatch, itemKey]);
+
   useEffect(() => {
     if (item.effects.type === 'webgl2') {
       renderWithWebGL2Ctx(

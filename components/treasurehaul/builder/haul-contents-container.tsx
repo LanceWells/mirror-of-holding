@@ -34,14 +34,15 @@ export default function HaulContentsContainer() {
 
   return (
     <HaulContents>
-      <div className={clsx(
-        'z-20',
-        'text-center text-lg',
-        'dark:text-white',
-        effectsItems.length > 0
-          ? 'hidden'
-          : 'visible'
-      )}>
+      <div
+        className={clsx(
+          'z-20',
+          'text-center text-lg',
+          'dark:text-white',
+          effectsItems.length > 0
+            ? 'hidden'
+            : 'visible'
+        )}>
         <p>Nothing here yet!</p>
         <p>Click the <b>plus sign</b> in the toolbar to get started 🙂</p>
       </div>

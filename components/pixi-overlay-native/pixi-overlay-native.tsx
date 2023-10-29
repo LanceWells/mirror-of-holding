@@ -19,6 +19,9 @@ export default function PixiOverlay() {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const appRef = useRef<Application | null>(null);
+  const maskRef = useRef<PIXI.Graphics | null>(null);
+  const rObserver = useRef<ResizeObserver | null>(null);
+  const mObserver = useRef<MutationObserver | null>(null);
 
   const cardsRef = useRef<{
     [canvasKey: string]: {
@@ -50,18 +53,36 @@ export default function PixiOverlay() {
     }, 1000);
   }, []);
 
-  const resizeObserver = useRef<ResizeObserver | null>(
-    null
-  );
-
   useEffect(() => {
     if (ResizeObserver) {
-      resizeObserver.current = new ResizeObserver(() => {
+      rObserver.current = new ResizeObserver(() => {
         recalculateBoundingBoxes();
       });
 
-      resizeObserver.current.observe(document.body);
+      rObserver.current.observe(document.body);
     }
+
+    if (MutationObserver) {
+      mObserver.current = new MutationObserver(() => {
+        const haulBox = document.getElementById('haul-contents');
+        if (!haulBox) {
+          return;
+        }
+
+        // const bounds = haulBox.getBoundingClientRect();
+        // maskRef.current?.clear();
+        // maskRef.current?.beginFill(0xffffff)
+        //   .drawRect(bounds.x, bounds.y, bounds.width, bounds.height)
+        //   .endFill();
+      });
+    }
+
+    // const haulBox = document.getElementById('haul-contents');
+    // if (haulBox) {
+    //   haulBox.addEventListener('scroll', () => {
+    //     recalculateBoundingBoxes();
+    //   });
+    // }
   }, [recalculateBoundingBoxes]);
 
   useEffect(() => {
@@ -78,6 +99,49 @@ export default function PixiOverlay() {
       backgroundAlpha: 0,
       resizeTo: window,
     });
+
+    const haulBox = document.getElementById('haul-contents');
+    if (haulBox) {
+      const bounds = haulBox.getBoundingClientRect();
+      const mask = new PIXI.Graphics()
+        .beginFill(0xffffff)
+        .drawRect(bounds.x, bounds.y, bounds.width, bounds.height)
+        .endFill();
+
+      // app.stage.mask = mask;
+      // maskRef.current = mask;
+
+      // haulBox.addEventListener('change', function (this: HTMLElement) {
+      //   const bounds = this.getBoundingClientRect();
+      //   maskRef.current?.clear();
+      //   maskRef.current?.beginFill(0xffffff)
+      //     .drawRect(bounds.x, bounds.y, bounds.width, bounds.height)
+      //     .endFill();
+      // });
+
+
+
+
+      // haulBox.addEventListener('scroll', function (this: HTMLElement) {
+      //   Object.entries(cardsRef.current)
+      //     .forEach(([k, v]) => {
+      //       // const bounds = this.getBoundingClientRect();
+      //       const thisCanvas = document.getElementById(k);
+      //       if (!thisCanvas) {
+      //         console.log(`couldn't find a canvas for '${k}'`);
+      //         return;
+      //       }
+
+      //       const bounds = thisCanvas.getBoundingClientRect();
+
+      //       v.sprite.x = bounds.x;
+      //       v.sprite.y = bounds.y;
+      //     });
+      // });
+
+    } else {
+      console.error('could not find container for ref');
+    }
 
     appRef.current = app;
   }, [canvasRef]);
@@ -155,7 +219,7 @@ export default function PixiOverlay() {
 
     if (app.ticker.count <= 1) {
       app.ticker.add((delta) => {
-        if (shouldRecalcBounds.current) {
+        if (shouldRecalcBounds.current.doReset) {
           const canvases = document.querySelectorAll('[data-item-canvas') as NodeListOf<HTMLCanvasElement>;
           canvases.forEach((c) => {
             if (!cardsRef.current[c.id]) {
@@ -182,8 +246,6 @@ export default function PixiOverlay() {
             particles: v.state.particles,
           });
         });
-
-        // bunny.rotation += 0.1 * delta;
       });
     }
   }, [appRef]);
