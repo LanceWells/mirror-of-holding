@@ -31,11 +31,7 @@ const DefaultTreasureHaul = {
     chestIconOption: 'chest' as ChestIconOptions,
     chestIconURL: ChestIconOptions['chest'] as string,
   },
-  cardVisiblity: {} as {
-    [canvasKey: string]: {
-      itemKey: string;
-    }
-  },
+  cardVisiblity: [] as string[],
 };
 
 export type TreasureHaulStorage = typeof DefaultTreasureHaul;
@@ -106,13 +102,21 @@ const TreasureHaulSlice = createSlice({
       state.chestDetails.chestIconOption = action.payload.chestIconOption;
       state.chestDetails.chestName = action.payload.chestName;
     },
-    setCardVisibility(state, action: PayloadAction<{ canvasKey: string; itemKey: string }>) {
-      state.cardVisiblity[action.payload.canvasKey] = {
-        itemKey: action.payload.itemKey,
-      };
+    setCardVisibility(state, action: PayloadAction<{ itemKey: string }>) {
+      // state.cardVisiblity[action.payload.canvasKey] = {
+      //   itemKey: action.payload.itemKey,
+      // };
+
+      const s = new Set(state.cardVisiblity);
+      s.add(action.payload.itemKey);
+      state.cardVisiblity = [...s.values()];
     },
-    removeCardVisibility(state, action: PayloadAction<{ canvasKey: string }>) {
-      delete state.cardVisiblity[action.payload.canvasKey];
+    removeCardVisibility(state, action: PayloadAction<{ itemKey: string }>) {
+      // delete state.cardVisiblity[action.payload.canvasKey];
+
+      const s = new Set(state.cardVisiblity);
+      s.delete(action.payload.itemKey);
+      state.cardVisiblity = [...s.values()];
     }
   },
 });

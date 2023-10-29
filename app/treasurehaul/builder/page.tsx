@@ -35,7 +35,7 @@ export default function Builder() {
       />
       <BuilderToolbar />
       <ToastFeedContainer />
-      <PixiOverlay />
+      {/* <PixiOverlay /> */}
     </main>
   );
 }

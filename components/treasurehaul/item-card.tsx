@@ -56,11 +56,11 @@ export default function ItemCard(props: ItemCardProps) {
 
   const dispatch = useDispatch();
 
-  // We could have two cards with the same item key if one is visible in a drawer. That would give
-  // us multiple elements to observe. Make a unique key here instead.
-  const canvasKey = useMemo(() => {
-    return `${itemKey}_${Math.floor(Math.random() * 10000000)}`;
-  }, [itemKey]);
+  // // We could have two cards with the same item key if one is visible in a drawer. That would give
+  // // us multiple elements to observe. Make a unique key here instead.
+  // const canvasKey = useMemo(() => {
+  //   return `${itemKey}_${Math.floor(Math.random() * 10000000)}`;
+  // }, [itemKey]);
 
   // useEffect(() => {
   //   if (!canvasRef.current) {
@@ -117,13 +117,12 @@ export default function ItemCard(props: ItemCardProps) {
   // item card that can be watched.
   useEffect(() => {
     dispatch(setCardVisibility({
-      canvasKey,
       itemKey,
     }));
 
     return (() => {
       dispatch(removeCardVisibility({
-        canvasKey,
+        itemKey,
       }));
     });
 
@@ -133,7 +132,7 @@ export default function ItemCard(props: ItemCardProps) {
     //     itemKey,
     //   }));
     // });
-  }, [canvasKey, itemKey, dispatch]);
+  }, [itemKey, dispatch]);
 
   const loadImages = useCallback(async () => {
     const [src, noise, patchyNoise, particle] = await Promise.all([
@@ -203,7 +202,7 @@ export default function ItemCard(props: ItemCardProps) {
         // // than the assumed location.
         // data-item-canvas
         // data-item-key={itemKey}
-        id={canvasKey}
+        id={itemKey}
         data-item-canvas
         className={clsx(
           'rounded-lg',

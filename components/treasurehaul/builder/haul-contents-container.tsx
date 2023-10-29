@@ -2,14 +2,17 @@
 
 import { useHaulSelector, setDisplayedItem, setDrawerOpen } from '@/lib/store/treasure-haul';
 import clsx from 'clsx';
-import { useMemo } from 'react';
+import { forwardRef, useMemo, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import ItemCard from '../item-card';
-import HaulContents from '@/components/haulContents/haul-contents';
+import { HaulContents } from '@/components/haulContents/haul-contents';
+import PixiCardGrid from '@/components/pixi/card-grid/card-grid';
 
 export default function HaulContentsContainer() {
   const haul = useHaulSelector();
   const dispatch = useDispatch();
+
+  const haulContentsRef = useRef<HTMLDivElement | null>(null);
 
   const effectsItems = useMemo(
     () => Object.entries(haul)
@@ -33,20 +36,23 @@ export default function HaulContentsContainer() {
   );
 
   return (
-    <HaulContents>
-      <div
-        className={clsx(
-          'z-20',
-          'text-center text-lg',
-          'dark:text-white',
-          effectsItems.length > 0
-            ? 'hidden'
-            : 'visible'
-        )}>
-        <p>Nothing here yet!</p>
-        <p>Click the <b>plus sign</b> in the toolbar to get started 🙂</p>
-      </div>
-      {effectsItems}
-    </HaulContents>
+    <>
+      <HaulContents ref={haulContentsRef}>
+        <div
+          className={clsx(
+            'z-20',
+            'text-center text-lg',
+            'dark:text-white',
+            effectsItems.length > 0
+              ? 'hidden'
+              : 'visible'
+          )}>
+          <p>Nothing here yet!</p>
+          <p>Click the <b>plus sign</b> in the toolbar to get started 🙂</p>
+        </div>
+        {effectsItems}
+        <PixiCardGrid resizeTo={haulContentsRef} />
+      </HaulContents>
+    </>
   );
 }
