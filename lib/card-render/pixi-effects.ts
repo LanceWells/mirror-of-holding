@@ -7,7 +7,7 @@ import * as PIXI from 'pixi.js';
 import { TrigOptimizer } from '../trigopt/trig-optimizer';
 
 export type ParticleState = {
-  container: PIXI.ParticleContainer,
+  // container: PIXI.ParticleContainer,
   sprites: {
     sprite: PIXI.Sprite,
     createdAt: number,
@@ -32,6 +32,7 @@ export type PixiEffects = {
     time: number,
     particles: ParticleState,
     effects: TreasureHaulItem['effects'],
+    container: PIXI.Container,
   }) => void
 }
 
@@ -51,22 +52,19 @@ export const PixiEffects: PixiEffects = {
     effects,
     particles,
     time,
+    container,
   }) => {
     const eff = effects.uniforms as ItemEffectUniformParticles;
 
     // TODO: Consolidate these.
-    particles.sprites.forEach((p) => {
-      if ((time - p.createdAt) < eff.particleLifetime) {
-        particles.container.removeChild(p.sprite);
+    particles.sprites.forEach((p, i) => {
+      if ((time - p.createdAt) > eff.particleLifetime) {
+        container.removeChild(p.sprite);
+        particles.sprites.splice(i, 1);
       }
     });
 
-    particles.sprites = particles.sprites
-      .filter((p) => (time - p.createdAt) < eff.particleLifetime);
-
-    const t = 1000 / eff.particleFrequency;
-
-    const particlesToCreate = Math.floor(time / t) - Math.floor((time - delta) / t);
+    const particlesToCreate = (delta * eff.particleFrequency) / 100;
 
     for (let i = 0; i < particlesToCreate; i++) {
       const dirVariance = (eff.emitterCone / 2) - (Math.random() * eff.emitterCone);
@@ -82,7 +80,7 @@ export const PixiEffects: PixiEffects = {
       particle.y = (Math.random() - 0.5) * eff.emitterRadius + eff.emitterY;
       particle.rotation = direction;
 
-      particles.container.addChild(particle);
+      container.addChild(particle);
       particles.sprites.push({
         sprite: particle,
         createdAt: time,

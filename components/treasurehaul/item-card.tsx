@@ -120,15 +120,8 @@ export default function ItemCard(props: ItemCardProps) {
       itemKey,
     }));
 
-    return (() => {
-      dispatch(removeCardVisibility({
-        itemKey,
-      }));
-    });
-
     // return (() => {
-    //   dispatch(setCardVisibility({
-    //     canvasKey,
+    //   dispatch(removeCardVisibility({
     //     itemKey,
     //   }));
     // });
@@ -181,7 +174,7 @@ export default function ItemCard(props: ItemCardProps) {
           'w-[192px]',
           'h-[256px]',
           'grid',
-          'grid-rows-[min-content_1fr]',
+          'grid-rows-[128px_1fr]',
           'gap-y-6',
           'm-2',
           'bg-no-repeat',
@@ -194,7 +187,12 @@ export default function ItemCard(props: ItemCardProps) {
         animationFillMode: 'both',
       }}
     >
-      <canvas
+      <div
+        id={itemKey}
+        className='w-[128px] h-[128px] rounded-lg justify-self-center border-none'
+        data-item-canvas
+      />
+      {/* <canvas
         // // These data items let us query the exact bounding box of the canvas from another
         // // component. The reason that we're doing this (which may seem hacky), is that it is a more
         // // optimized option to get the box of an item versus saving this into something like a redux
@@ -215,7 +213,7 @@ export default function ItemCard(props: ItemCardProps) {
         height={128}
         width={128}
         ref={canvasRef}
-      />
+      /> */}
       <h3 className={clsx(
         medievalSharp.className,
         'text-white',

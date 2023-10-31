@@ -242,7 +242,7 @@ export default function PixiOverlay() {
               patchyNoise: '',
               src: '/particles/sparkle-gray.png',
             },
-            time: Date.now(),
+            lastTime: Date.now(),
             particles: v.state.particles,
           });
         });
